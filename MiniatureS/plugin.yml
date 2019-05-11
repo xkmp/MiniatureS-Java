@@ -1,0 +1,60 @@
+name: MiniatureS
+main: cn.epicfx.xiaokai.mis.MiniatureS
+api:
+- 1.0.0
+version: 1.0.0
+load: POSTWORLD
+website: http://EpicFX.cn
+description: 附带了一些小功能，其中包括多功能UI菜单，多功能商店
+author: EpicFX
+commands:
+   admis:
+      description: §6MiniatureS§9管理员命令
+      usage: §b/§admis §chelp
+      permission: MiniatureS.Command.Admin
+      aliases:
+      - adminmis
+   shop:
+      description: §9超级商店主命令
+      usage: §b/§6shop §chelp
+      permission: MiniatureS.Command.Shop
+      aliases:
+      - 商店
+   mis:
+      description: §9菜单工具主命令
+      permission: MiniatureS.Command.main
+      usage: §b/§6mis §chelp
+      aliases:
+      - miniature
+      - miniatures
+      - 菜单
+permissions:
+   MiniatureS.Command.Admin:
+      description: MiniatureS管理员命令
+      default: false
+   MiniatureS.Command.Shop:
+      description: 超级商店主命令
+      default: true
+   MiniatureS.Command.main:
+      description: 菜单工具主命令
+      default: true
+EpicFX:
+   github: https://github.com/xkmp
+   member:
+   - Winfxk
+   - Anders233
+   exploit:
+      major: Winfxk
+      minor: Anders233
+   intro:
+      Winfxk:
+         QQ: 2508543202
+         Email:
+         - Winfxk@QQ.com
+         - Winfxk@gmail.com
+         github: https://github.com/WinfXK
+      Anders233:
+         QQ: 2641541097
+         Email:
+         - 2641541097@QQ.com
+         github: https://github.com/Anders233
