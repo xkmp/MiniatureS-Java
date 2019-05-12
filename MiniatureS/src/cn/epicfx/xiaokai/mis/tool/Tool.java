@@ -108,7 +108,7 @@ public class Tool {
 	 */
 	public static String getRandString(String string) {
 		int r1 = getRand(0, string.length() - 1);
-		return string.substring(0, r1 + 1);
+		return string.substring(r1, r1 + 1);
 	}
 
 	/**

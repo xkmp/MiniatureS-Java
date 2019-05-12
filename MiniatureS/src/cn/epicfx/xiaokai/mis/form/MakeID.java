@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum MakeID {
-	MainFormID(97005423), SetConfig(165412354), AddButtonType(1563165423), ShopMain(755453486), ShopAddShop(168854321);
+	MainFormID(97005423), SetConfig(165412354), AddButtonType(1563165423), ShopMain(755453486), ShopAddShop(168854321),
+	Shop(45435453), AddShopType(231635415);
 	private int code;
 
 	private static final Map<Integer, MakeID> MAP = new HashMap<>();

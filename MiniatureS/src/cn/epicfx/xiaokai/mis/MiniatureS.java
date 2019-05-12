@@ -1,11 +1,38 @@
+//                       _oo0oo_
+//                      o8888888o
+//                      88" . "88
+//                      (| -_- |)
+//                      0\  =  /0
+//                    ___/`---'\___
+//                  .' \\|     |// '.
+//                 / \\|||  :  |||// \
+//                / _||||| -:- |||||- \
+//               |   | \\\  -  /// |   |
+//               | \_|  ''\---/''  |_/ |
+//               \  .-\__  '-'  ___/-. /
+//             ___'. .'  /--.--\  `. .'___
+//          ."" '<  `.___\_<|>_/___.' >' "".
+//         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+//         \  \ `_.   \_ __\ /__ _/   .-` /  /
+//     =====`-.____`.___ \_____/___.-`___.-'=====
+//                       `=---='
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//               佛祖保佑         永无BUG
+//          佛曰:
+//              写字楼里写字间, 写字间里程序员；
+//              程序人员写程序, 又拿程序换酒钱。
+//              酒醒只在网上坐, 酒醉还来网下眠；
+//              酒醉酒醒日复日, 网上网下年复年。
+//              但愿老死电脑间, 不愿鞠躬老板前；
+//              奔驰宝马贵者趣, 公交自行程序员。
+//              别人笑我忒疯癫, 我笑自己命太贱；
+//              不见满街漂亮妹, 哪个归得程序员？
 package cn.epicfx.xiaokai.mis;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.LinkedHashMap;
 import cn.epicfx.xiaokai.mis.cmd.PlayerCommand;
 import cn.epicfx.xiaokai.mis.event.FormCallback;
 import cn.epicfx.xiaokai.mis.event.PlayerEvent;
@@ -25,17 +52,38 @@ import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 
 public class MiniatureS extends PluginBase implements Listener {
-	public static String[] ConfigNameList = { "Config.yml", "Message.yml", "Main.yml" };
-	public Map<String, String> PlayerMenuBack = new HashMap<String, String>();
-	public Map<String, ArrayList<String>> PlayerMenu = new HashMap<String, ArrayList<String>>();
+	public static String[] ConfigNameList = { "Config.yml", "Message.yml", "Main.yml", "ShopList.yml" };
+	/**
+	 * 玩家点的这个菜单的上一级
+	 */
+	public LinkedHashMap<String, String> PlayerMenuBack = new LinkedHashMap<String, String>();
+	/**
+	 * 玩家当前页面的按钮列表
+	 */
+	public LinkedHashMap<String, ArrayList<String>> PlayerMenu = new LinkedHashMap<String, ArrayList<String>>();
+	/**
+	 * 菜单配置文件存储路径
+	 */
 	public static final String MenuConfigPath = "/Menus/";
-	public Config config, MsgConfig, Menus;
+	public static final String ShopConfigPath = "/Shops/";
+	public Config config;
+	/**
+	 * 插件消息文本文件
+	 */
+	public Config MsgConfig;
+	/**
+	 * 菜单key配置文件名对照表
+	 */
+	public Config Menus;
 	public static MiniatureS mis;
 	public MakeForm makeForm;
 	private Message message;
 	private PlayerCommand cmd;
+	/**
+	 * 商店按钮列表
+	 */
 	public Config ShopListConfig;
-	public Map<String, ArrayList<String>> shopList = new HashMap<String, ArrayList<String>>();
+	public LinkedHashMap<String, ArrayList<String>> shopList = new LinkedHashMap<String, ArrayList<String>>();
 	public ShopMakeForm shopMakeForm;
 
 	@Override
@@ -51,7 +99,7 @@ public class MiniatureS extends PluginBase implements Listener {
 		Menus = new Config(this.getDataFolder() + "/Main.yml", 2);
 		cmd = new PlayerCommand(this);
 		shopMakeForm = new ShopMakeForm(this);
-		File file = new File(mis.getDataFolder(), "Shops/");
+		File file = new File(mis.getDataFolder() + ShopConfigPath);
 		if (!file.exists())
 			file.mkdirs();
 		this.ShopListConfig = new Config(mis.getDataFolder() + "/ShopList.yml", 2);

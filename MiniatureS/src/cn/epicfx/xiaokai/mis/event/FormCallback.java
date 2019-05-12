@@ -8,6 +8,8 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerFormRespondedEvent;
+import cn.nukkit.form.response.FormResponseCustom;
+import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.form.response.FormResponseSimple;
 
 public class FormCallback implements Listener {
@@ -21,11 +23,21 @@ public class FormCallback implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerForm(PlayerFormRespondedEvent e) {
-		if (e.wasClosed() || e.getResponse() == null || !(e.getResponse() instanceof FormResponseSimple)
+		if (e.wasClosed() || e.getResponse() == null || (!(e.getResponse() instanceof FormResponseSimple)
+				&& !(e.getResponse() instanceof FormResponseCustom) && !(e.getResponse() instanceof FormResponseModal))
 				|| e.getPlayer() == null)
 			return;
 		Player player = e.getPlayer();
 		switch (MakeID.getByID(e.getFormID())) {
+		case AddShopType:
+			shopDispose.SelectShopType(player, ((FormResponseSimple) e.getResponse()).getClickedButtonId());
+			break;
+		case Shop:
+			shopDispose.Shop(player, (FormResponseSimple) e.getResponse());
+			break;
+		case ShopAddShop:
+			shopDispose.addShopShow(player, (FormResponseCustom) e.getResponse());
+			break;
 		case ShopMain:
 			shopDispose.Main(player, (FormResponseSimple) e.getResponse());
 			break;
