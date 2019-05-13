@@ -8,6 +8,7 @@ import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
+import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerInteractEvent.Action;
 import cn.nukkit.event.player.PlayerJoinEvent;
@@ -24,6 +25,22 @@ public class PlayerEvent implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+	public void onPlayerBreak(BlockBreakEvent e) {
+		String makeTool = mis.config.getString("快捷工具", null);
+		if (makeTool == null || makeTool.equals(""))
+			return;
+		Item item = e.getItem();
+		if (item != null && Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool)
+				&& e.getPlayer().getGamemode() == 1) {
+			e.setCancelled();
+			if (!mis.config.getBoolean("快捷打开为商店"))
+				mis.makeForm.makeMain(e.getPlayer());
+			else
+				mis.shopMakeForm.MakeMain(e.getPlayer());
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		String makeTool = mis.config.getString("快捷工具", null);
 		if (makeTool == null || makeTool.equals(""))
@@ -31,8 +48,12 @@ public class PlayerEvent implements Listener {
 		Item item = e.getItem();
 		if (item != null && e.getAction() != null
 				&& (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-				&& Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool)) {
-			mis.makeForm.makeMain(e.getPlayer());
+				&& Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool) && e.getPlayer().getGamemode() != 1) {
+			e.setCancelled();
+			if (!mis.config.getBoolean("快捷打开为商店"))
+				mis.makeForm.makeMain(e.getPlayer());
+			else
+				mis.shopMakeForm.MakeMain(e.getPlayer());
 		}
 	}
 

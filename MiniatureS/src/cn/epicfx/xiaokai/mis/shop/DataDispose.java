@@ -16,15 +16,56 @@ public class DataDispose {
 		this.mis = shop;
 	}
 
+	// { "出售物品", "购买物品", "出售经验", "购买经验", "以物换物" };
 	public void SelectShopType(Player player, int data) {
+		ShopMakeForm makeForm = new ShopMakeForm(mis);
 		switch (data) {
-		case 0:
-
+		case 1:
+			makeForm.AddItemShop(player);
 			break;
-
+		case 0:
 		default:
+			makeForm.addItemSell(player);
 			break;
 		}
+	}
+
+	public void AddItemShop(Player player, FormResponseCustom data) {
+		if (!player.isOp()) {
+			player.sendMessage(TextFormat.RED + "你无权创建商店");
+			return;
+		}
+		String ID = ItemIDSunName.UnknownToID(String.valueOf(data.getResponse(0)));
+		int Count = Float.valueOf(String.valueOf(data.getResponse(1))).intValue();
+		int Money = Integer.valueOf(String.valueOf(data.getResponse(2)));
+		int Item_Count = Integer.valueOf(String.valueOf(data.getResponse(3)));
+		int MinCount = Float.valueOf(String.valueOf(data.getResponse(4))).intValue();
+		int MaxCount = Float.valueOf(String.valueOf(data.getResponse(5))).intValue();
+		if (((int) (Money / Count)) < 1) {
+			MakeForm.makeTip(player, TextFormat.RED + "您输入的每个物品的价格过低！请重新设置一个吧~");
+			return;
+		}
+		(new Shop(mis)).AddItemShop(mis.PlayerMenuBack.get(player.getName()), player, ID, Money / Count, Item_Count,
+				MinCount, MaxCount);
+	}
+
+	public void AddItemSell(Player player, FormResponseCustom data) {
+		if (!player.isOp()) {
+			player.sendMessage(TextFormat.RED + "你无权创建商店");
+			return;
+		}
+		String ID = ItemIDSunName.UnknownToID(String.valueOf(data.getResponse(0)));
+		int Count = Float.valueOf(String.valueOf(data.getResponse(1))).intValue();
+		int Money = Integer.valueOf(String.valueOf(data.getResponse(2)));
+		int Item_Count = Integer.valueOf(String.valueOf(data.getResponse(3)));
+		int MinCount = Float.valueOf(String.valueOf(data.getResponse(4))).intValue();
+		int MaxCount = Float.valueOf(String.valueOf(data.getResponse(5))).intValue();
+		if (((int) (Money / Count)) < 1) {
+			MakeForm.makeTip(player, TextFormat.RED + "您输入的每个物品的价格过低！请重新设置一个吧~");
+			return;
+		}
+		(new Shop(mis)).AddItemSell(mis.PlayerMenuBack.get(player.getName()), player, ID, Money / Count, Item_Count,
+				MinCount, MaxCount);
 	}
 
 	public void Shop(Player player, FormResponseSimple data) {

@@ -23,12 +23,18 @@ public class FormCallback implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerForm(PlayerFormRespondedEvent e) {
-		if (e.wasClosed() || e.getResponse() == null || (!(e.getResponse() instanceof FormResponseSimple)
-				&& !(e.getResponse() instanceof FormResponseCustom) && !(e.getResponse() instanceof FormResponseModal))
+		if (e.wasClosed() || e.getResponse() == null || (!(e.getResponse() instanceof FormResponseCustom)
+				&& !(e.getResponse() instanceof FormResponseSimple) && !(e.getResponse() instanceof FormResponseModal))
 				|| e.getPlayer() == null)
 			return;
 		Player player = e.getPlayer();
 		switch (MakeID.getByID(e.getFormID())) {
+		case AddItemShop:
+			shopDispose.AddItemShop(player, (FormResponseCustom) e.getResponse());
+			break;
+		case AddItemSell:
+			shopDispose.AddItemSell(player, (FormResponseCustom) e.getResponse());
+			break;
 		case AddShopType:
 			shopDispose.SelectShopType(player, ((FormResponseSimple) e.getResponse()).getClickedButtonId());
 			break;
