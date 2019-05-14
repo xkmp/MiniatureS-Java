@@ -29,6 +29,15 @@ public class FormCallback implements Listener {
 			return;
 		Player player = e.getPlayer();
 		switch (MakeID.getByID(e.getFormID())) {
+		case AddItemToItem:
+			shopDispose.AddItemToItem(player, (FormResponseCustom) e.getResponse());
+			break;
+		case AddExpShop:
+			shopDispose.AddExpShop(player, (FormResponseCustom) e.getResponse());
+			break;
+		case AddExpSell:
+			shopDispose.AddExpSell(player, (FormResponseCustom) e.getResponse());
+			break;
 		case AddItemShop:
 			shopDispose.AddItemShop(player, (FormResponseCustom) e.getResponse());
 			break;
@@ -47,12 +56,12 @@ public class FormCallback implements Listener {
 		case ShopMain:
 			shopDispose.Main(player, (FormResponseSimple) e.getResponse());
 			break;
-		case MainFormID:
-			dispose.Main(player, (FormResponseSimple) e.getResponse());
-			break;
 		case AddButtonType:
 
+			break;
+		case MainFormID:
 		default:
+			dispose.Main(player, (FormResponseSimple) e.getResponse());
 			break;
 		}
 	}

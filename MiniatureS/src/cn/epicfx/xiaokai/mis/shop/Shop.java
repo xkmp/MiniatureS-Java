@@ -120,7 +120,7 @@ public class Shop {
 		map.put("Player", player.getName());
 		map.put("File", ConfigName);
 		map.put("Type", ShopType);
-		map.put("Back_world", Back_world == null ? new String[] {} : Back_world);
+		map.put("Back_World", Back_world == null ? new String[] {} : Back_world);
 		map.put("Back_Player", Back_Player == null ? new String[] {} : Back_Player);
 		Map<String, Object> list;
 		if (!mis.ShopListConfig.getString("Buttons").equals("[]"))
@@ -131,7 +131,7 @@ public class Shop {
 		Con.put("Content", null);
 		Con.put("Name", ShopName);
 		Con.put("Player", player.getName());
-		Con.put("Back_world", Back_world == null ? new String[] {} : Back_world);
+		Con.put("Back_World", Back_world == null ? new String[] {} : Back_world);
 		Con.put("Back_Player", Back_Player == null ? new String[] {} : Back_Player);
 		Con.put("Buttons", new HashMap<String, Object>());
 		Config Config = new Config(mis.getDataFolder() + MiniatureS.ShopConfigPath + ConfigName, 2);

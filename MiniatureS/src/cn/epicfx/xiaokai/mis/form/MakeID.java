@@ -4,8 +4,54 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum MakeID {
-	MainFormID(97005423), SetConfig(165412354), AddButtonType(1563165423), ShopMain(755453486), ShopAddShop(168854321),
-	Shop(45435453), AddShopType(231635415), AddItemSell(564357421), AddItemShop(456123156);
+	/**
+	 * 菜单主页ID
+	 */
+	MainFormID(97005423),
+	/**
+	 * 设置属性页ID
+	 */
+	SetConfig(165412354),
+	/**
+	 * 选择要添加按钮类型页ID
+	 */
+	AddButtonType(1563165423),
+	/**
+	 * 商店主页ID
+	 */
+	ShopMain(755453486),
+	/**
+	 * 添加商店分页ID
+	 */
+	ShopAddShop(168854321),
+	/**
+	 * 商店分页ID
+	 */
+	Shop(45435453),
+	/**
+	 * 添加商店物品类型页ID
+	 */
+	AddShopType(231635415),
+	/**
+	 * 上架物品出售页ID
+	 */
+	AddItemSell(564357421),
+	/**
+	 * 上架物品回收页ID
+	 */
+	AddItemShop(456123156),
+	/**
+	 * 上架出售经验等级页ID
+	 */
+	AddExpShop(338713874),
+	/**
+	 * 上架经验回收页ID
+	 */
+	AddExpSell(45456456),
+	/**
+	 * 上架以物易物页ID
+	 */
+	AddItemToItem(234734554);
 	private int code;
 
 	private static final Map<Integer, MakeID> MAP = new HashMap<>();

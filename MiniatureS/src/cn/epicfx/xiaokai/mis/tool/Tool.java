@@ -1,5 +1,7 @@
 package cn.epicfx.xiaokai.mis.tool;
 
+import java.util.regex.Pattern;
+
 public class Tool {
 	private static String colorKeyString = "123456789abcdef";
 	private static String randString = "0123456789-+abcdefghijklmnopqrstuvwxyz";
@@ -125,5 +127,32 @@ public class Tool {
 			text += "§" + ColorFont.substring(rand, rand + 1) + Font.substring(i, i + 1);
 		}
 		return text;
+	}
+
+	/**
+	 * 判断字符串是否是整数型
+	 * 
+	 * @param str
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	public static boolean isInteger(String str) {
+		try {
+			int num = Float.valueOf(str).intValue();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	/**
+	 * 判断一段字符串中是否只为纯数字
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {
+		Pattern pattern = Pattern.compile("[0-9]*");
+		return pattern.matcher(str).matches();
 	}
 }

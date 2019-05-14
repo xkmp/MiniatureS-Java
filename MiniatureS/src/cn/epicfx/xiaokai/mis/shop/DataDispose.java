@@ -1,9 +1,12 @@
 package cn.epicfx.xiaokai.mis.shop;
 
+import java.util.ArrayList;
+
 import cn.epicfx.xiaokai.mis.MiniatureS;
 import cn.epicfx.xiaokai.mis.form.FormStatic;
 import cn.epicfx.xiaokai.mis.form.MakeForm;
 import cn.epicfx.xiaokai.mis.tool.ItemIDSunName;
+import cn.epicfx.xiaokai.mis.tool.Tool;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
@@ -18,8 +21,21 @@ public class DataDispose {
 
 	// { "出售物品", "购买物品", "出售经验", "购买经验", "以物换物" };
 	public void SelectShopType(Player player, int data) {
+		if (!player.isOp()) {
+			MakeForm.makeTip(player, TextFormat.RED + "你没有权限设置该页！");
+			return;
+		}
 		ShopMakeForm makeForm = new ShopMakeForm(mis);
 		switch (data) {
+		case 4:
+			makeForm.AddItemToItem(player);
+			break;
+		case 3:
+			makeForm.AddExpSell(player);
+			break;
+		case 2:
+			makeForm.AddExpShop(player);
+			break;
 		case 1:
 			makeForm.AddItemShop(player);
 			break;
@@ -30,15 +46,41 @@ public class DataDispose {
 		}
 	}
 
+	public void AddItemToItem(Player player, FormResponseCustom data) {
+
+	}
+
+	public void AddExpShop(Player player, FormResponseCustom data) {
+
+	}
+
+	public void AddExpSell(Player player, FormResponseCustom data) {
+
+	}
+
 	public void AddItemShop(Player player, FormResponseCustom data) {
 		if (!player.isOp()) {
 			player.sendMessage(TextFormat.RED + "你无权创建商店");
 			return;
 		}
 		String ID = ItemIDSunName.UnknownToID(String.valueOf(data.getResponse(0)));
+		if (!Tool.isNumeric(String.valueOf(data.getResponse(1))) || !Tool.isNumeric(String.valueOf(data.getResponse(2)))
+				|| !Tool.isNumeric(String.valueOf(data.getResponse(3)))
+				|| !Tool.isNumeric(String.valueOf(data.getResponse(4)))
+				|| !Tool.isNumeric(String.valueOf(data.getResponse(5)))) {
+			MakeForm.makeTip(player, TextFormat.RED + "所有参数仅支持纯数字！");
+			return;
+		}
+		if (!Tool.isInteger(String.valueOf(data.getResponse(1))) || !Tool.isInteger(String.valueOf(data.getResponse(2)))
+				|| !Tool.isInteger(String.valueOf(data.getResponse(3)))
+				|| !Tool.isInteger(String.valueOf(data.getResponse(4)))
+				|| !Tool.isInteger(String.valueOf(data.getResponse(5)))) {
+			MakeForm.makeTip(player, TextFormat.RED + "所有参数不得超出范围（0-2147483647）！");
+			return;
+		}
 		int Count = Float.valueOf(String.valueOf(data.getResponse(1))).intValue();
-		int Money = Integer.valueOf(String.valueOf(data.getResponse(2)));
-		int Item_Count = Integer.valueOf(String.valueOf(data.getResponse(3)));
+		int Money = Float.valueOf(String.valueOf(data.getResponse(2))).intValue();
+		int Item_Count = Float.valueOf(String.valueOf(data.getResponse(3))).intValue();
 		int MinCount = Float.valueOf(String.valueOf(data.getResponse(4))).intValue();
 		int MaxCount = Float.valueOf(String.valueOf(data.getResponse(5))).intValue();
 		if (((int) (Money / Count)) < 1) {
@@ -54,10 +96,24 @@ public class DataDispose {
 			player.sendMessage(TextFormat.RED + "你无权创建商店");
 			return;
 		}
+		if (!Tool.isNumeric(String.valueOf(data.getResponse(1))) || !Tool.isNumeric(String.valueOf(data.getResponse(2)))
+				|| !Tool.isNumeric(String.valueOf(data.getResponse(3)))
+				|| !Tool.isNumeric(String.valueOf(data.getResponse(4)))
+				|| !Tool.isNumeric(String.valueOf(data.getResponse(5)))) {
+			MakeForm.makeTip(player, TextFormat.RED + "所有参数仅支持纯数字！");
+			return;
+		}
+		if (!Tool.isInteger(String.valueOf(data.getResponse(1))) || !Tool.isInteger(String.valueOf(data.getResponse(2)))
+				|| !Tool.isInteger(String.valueOf(data.getResponse(3)))
+				|| !Tool.isInteger(String.valueOf(data.getResponse(4)))
+				|| !Tool.isInteger(String.valueOf(data.getResponse(5)))) {
+			MakeForm.makeTip(player, TextFormat.RED + "所有参数不得超出范围（0-2147483647）！");
+			return;
+		}
 		String ID = ItemIDSunName.UnknownToID(String.valueOf(data.getResponse(0)));
 		int Count = Float.valueOf(String.valueOf(data.getResponse(1))).intValue();
-		int Money = Integer.valueOf(String.valueOf(data.getResponse(2)));
-		int Item_Count = Integer.valueOf(String.valueOf(data.getResponse(3)));
+		int Money = Float.valueOf(String.valueOf(data.getResponse(2))).intValue();
+		int Item_Count = Float.valueOf(String.valueOf(data.getResponse(3))).intValue();
 		int MinCount = Float.valueOf(String.valueOf(data.getResponse(4))).intValue();
 		int MaxCount = Float.valueOf(String.valueOf(data.getResponse(5))).intValue();
 		if (((int) (Money / Count)) < 1) {
@@ -122,6 +178,24 @@ public class DataDispose {
 			else
 				imagePath = null;
 		}
+		ArrayList<String> strings = new ArrayList<>();
+		for (String s : Back_World) {
+			if (!s.equals(""))
+				strings.add(s);
+		}
+		if (strings != null && strings.size() > 0)
+			Back_World = (String[]) strings.toArray();
+		else
+			Back_World = new String[] {};
+		strings = new ArrayList<>();
+		for (String s : Back_Player) {
+			if (!s.equals(""))
+				strings.add(s);
+		}
+		if (strings != null && strings.size() > 0)
+			Back_Player = (String[]) strings.toArray();
+		else
+			Back_Player = new String[] {};
 		(new Shop(mis)).AddShopShow(player, ShopName, ShopType, Back_World, Back_Player, ImageType, imagePath);
 	}
 
