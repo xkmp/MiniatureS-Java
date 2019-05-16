@@ -1,5 +1,6 @@
 <h1>MiniatureS - 附加功能<img src="https://raw.githubusercontent.com/xkmp/Test/master/MiniatureS-Logo.png" height="64" width="64" align="left"></img></h1>
 <br>
+
 ## MiniatureS 是什么?
 
 一个[NukkitX](https://github.com/NukkitX/Nukkit)自定义GUi菜单插件
