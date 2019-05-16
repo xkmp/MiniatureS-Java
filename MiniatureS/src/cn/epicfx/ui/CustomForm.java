@@ -1,191 +1,384 @@
 package cn.epicfx.ui;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
+import cn.nukkit.form.element.Element;
+import cn.nukkit.form.element.ElementDropdown;
+import cn.nukkit.form.element.ElementInput;
+import cn.nukkit.form.element.ElementLabel;
+import cn.nukkit.form.element.ElementSlider;
+import cn.nukkit.form.element.ElementStepSlider;
+import cn.nukkit.form.element.ElementToggle;
+import cn.nukkit.form.window.FormWindowCustom;
 
-public class CustomForm extends FormBase {
-	private ArrayList<Map<String, Object>> content = new ArrayList<Map<String, Object>>();
+public class CustomForm {
+	private List<Element> list = new ArrayList<Element>();
+	private int ID;
+	private String Title = "";
+	private String Icon = null;
 
-	public CustomForm(int id, String Title) {
-		super(id, Title, "custom_form");
-	}
-
-	public CustomForm(int id) {
-		super(id, "", "custom_form");
-	}
-
-	/**
-	 * 添加滑步滑块
-	 * 
-	 * @param text  标题
-	 * @param options 选项内容
-	 */
-	public void addStepSlider(String text, String[] options) {
-		Map<String, Object> content = new LinkedHashMap<String, Object>();
-		content.put("type", "step_slider");
-		content.put("text", text);
-		content.put("steps", options);
-		addContent(content);
+	public CustomForm() {
+		this.ID = getID();
 	}
 
 	/**
-	 * 带选择性的滑块
 	 * 
-	 * @param text         控件标题
-	 * @param options        选项内容
-	 * @param defaultIndex 默认显示第一几个
+	 * @param ID 表单ID
 	 */
-	public void addStepSlider(String text, String[] options, int defaultIndex) {
-		Map<String, Object> content = new LinkedHashMap<String, Object>();
-		content.put("type", "step_slider");
-		content.put("text", text);
-		content.put("steps", options);
-		content.put("default", defaultIndex);
-		addContent(content);
+	public CustomForm(int ID) {
+		this(ID, "");
 	}
 
 	/**
-	 * 添加滑块控件
 	 * 
-	 * @param text 控件标题
-	 * @param min  控件最小值
-	 * @param max  控件最大值
+	 * @param ID    表单ID
+	 * @param Title 表单标题
 	 */
-	public void addSlider(String text, int min, int max) {
-		Map<String, Object> content = new LinkedHashMap<String, Object>();
-		content.put("type", "slider");
-		content.put("text", text);
-		content.put("min", min);
-		content.put("max", max);
-		addContent(content);
+	public CustomForm(int ID, String Title) {
+		this.ID = ID;
+		this.Title = Title;
 	}
 
 	/**
-	 * 添加滑块控件
 	 * 
-	 * @param text    控件标题
-	 * @param min     滑块最小值
-	 * @param max     滑块最大值
-	 * @param step    步长
-	 * @param Default 默认值
+	 * @param ID    表单ID
+	 * @param Title 表单标题
+	 * @param Icon  表单按钮图标路径
 	 */
-	public void addSlider(String text, int min, int max, int step, int Default) {
-		Map<String, Object> content = new LinkedHashMap<String, Object>();
-		content.put("type", "slider");
-		content.put("text", text);
-		content.put("min", min);
-		content.put("max", max);
-		content.put("step", step);
-		content.put("default", Default);
-		addContent(content);
+	public CustomForm(int ID, String Title, String Icon) {
+		this.ID = ID;
+		this.Title = Title;
+		this.Icon = Icon;
 	}
 
 	/**
-	 * 添加下拉菜单
+	 * 添加一个开关控件
 	 * 
-	 * @param text    菜单标题
-	 * @param options 菜单选项内容
+	 * @param Text 控件标题
+	 * @return
 	 */
-	public void addDropdown(String text, String[] options) {
-		addDropdown(text, options, 0);
+	public CustomForm addToggle(String Text) {
+		list.add(new ElementToggle(Text, false));
+		return this;
 	}
 
 	/**
-	 * 添加下拉菜单
+	 * 添加一个开关控件
 	 * 
-	 * @param text    菜单标题
-	 * @param options 菜单选项内容
-	 * @param Default 默认显示第几个
+	 * @param Text    控件标题
+	 * @param Default 默认状态
+	 * @return
 	 */
-	public void addDropdown(String text, String[] options, int Default) {
-		Map<String, Object> content = new LinkedHashMap<String, Object>();
-		content.put("type", "dropdown");
-		content.put("text", text);
-		content.put("options", options);
-		content.put("default", Default);
-		addContent(content);
+	public CustomForm addToggle(String Text, Boolean Default) {
+		list.add(new ElementToggle(Text, Default));
+		return this;
+	}
+
+	/**
+	 * 添加一个滑动选项条
+	 * 
+	 * @param Text 控件标题
+	 * @return
+	 */
+	public CustomForm addStepSlider(String Text) {
+		list.add(new ElementStepSlider(Text, new ArrayList<String>(), 0));
+		return this;
+	}
+
+	/**
+	 * 添加一个滑动选项条
+	 * 
+	 * @param Text    控件标题
+	 * @param Options 控件选项
+	 * @return
+	 */
+	public CustomForm addStepSlider(String Text, List<String> Options) {
+		list.add(new ElementStepSlider(Text, Options, 0));
+		return this;
+	}
+
+	/**
+	 * 添加一个滑动选项条
+	 * 
+	 * @param Text    控件标题
+	 * @param Options 控件选项
+	 * @return
+	 */
+	public CustomForm addStepSlider(String Text, String[] Options) {
+		return this.addStepSlider(Text, Options, 0);
+	}
+
+	/**
+	 * 添加一个滑动选项条
+	 * 
+	 * @param Text    控件标题
+	 * @param Options 控件选项
+	 * @param Default 控件默认显示
+	 * @return
+	 */
+	public CustomForm addStepSlider(String Text, List<String> Options, int Default) {
+		list.add(new ElementStepSlider(Text, Options, Default));
+		return this;
+	}
+
+	/**
+	 * 添加一个滑动选项条
+	 * 
+	 * @param Text    控件标题
+	 * @param Options 控件选项
+	 * @param Default 控件默认显示
+	 * @return
+	 */
+	public CustomForm addStepSlider(String Text, String[] Options, int Default) {
+		list.add(new ElementStepSlider(Text, Arrays.asList(Options), Default));
+		return this;
+	}
+
+	/**
+	 * 添加一个滑动控件
+	 * 
+	 * @param Text 控件标题
+	 * @return
+	 */
+	public CustomForm addSlider(String Text) {
+		list.add(new ElementSlider(Text, 0, 100, 1, 1));
+		return this;
+	}
+
+	/**
+	 * 添加一个滑动控件
+	 * 
+	 * @param Text 控件标题
+	 * @param Min  最小值
+	 * @param Max  最大值
+	 * @return
+	 */
+	public CustomForm addSlider(String Text, int Min, int Max) {
+		list.add(new ElementSlider(Text, Min, Max, 1, Min));
+		return this;
+	}
+
+	/**
+	 * 添加一个滑动控件
+	 * 
+	 * @param Text 控件标题
+	 * @param Min  最小值
+	 * @param Max  最大值
+	 * @param Step 步长
+	 * @return
+	 */
+	public CustomForm addSlider(String Text, int Min, int Max, int Step) {
+		list.add(new ElementSlider(Text, Min, Max, Step, Min));
+		return this;
+	}
+
+	/**
+	 * 添加一个滑动控件
+	 * 
+	 * @param Text         控件标题
+	 * @param Min          最小值
+	 * @param Max          最大值
+	 * @param Step         步长
+	 * @param DefaultValue 默认显示
+	 * @return
+	 */
+	public CustomForm addSlider(String Text, int Min, int Max, int Step, int DefaultValue) {
+		list.add(new ElementSlider(Text, Min, Max, Step, DefaultValue));
+		return this;
 	}
 
 	/**
 	 * 添加一个标签
 	 * 
-	 * @param text 标签内容
+	 * @param Text 标签标题
+	 * @return
 	 */
-	public void addLabel(String text) {
-		Map<String, Object> content = new LinkedHashMap<String, Object>();
-		content.put("type", "label");
-		content.put("text", text);
-		addContent(content);
+	public CustomForm addLabel(String Text) {
+		list.add(new ElementLabel(Text));
+		return this;
 	}
 
 	/**
-	 * 添加一个开关控件
+	 * 添加一个下拉菜单
 	 * 
-	 * @param text 控件标题
+	 * @param Text 下拉菜单标题
+	 * @return
 	 */
-	public void addToggle(String text) {
-		addToggle(text, false);
+	public CustomForm addDropdown(String Text) {
+		return addDropdown(Text, new ArrayList<String>(), 0);
 	}
 
 	/**
-	 * 添加一个开关控件
+	 * 添加一个下拉菜单
 	 * 
-	 * @param text    控件标题
-	 * @param Default 控件默认状态
+	 * @param Text    下拉菜单标题
+	 * @param Options 下拉菜单内容
+	 * @return
 	 */
-	public void addToggle(String text, boolean Default) {
-		Map<String, Object> content = new LinkedHashMap<String, Object>();
-		content.put("type", "toggle");
-		content.put("text", text);
-		content.put("default", Default);
-		addContent(content);
+	public CustomForm addDropdown(String Text, List<String> Options) {
+		return addDropdown(Text, Options, 0);
+	}
+
+	/**
+	 * 添加一个下拉菜单
+	 * 
+	 * @param Text    下拉菜单标题
+	 * @param Options 下拉菜单内容
+	 * @return
+	 */
+	public CustomForm addDropdown(String Text, String[] Options) {
+		return addDropdown(Text, Arrays.asList(Options), 0);
+	}
+
+	/**
+	 * 添加一个下拉菜单
+	 * 
+	 * @param Text          下拉菜单标题
+	 * @param Options       下拉菜单内容
+	 * @param DefaultOption 默认显示选项
+	 * @return
+	 */
+	public CustomForm addDropdown(String Text, List<String> Options, int DefaultOption) {
+		list.add(new ElementDropdown(Text, Options, DefaultOption));
+		return this;
+	}
+
+	/**
+	 * 添加一个下拉菜单
+	 * 
+	 * @param Text          下拉菜单标题
+	 * @param Options       下拉菜单内容
+	 * @param DefaultOption 默认显示选项
+	 * @return
+	 */
+	public CustomForm addDropdown(String Text, String[] Options, int DefaultOption) {
+		list.add(new ElementDropdown(Text, Arrays.asList(Options), DefaultOption));
+		return this;
 	}
 
 	/**
 	 * 添加一个编辑框
 	 * 
 	 * @param text 编辑框标题
+	 * @return
 	 */
-	public void addInput(String text) {
-		addInput(text, null, "");
+	public CustomForm addInput(String text) {
+		return addInput(text, "", "");
 	}
 
 	/**
 	 * 添加一个编辑框
 	 * 
 	 * @param text    编辑框标题
-	 * @param Default 编辑框默认内容
+	 * @param Default 编辑框默认显示的内容
+	 * @return
 	 */
-	public void addInput(String text, String Default) {
-		addInput(text, Default, "");
+	public CustomForm addInput(String text, String Default) {
+		return addInput(text, Default, "");
 	}
 
 	/**
 	 * 添加一个编辑框
 	 * 
-	 * @param text        编辑框的标题
-	 * @param Default     默认内容
-	 * @param placeholder
+	 * @param text    编辑框标题
+	 * @param Default 编辑框默认显示的内容
+	 * @param Hint    编辑框为空时显示的内容
+	 * @return
 	 */
-	public void addInput(String text, String Default, String placeholder) {
-		Map<String, Object> content = new LinkedHashMap<String, Object>();
-		content.put("type", "input");
-		content.put("text", text);
-		content.put("placeholder", placeholder);
-		content.put("default", Default);
-		addContent(content);
+	public CustomForm addInput(String text, String Default, String Hint) {
+		list.add(new ElementInput(text, Hint, Default));
+		return this;
 	}
 
-	private void addContent(Map<String, Object> content) {
-		this.content.add(content);
+	/**
+	 * 将表单数据发送给玩家[只有当构造对象时传递玩家对象或设置玩家列表时才有效]
+	 * 
+	 * @return 是否有发送给玩家
+	 */
+	public boolean sendPlayer(List<Player> players) {
+		if (players.size() < 1)
+			return false;
+		boolean isOK = false;
+		for (Player player : players) {
+			isOK = true;
+			player.showFormWindow(
+					Icon != null ? (new FormWindowCustom(Title, list, Icon)) : (new FormWindowCustom(Title, list)), ID);
+		}
+		return isOK;
 	}
 
-	@Override
-	public void sendPlayer(Player player) {
-		data.put("content", this.content);
-		super.sendPlayer(player);
+	/**
+	 * 将表单数据发送给指定玩家
+	 * 
+	 * @return 是否有发送给玩家
+	 */
+	public int sendPlayer(Player player) {
+		player.showFormWindow(
+				Icon != null ? (new FormWindowCustom(Title, list, Icon)) : (new FormWindowCustom(Title, list)), ID);
+		return ID;
+	}
+
+	/**
+	 * 设置表单按钮图标
+	 * 
+	 * @param IconPath
+	 * @return
+	 */
+	public CustomForm setIcon(String IconPath) {
+		this.Icon = IconPath;
+		return this;
+	}
+
+	/**
+	 * 设置表单标题
+	 * 
+	 * @param Title
+	 * @return
+	 */
+	public CustomForm setTitle(String Title) {
+		this.Title = Title;
+		return this;
+	}
+
+	/**
+	 * 发送给服务器全部玩家
+	 * 
+	 * @return 表单ID
+	 */
+	public int sendAllPlayer() {
+		Map<UUID, Player> ps = Server.getInstance().getOnlinePlayers();
+		for (UUID uuid : ps.keySet())
+			ps.get(uuid).showFormWindow(
+					Icon != null ? (new FormWindowCustom(Title, list, Icon)) : (new FormWindowCustom(Title, list)), ID);
+		return ID;
+	}
+
+	/**
+	 * 设置表单ID
+	 * 
+	 * @param ID
+	 * @return
+	 */
+	public CustomForm setID(int ID) {
+		this.ID = ID;
+		return this;
+	}
+
+	private int getID() {
+		int length = getRand(1, 5);
+		String ID = "";
+		for (int i = 0; i < length; i++)
+			ID += getRand(0, 9);
+		return Integer.valueOf(ID);
+	}
+
+	private int getRand(int min, int max) {
+		return (int) (min + Math.random() * (max - min + 1));
 	}
 }

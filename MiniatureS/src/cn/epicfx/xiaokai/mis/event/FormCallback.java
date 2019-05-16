@@ -16,16 +16,27 @@ public class FormCallback implements Listener {
 	private FormDispose dispose;
 	private DataDispose shopDispose;
 
+	/**
+	 * UI数据包传回事件
+	 * 
+	 * @param mis 插件主类对象
+	 */
 	public FormCallback(MiniatureS mis) {
 		dispose = new FormDispose(mis);
 		shopDispose = new DataDispose(mis);
 	}
 
+	/**
+	 * 事件监听方法
+	 * 
+	 * @param e 事件对象
+	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerForm(PlayerFormRespondedEvent e) {
-		if (e.wasClosed() || e.getResponse() == null || (!(e.getResponse() instanceof FormResponseCustom)
-				&& !(e.getResponse() instanceof FormResponseSimple) && !(e.getResponse() instanceof FormResponseModal))
-				|| e.getPlayer() == null)
+		if (e.wasClosed() || e.getResponse() == null
+				|| (!(e.getResponse() instanceof FormResponseCustom) && !(e.getResponse() instanceof FormResponseSimple)
+						&& !(e.getResponse() instanceof FormResponseModal))
+				|| e.getPlayer() == null || MakeID.getByID(e.getFormID()) == null)
 			return;
 		Player player = e.getPlayer();
 		switch (MakeID.getByID(e.getFormID())) {

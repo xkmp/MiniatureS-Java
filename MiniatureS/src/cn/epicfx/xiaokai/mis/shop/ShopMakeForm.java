@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import cn.epicfx.xiaokai.mis.MiniatureS;
 import cn.epicfx.xiaokai.mis.form.FormStatic;
 import cn.epicfx.xiaokai.mis.form.MakeForm;
@@ -51,6 +52,7 @@ public class ShopMakeForm {
 						? (player.getInventory().getItemInHand().getId() + ":"
 								+ player.getInventory().getItemInHand().getDamage())
 						: ""));
+		list.add(new ElementInput(TextFormat.GREEN + "同时扣除玩家多少钱", "玩家在兑换物品时会扣除的金币", "1"));
 		list.add(new ElementInput(TextFormat.GREEN + "玩家每次能换的最少数", "", "1"));
 		list.add(new ElementInput(TextFormat.GREEN + "玩家每次能换的最大数", "", "64"));
 		list.add(new ElementInput(TextFormat.GREEN + "请输入想要出售的经验库存", "留空或小于等于零时不限制库存", "0"));
