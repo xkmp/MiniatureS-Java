@@ -219,6 +219,29 @@ public class ShopMakeForm {
 			player.sendMessage(TextFormat.RED + "该商店不存在！");
 			return;
 		}
+		switch (String.valueOf(Button.get("Type") == null ? "All" : Button.get("Type")).toLowerCase()) {
+		case "player":
+		case "玩家":
+		case "普通玩家":
+			if (!player.isOp())
+				break;
+			else {
+				player.sendMessage(TextFormat.RED + "您无法使用该商店！该商店仅供服务器普通玩家使用使用！！");
+				return;
+			}
+		case "op":
+		case "管理员":
+			if (player.isOp())
+				break;
+			else {
+				player.sendMessage(TextFormat.RED + "您无法使用该商店！该商店仅供服务器管理员使用！！");
+				return;
+			}
+		case "all":
+		case "全部":
+		default:
+			break;
+		}
 		if (Button.get("Back_Player") != null && (Button.get("Back_Player") instanceof List)
 				&& ((ArrayList<String>) Button.get("Back_Player")).contains(player.getName())) {
 			player.sendMessage(TextFormat.RED + "您无法使用该商店！您已被该商店列为黑名单！");

@@ -323,6 +323,7 @@ public class Shop {
 		LinkedHashMap<String, Object> Con = new LinkedHashMap<>();
 		Con.put("Content", null);
 		Con.put("Name", BtKey);
+		Con.put("Type", ShopType);
 		Con.put("Player", player.getName());
 		Con.put("Back_World", Back_world == null ? new String[] {} : Back_world);
 		Con.put("Back_Player", Back_Player == null ? new String[] {} : Back_Player);
