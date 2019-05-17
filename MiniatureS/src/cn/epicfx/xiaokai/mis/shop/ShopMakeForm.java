@@ -56,6 +56,7 @@ public class ShopMakeForm {
 		list.add(new ElementInput(TextFormat.GREEN + "玩家每次能换的最少数", "", "1"));
 		list.add(new ElementInput(TextFormat.GREEN + "玩家每次能换的最大数", "", "64"));
 		list.add(new ElementInput(TextFormat.GREEN + "请输入想要出售的经验库存", "留空或小于等于零时不限制库存", "0"));
+		list.add(new ElementInput(TextFormat.GREEN + "需要多少个(金币)物品才能兑换目标物品 ", "", "1"));
 		player.showFormWindow(
 				new FormWindowCustom(Tool.getRandColor() + mis.PlayerMenuBack.get(player.getName()), list),
 				MakeID.AddItemToItem.getID());
@@ -237,6 +238,54 @@ public class ShopMakeForm {
 				strings.add(Key);
 				Map<String, Object> map = (Map<String, Object>) bs.get(Key);
 				switch (String.valueOf(map.get("Type")).toLowerCase()) {
+				case "itemtoitem":
+				case "以物换物":
+					List.add(new ElementButton(
+							TextFormat.YELLOW
+									+ String.valueOf((map.get("ItemMoeny") == null ? "1" : map.get("ItemMoeny")))
+									+ TextFormat.BLACK + "个" + TextFormat.YELLOW
+									+ ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID"))) + TextFormat.BLACK
+									+ "可兑换一个" + TextFormat.YELLOW + ItemIDSunName.getIDByName(String.valueOf(map.get(
+											"ToBlockID")))
+									+ TextFormat.BLACK
+									+ (Float.valueOf(String.valueOf(map.get("Money"))).intValue() > 0
+											? ("并扣除" + TextFormat.WHITE + String.valueOf(map.get("Money"))
+													+ TextFormat.BLACK + mis.config.getString("货币单位"))
+											: "")
+									+ (Boolean.valueOf(String.valueOf(map.get("Astrict")))
+											? ("，空余库存：" + TextFormat.WHITE + String.valueOf(map.get("ExpCount")))
+											: "，不限制库存"),
+							new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
+									"textures/ui/cartography_table_glass.png")));
+					break;
+				case "sell_exp":
+				case "回收经验":
+					List.add(
+							new ElementButton(
+									TextFormat.BLACK
+											+ "出售每级经验可得" + TextFormat.YELLOW + String.valueOf(map.get("Money"))
+											+ TextFormat.BLACK + mis.config.getString("货币单位")
+											+ (Boolean.valueOf(String.valueOf(map.get("Astrict")))
+													? ("，空余库存：" + TextFormat.WHITE
+															+ String.valueOf(map.get("ExpCount")))
+													: "，不限制库存"),
+									new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
+											"textures/items/gold_nugget.png")));
+					break;
+				case "shop_exp":
+				case "出售经验":
+					List.add(
+							new ElementButton(
+									TextFormat.BLACK
+											+ "购买每级经验需要" + TextFormat.YELLOW + String.valueOf(map.get("Money"))
+											+ TextFormat.BLACK + mis.config.getString("货币单位")
+											+ (Boolean.valueOf(String.valueOf(map.get("Astrict")))
+													? ("，限制库存：" + TextFormat.WHITE
+															+ String.valueOf(map.get("ExpCount")))
+													: "，不限制库存"),
+									new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
+											"textures/items/gold_nugget.png")));
+					break;
 				case "shop_item":
 				case "回收物品":
 					List.add(

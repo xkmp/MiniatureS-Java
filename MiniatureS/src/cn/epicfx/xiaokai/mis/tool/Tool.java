@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class Tool {
 	private static String colorKeyString = "123456789abcdef";
-	private static String randString = "0123456789-+abcdefghijklmnopqrstuvwxyz";
+	private static String randString = "0123456789-+abcdefghijklmnopqrstuvwxyz_=";
 
 	/**
 	 * 判断两个ID是否匹配，x忽略匹配
@@ -152,7 +152,7 @@ public class Tool {
 	 * @return
 	 */
 	public static boolean isNumeric(String str) {
-		Pattern pattern = Pattern.compile("[0-9]*");
+		Pattern pattern = Pattern.compile("[0-9[.]]*");
 		return pattern.matcher(str).matches();
 	}
 }
