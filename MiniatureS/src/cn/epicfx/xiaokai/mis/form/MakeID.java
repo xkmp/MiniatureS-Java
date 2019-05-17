@@ -51,7 +51,11 @@ public enum MakeID {
 	/**
 	 * 上架以物易物页ID
 	 */
-	AddItemToItem(234734554);
+	AddItemToItem(234734554),
+	/**
+	 * 玩家打开商店项目时的界面ID
+	 */
+	PlayerShopInteract(5873431);
 	private int code;
 
 	private static final Map<Integer, MakeID> MAP = new HashMap<>();

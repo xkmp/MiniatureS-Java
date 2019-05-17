@@ -306,6 +306,7 @@ public class Shop {
 			ArrayList<String> Back_Player, Boolean imageType, String imagePath) {
 		LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 		String ConfigName = getShopConfigName();
+		String BtKey = ShopMakeForm.getShopName(0);
 		map.put("Text", ShopName);
 		map.put("Image", imagePath);
 		map.put("ImageType", true);
@@ -321,7 +322,7 @@ public class Shop {
 			list = new HashMap<>();
 		LinkedHashMap<String, Object> Con = new LinkedHashMap<>();
 		Con.put("Content", null);
-		Con.put("Name", ShopName);
+		Con.put("Name", BtKey);
 		Con.put("Player", player.getName());
 		Con.put("Back_World", Back_world == null ? new String[] {} : Back_world);
 		Con.put("Back_Player", Back_Player == null ? new String[] {} : Back_Player);
@@ -329,7 +330,6 @@ public class Shop {
 		Config Config = new Config(mis.getDataFolder() + MiniatureS.ShopConfigPath + ConfigName, 2);
 		Config.setAll(Con);
 		Config.save();
-		String BtKey = ShopMakeForm.getShopName(0);
 		list.put(BtKey, map);
 		mis.ShopListConfig.set("Buttons", list);
 		mis.ShopListConfig.save();

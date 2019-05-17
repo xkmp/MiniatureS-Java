@@ -32,6 +32,7 @@ package cn.epicfx.xiaokai.mis;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import cn.epicfx.xiaokai.mis.cmd.PlayerCommand;
 import cn.epicfx.xiaokai.mis.event.FormCallback;
@@ -61,6 +62,10 @@ public class MiniatureS extends PluginBase implements Listener {
 	 * 玩家当前页面的按钮列表
 	 */
 	public LinkedHashMap<String, ArrayList<String>> PlayerMenu = new LinkedHashMap<String, ArrayList<String>>();
+	/**
+	 * 存储玩家在购买东西时点击项目的项目数据
+	 */
+	public LinkedHashMap<String, HashMap<String, Object>> PlayerShopInteract = new LinkedHashMap<>();
 	/**
 	 * 菜单配置文件存储路径
 	 */

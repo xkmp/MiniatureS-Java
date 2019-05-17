@@ -235,7 +235,8 @@ public class DataDispose {
 			mis.shopMakeForm.SelectShopType(player);
 			return;
 		}
-		(new ItemProcess(mis)).Selection(data.getClickedButtonId(), mis.PlayerMenuBack.get(player.getName()));
+		(new ItemProcess(mis)).Selection(player, mis.shopList.get(player.getName()).get(data.getClickedButtonId()),
+				mis.PlayerMenuBack.get(player.getName()));
 	}
 
 	/**
