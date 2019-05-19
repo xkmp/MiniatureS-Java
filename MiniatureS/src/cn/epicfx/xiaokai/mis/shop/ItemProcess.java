@@ -125,11 +125,16 @@ public class ItemProcess {
 		player.showFormWindow(
 				new FormWindowCustom(
 						TextFormat.WHITE + "[" + TextFormat.YELLOW + Shop + TextFormat.WHITE + "]"
-								+ TextFormat.DARK_AQUA + "-" + TextFormat.WHITE + "[" + TextFormat.AQUA + Key
-								+ TextFormat.WHITE + "]" + TextFormat.BLUE + "物品出售",
+								+ TextFormat.DARK_AQUA + "-" + TextFormat.WHITE + "[" + TextFormat.AQUA
+								+ ItemIDSunName.getIDByName(String.valueOf(data.get("ID"))) + TextFormat.WHITE + "]"
+								+ TextFormat.BLUE + "物品出售",
 						list, ItemIDSunName.getIDByPath(String.valueOf(data.get("ID")))),
 				MakeID.PlayerShopInteract.getID());
 		mis.PlayerShopInteract.put(player.getName(), data);
+		ShopData value = new ShopData();
+		value.itemKey = Key;
+		value.ShopKey = Shop;
+		mis.PlayerShopItemData.put(player.getName(), value);
 	}
 
 	/**
@@ -157,11 +162,11 @@ public class ItemProcess {
 						+ (Count > 0 ? ("共有" + TextFormat.YELLOW + Count + TextFormat.WHITE + "个") : "还没有")
 						+ TextFormat.YELLOW + ItemIDSunName.getIDByName(String.valueOf(data.get("ID")))
 						+ TextFormat.WHITE
-						+ (Count > 0 ? (",全部出售约能获利" + TextFormat.YELLOW
+						+ (Count > 0 ? ("\n全部出售约能获利" + TextFormat.YELLOW
 								+ ((int) (Count * Float.valueOf(String.valueOf(data.get("Money"))))) + TextFormat.WHITE
 								+ mis.config.getString("货币单位"))
 								+ (Count > Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue()
-										? ("\n" + TextFormat.WHITE + ",但由于物品出售上限，本次您最多越能获利" + TextFormat.YELLOW
+										? ("\n" + TextFormat.WHITE + "但由于物品出售上限\n本次您最多越能获利" + TextFormat.YELLOW
 												+ ((int) Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue()
 														* Float.valueOf(String.valueOf(data.get("Money"))))
 												+ TextFormat.WHITE + mis.config.getString("货币单位"))
@@ -179,11 +184,16 @@ public class ItemProcess {
 		player.showFormWindow(
 				new FormWindowCustom(
 						TextFormat.WHITE + "[" + TextFormat.YELLOW + Shop + TextFormat.WHITE + "]"
-								+ TextFormat.DARK_AQUA + "-" + TextFormat.WHITE + "[" + TextFormat.AQUA + Key
-								+ TextFormat.WHITE + "]" + TextFormat.BLUE + "物品回收",
+								+ TextFormat.DARK_AQUA + "-" + TextFormat.WHITE + "[" + TextFormat.AQUA
+								+ ItemIDSunName.getIDByName(String.valueOf(data.get("ID"))) + TextFormat.WHITE + "]"
+								+ TextFormat.BLUE + "物品回收",
 						list, ItemIDSunName.getIDByPath(String.valueOf(data.get("ID")))),
 				MakeID.PlayerShopInteract.getID());
 		mis.PlayerShopInteract.put(player.getName(), data);
+		ShopData value = new ShopData();
+		value.itemKey = Key;
+		value.ShopKey = Shop;
+		mis.PlayerShopItemData.put(player.getName(), value);
 	}
 
 	/**
@@ -209,11 +219,15 @@ public class ItemProcess {
 		player.showFormWindow(
 				new FormWindowCustom(
 						TextFormat.WHITE + "[" + TextFormat.YELLOW + Shop + TextFormat.WHITE + "]"
-								+ TextFormat.DARK_AQUA + "-" + TextFormat.WHITE + "[" + TextFormat.AQUA + Key
+								+ TextFormat.DARK_AQUA + "-" + TextFormat.WHITE + "[" + TextFormat.AQUA + "经验"
 								+ TextFormat.WHITE + "]" + TextFormat.BLUE + "经验购买",
 						list, "textures/items/gold_nugget.png"),
 				MakeID.PlayerShopInteract.getID());
 		mis.PlayerShopInteract.put(player.getName(), data);
+		ShopData value = new ShopData();
+		value.itemKey = Key;
+		value.ShopKey = Shop;
+		mis.PlayerShopItemData.put(player.getName(), value);
 	}
 
 	/**
@@ -244,11 +258,15 @@ public class ItemProcess {
 		player.showFormWindow(
 				new FormWindowCustom(
 						TextFormat.WHITE + "[" + TextFormat.YELLOW + Shop + TextFormat.WHITE + "]"
-								+ TextFormat.DARK_AQUA + "-" + TextFormat.WHITE + "[" + TextFormat.AQUA + Key
+								+ TextFormat.DARK_AQUA + "-" + TextFormat.WHITE + "[" + TextFormat.AQUA + "经验"
 								+ TextFormat.WHITE + "]" + TextFormat.BLUE + "经验出售",
 						list, "textures/items/gold_nugget.png"),
 				MakeID.PlayerShopInteract.getID());
 		mis.PlayerShopInteract.put(player.getName(), data);
+		ShopData value = new ShopData();
+		value.itemKey = Key;
+		value.ShopKey = Shop;
+		mis.PlayerShopItemData.put(player.getName(), value);
 	}
 
 	/**
@@ -300,13 +318,14 @@ public class ItemProcess {
 								: (couu > Float.valueOf(String.valueOf(data.get("Max"))).intValue()
 										? Float.valueOf(String.valueOf(data.get("Max"))).intValue()
 										: couu)));
-		player.showFormWindow(
-				new FormWindowCustom(
-						TextFormat.WHITE + "[" + TextFormat.YELLOW + Shop + TextFormat.WHITE + "]"
-								+ TextFormat.DARK_AQUA + "-" + TextFormat.WHITE + "[" + TextFormat.AQUA + Key
-								+ TextFormat.WHITE + "]" + TextFormat.BLUE + "物品兑换",
-						list, "textures/ui/cartography_table_glass.png"),
-				MakeID.PlayerShopInteract.getID());
+		player.showFormWindow(new FormWindowCustom(
+				TextFormat.WHITE + "[" + TextFormat.YELLOW + Shop + TextFormat.WHITE + "]" + TextFormat.DARK_AQUA + "-"
+						+ TextFormat.WHITE + "]" + TextFormat.BLUE + "物品兑换",
+				list, "textures/ui/cartography_table_glass.png"), MakeID.PlayerShopInteract.getID());
 		mis.PlayerShopInteract.put(player.getName(), data);
+		ShopData value = new ShopData();
+		value.itemKey = Key;
+		value.ShopKey = Shop;
+		mis.PlayerShopItemData.put(player.getName(), value);
 	}
 }

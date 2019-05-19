@@ -3,6 +3,7 @@ package cn.epicfx.xiaokai.mis.event;
 import cn.epicfx.xiaokai.mis.MiniatureS;
 import cn.epicfx.xiaokai.mis.form.MakeID;
 import cn.epicfx.xiaokai.mis.shop.DataDispose;
+import cn.epicfx.xiaokai.mis.shop.ItemCallback;
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
@@ -15,6 +16,7 @@ import cn.nukkit.form.response.FormResponseSimple;
 public class FormCallback implements Listener {
 	private FormDispose dispose;
 	private DataDispose shopDispose;
+	private MiniatureS mis;
 
 	/**
 	 * UI数据包传回事件
@@ -24,6 +26,7 @@ public class FormCallback implements Listener {
 	public FormCallback(MiniatureS mis) {
 		dispose = new FormDispose(mis);
 		shopDispose = new DataDispose(mis);
+		this.mis = mis;
 	}
 
 	/**
@@ -40,6 +43,9 @@ public class FormCallback implements Listener {
 			return;
 		Player player = e.getPlayer();
 		switch (MakeID.getByID(e.getFormID())) {
+		case PlayerShopInteract:
+			(new ItemCallback(mis, player, (FormResponseCustom) e.getResponse())).start();
+			break;
 		case AddItemToItem:
 			shopDispose.AddItemToItem(player, (FormResponseCustom) e.getResponse());
 			break;

@@ -135,10 +135,9 @@ public class Tool {
 	 * @param str
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	public static boolean isInteger(String str) {
 		try {
-			int num = Float.valueOf(str).intValue();
+			Float.valueOf(str).intValue();
 			return true;
 		} catch (Exception e) {
 			return false;

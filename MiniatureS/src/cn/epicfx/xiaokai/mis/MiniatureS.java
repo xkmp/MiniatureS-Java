@@ -39,12 +39,12 @@ import cn.epicfx.xiaokai.mis.event.FormCallback;
 import cn.epicfx.xiaokai.mis.event.PlayerEvent;
 import cn.epicfx.xiaokai.mis.form.MakeForm;
 import cn.epicfx.xiaokai.mis.msg.Message;
+import cn.epicfx.xiaokai.mis.shop.ShopData;
 import cn.epicfx.xiaokai.mis.shop.ShopMakeForm;
 import cn.epicfx.xiaokai.mis.tool.Tool;
 
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.event.Listener;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
@@ -52,7 +52,7 @@ import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 
-public class MiniatureS extends PluginBase implements Listener {
+public class MiniatureS extends PluginBase {
 	public static String[] ConfigNameList = { "Config.yml", "Message.yml", "Main.yml", "ShopList.yml" };
 	/**
 	 * 玩家点的这个菜单的上一级
@@ -66,6 +66,10 @@ public class MiniatureS extends PluginBase implements Listener {
 	 * 存储玩家在购买东西时点击项目的项目数据
 	 */
 	public LinkedHashMap<String, HashMap<String, Object>> PlayerShopInteract = new LinkedHashMap<>();
+	/**
+	 * 存储玩家在购买东西时点击项目的项目数据
+	 */
+	public LinkedHashMap<String, ShopData> PlayerShopItemData = new LinkedHashMap<>();
 	/**
 	 * 菜单配置文件存储路径
 	 */
@@ -94,7 +98,6 @@ public class MiniatureS extends PluginBase implements Listener {
 	@Override
 	public void onEnable() {
 		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvents(this, this);
 		pm.registerEvents(new PlayerEvent(this), this);
 		pm.registerEvents(new FormCallback(this), this);
 		message = new Message(this);
