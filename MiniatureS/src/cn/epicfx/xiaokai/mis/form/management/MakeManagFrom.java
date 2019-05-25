@@ -25,11 +25,11 @@ public class MakeManagFrom {
 	}
 
 	public void MakeRemoveButton(Player player, String FormName) {
-
+		
 	}
 
 	public void MakeSettingConfig(Player player) {
-
+		
 	}
 
 	public void MakeAddButton(Player player) {

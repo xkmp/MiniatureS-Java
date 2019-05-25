@@ -1,8 +1,5 @@
 package cn.epicfx.xiaokai.mis.msg;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import cn.epicfx.xiaokai.mis.MiniatureS;
 import cn.epicfx.xiaokai.mis.tool.Tool;
 
@@ -27,11 +24,9 @@ public class Message {
 	}
 
 	public void update() {
-		SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
-		SimpleDateFormat data = new SimpleDateFormat("yyyy-MM-dd");
 		Global_Key = new String[] { "{n}", "{Plugin_Name}", "{Server_Name}", "{Time}", "{Data}", "{Rand_Color}" };
-		Global_Data = new String[] { "\n", mis.getName(), mis.getServer().getMotd(), time.format(new Date()),
-				data.format(new Date()), Tool.getRandColor() };
+		Global_Data = new String[] { "\n", mis.getName(), mis.getServer().getMotd(), Tool.getTime(), Tool.getDate(),
+				Tool.getRandColor() };
 	}
 
 	/**

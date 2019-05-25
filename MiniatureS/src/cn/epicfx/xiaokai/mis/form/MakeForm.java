@@ -21,6 +21,11 @@ public class MakeForm {
 		this.mis = mis;
 	}
 
+	/**
+	 * 创建主界面
+	 * 
+	 * @param player
+	 */
 	@SuppressWarnings("unchecked")
 	public void makeMain(Player player) {
 		Map<String, Object> AllMap = (HashMap<String, Object>) mis.Menus.getAll().get("Buttons");

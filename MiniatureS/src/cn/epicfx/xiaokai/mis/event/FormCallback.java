@@ -74,7 +74,7 @@ public class FormCallback implements Listener {
 			shopDispose.Main(player, (FormResponseSimple) e.getResponse());
 			break;
 		case AddButtonType:
-
+			
 			break;
 		case MainFormID:
 		default:

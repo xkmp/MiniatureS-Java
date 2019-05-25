@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.epicfx.xiaokai.mis.MiniatureS;
-import cn.epicfx.xiaokai.mis.form.FormTypeConclude;
 import cn.epicfx.xiaokai.mis.form.MakeForm;
 import cn.epicfx.xiaokai.mis.form.management.MakeManagFrom;
 import cn.nukkit.Player;
@@ -54,9 +53,7 @@ public class FormDispose {
 			MakeForm.makeTip(player, TextFormat.RED + "数据处理失败！\n\n无法获取玩家视图数据（Main 2）！");
 			return;
 		}
-		map = (Map<String, Object>) map.get(list.get(formResponse.getClickedButtonId()));
-		FormTypeConclude conclude = new FormTypeConclude(mis, map);
-		conclude.toMain(player);
+		// 缺少打开处理时间
 		mis.PlayerMenu.remove(player.getName());
 	}
 }

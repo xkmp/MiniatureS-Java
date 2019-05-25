@@ -8,8 +8,8 @@ import cn.epicfx.xiaokai.mis.tool.Tool;
 import cn.nukkit.form.element.ElementButton;
 
 public class FormStatic {
-	public static final String[] ButtonOpenTypeList = { "提示一个窗口", "打开一个新的界面", "执行命令", "带参数命令", "控制台执行命令", "控制台带参数执行命令",
-			"传送玩家", "打开商店" };
+	public static final String[] ButtonOpenTypeList = { "提示一个窗口", "打开一个新的界面", "执行命令", "控制台执行命令", "控制台带参数执行命令", "传送玩家",
+			"打开商店" };
 	private static final String[] ButtonImageType = { "无贴图", "自带贴图", "网络贴图" };
 	private static final String[] buttonImageGetTypeStrings = { "贴图路径", "物品ID", "物品名称" };
 	public static final String[] shopGetTypeStrings = { "所有玩家", "仅服务器管理员", "仅非服务器管理员" };

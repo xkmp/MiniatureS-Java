@@ -55,7 +55,11 @@ public enum MakeID {
 	/**
 	 * 玩家打开商店项目时的界面ID
 	 */
-	PlayerShopInteract(5873431);
+	PlayerShopInteract(5873431),
+	/**
+	 * 在主页添加提示类型的按钮时创建的UI的ID
+	 */
+	MainAddTipForm(124224341);
 	private int code;
 
 	private static final Map<Integer, MakeID> MAP = new HashMap<>();

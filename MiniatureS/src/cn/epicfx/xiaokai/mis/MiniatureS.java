@@ -154,6 +154,15 @@ public class MiniatureS extends PluginBase {
 		this.getServer().getLogger().info(Tool.getColorFont(this.getName() + "关闭！"));
 	}
 
+	/**
+	 * 返回货币的名称，如“金币”
+	 * 
+	 * @return
+	 */
+	public String getMoneyName() {
+		return config.getString("货币单位");
+	}
+
 	public Message getMessage() {
 		return message;
 	}

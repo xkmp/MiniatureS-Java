@@ -1,5 +1,7 @@
 package cn.epicfx.xiaokai.mis.tool;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 public class Tool {
@@ -26,6 +28,26 @@ public class Tool {
 				return false;
 		else
 			return false;
+	}
+
+	/**
+	 * 获取当前时间
+	 * 
+	 * @return
+	 */
+	public static String getTime() {
+		SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+		return time.format(new Date());
+	}
+
+	/**
+	 * 返回当前时间 <年-月-日>
+	 * 
+	 * @return
+	 */
+	public static String getDate() {
+		SimpleDateFormat data = new SimpleDateFormat("yyyy-MM-dd");
+		return data.format(new Date());
 	}
 
 	/**
