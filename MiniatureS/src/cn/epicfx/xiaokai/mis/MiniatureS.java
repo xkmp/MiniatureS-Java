@@ -53,6 +53,10 @@ import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 
 public class MiniatureS extends PluginBase {
+	/**
+	 * 当玩家在创建一个按钮时，并且这个按钮时打开商店分页的时候用来存储获得的商店分页的数据
+	 */
+	public LinkedHashMap<String, HashMap<String, String>> PlayerAddButtonByOpenShop = new LinkedHashMap<>();
 	public static String[] ConfigNameList = { "Config.yml", "Message.yml", "Main.yml", "ShopList.yml" };
 	/**
 	 * 玩家点的这个菜单的上一级

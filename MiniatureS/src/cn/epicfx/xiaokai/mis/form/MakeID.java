@@ -59,7 +59,19 @@ public enum MakeID {
 	/**
 	 * 在主页添加提示类型的按钮时创建的UI的ID
 	 */
-	MainAddTipForm(124224341);
+	MainAddTipForm(124224341),
+	/**
+	 * 在主页添加点击后传送万家的按钮时创建的UI的ID
+	 */
+	MainAddTransferForm(24324635),
+	/**
+	 * 在主页添加一个点击后可以打开商店分页的按钮时创建的UI的ID
+	 */
+	MainAddOpenShow(97464315),
+	/**
+	 * 在主页添加命令类型的按钮时创建的UI的ID
+	 */
+	MainAddCommadnForm(234686164);
 	private int code;
 
 	private static final Map<Integer, MakeID> MAP = new HashMap<>();

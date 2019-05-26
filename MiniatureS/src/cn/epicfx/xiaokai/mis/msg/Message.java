@@ -7,6 +7,8 @@ public class Message {
 	private MiniatureS mis;
 	private String[] Global_Key;
 	private String[] Global_Data;
+	public static String[] ReloadKey = { "\n" };
+	public static String[] ReloadData = { "{n}" };
 
 	public Message(MiniatureS mis) {
 		this.mis = mis;
@@ -27,6 +29,19 @@ public class Message {
 		Global_Key = new String[] { "{n}", "{Plugin_Name}", "{Server_Name}", "{Time}", "{Data}", "{Rand_Color}" };
 		Global_Data = new String[] { "\n", mis.getName(), mis.getServer().getMotd(), Tool.getTime(), Tool.getDate(),
 				Tool.getRandColor() };
+	}
+
+	/**
+	 * 将带有危险文本字符的字符串转换为不带危险字符
+	 * 
+	 * @param string 需要转换的字符串
+	 * @return 传话完毕的字符串
+	 */
+	public static String reloadString(String string) {
+		for (int i = 0; i < ReloadKey.length && i < ReloadData.length; i++)
+			if (string.contains(ReloadKey[i]))
+				string = string.replace(ReloadKey[i], ReloadData[i]);
+		return string;
 	}
 
 	/**
