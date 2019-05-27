@@ -1,5 +1,6 @@
 package cn.epicfx.xiaokai.mis.event;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,14 +16,21 @@ import cn.nukkit.utils.TextFormat;
 public class FormDispose {
 	private MiniatureS mis;
 
+	/**
+	 * UI数据处理
+	 * 
+	 * @param mis 插件主类对象
+	 */
 	public FormDispose(MiniatureS mis) {
 		this.mis = mis;
 	}
 
-	public void AddButtonType(Player player, FormResponseSimple formResponse) {
-
-	}
-
+	/**
+	 * 处理玩家点击主页上面的按钮事件
+	 * 
+	 * @param player       触发这个事件的玩家对象
+	 * @param formResponse 传回的数据
+	 */
 	public void Main(Player player, FormResponseSimple formResponse) {
 		if (mis.PlayerMenu.getOrDefault(player.getName(), null) == null) {
 			MakeForm.makeTip(player, TextFormat.RED + "数据处理失败！\n\n无法获取玩家视图列表（Main）！");
@@ -34,10 +42,11 @@ public class FormDispose {
 				&& formResponse.getClickedButtonId() < (list.size() + 3)) {
 			switch (formResponse.getClickedButtonId() - (list.size() - 1)) {
 			case 1:
-				(new MakeManagFrom(mis)).MakeGetButtonType(player);
+				(new MakeManagFrom(mis)).MakeGetMainButtonType(player);
 				break;
 			case 2:
-				(new MakeManagFrom(mis)).MakeRemoveButton(player, mis.PlayerMenuBack.get(player.getName()));
+				(new MakeManagFrom(mis)).MakeRemoveButton(player,
+						new File(mis.getDataFolder() + MiniatureS.MenuConfigPath, "Main.yml"));
 				break;
 			case 3:
 			default:

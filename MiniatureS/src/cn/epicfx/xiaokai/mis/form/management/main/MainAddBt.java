@@ -1,6 +1,8 @@
 package cn.epicfx.xiaokai.mis.form.management.main;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ import cn.epicfx.xiaokai.mis.MiniatureS;
 import cn.epicfx.xiaokai.mis.msg.Message;
 import cn.epicfx.xiaokai.mis.tool.Tool;
 import cn.nukkit.Player;
+import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 
 @SuppressWarnings("unchecked")
@@ -19,6 +22,51 @@ public class MainAddBt {
 	 */
 	public MainAddBt() {
 		this.mis = MiniatureS.mis;
+	}
+
+	/**
+	 * 在主页添加一个点击后可以再次打开一个新界面的按钮
+	 * 
+	 * @param player    添加这个按钮的玩家对象对象
+	 * @param Button    这个按钮的文本内容
+	 * @param FileName  要打开的界面的配置文件名称（仅文件名）
+	 * @param Money     点击这个按钮需要花费的钱
+	 * @param Command   点击后会执行的命令
+	 * @param ImageType 按钮的贴图类型
+	 * @param ImagePath 按钮的贴图路径
+	 */
+	public void addOpenWindow(Player player, String Button, String FileName, int Money, String Command,
+			boolean ImageType, String ImagePath) {
+		HashMap<String, Object> Buttons = (mis.Menus.get("Buttons") instanceof Map)
+				? (HashMap<String, Object>) (mis.Menus.get("Buttons"))
+				: (new HashMap<>());
+		LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+		map.put("Text", Button);
+		map.put("Type", "OpenWindows");
+		map.put("Command", Command);
+		map.put("FileName", FileName);
+		map.put("ImageType", ImageType);
+		map.put("Image", ImagePath);
+		map.put("Money", Money <= 0 ? 0 : Money);
+		map.put("Player", player.getName());
+		map.put("Time", Tool.getDate() + " " + Tool.getTime());
+		String Key = getButtonKey();
+		Buttons.put(Key, map);
+		mis.Menus.set("Buttons", Buttons);
+		mis.Menus.save();
+		File file = new File(mis.getDataFolder() + MiniatureS.MenuConfigPath, FileName);
+		if (file.exists()) {
+			Config config = new Config(file, Config.YAML);
+			map = new LinkedHashMap<String, Object>();
+			map.put("Title", Button);
+			map.put("Content", Button);
+			map.put("Player", player.getName());
+			map.put("Time", Tool.getDate() + " " + Tool.getTime());
+			map.put("Buttons", new HashMap<String, Object>());
+			config.setAll(map);
+			config.save();
+		}
+		player.sendMessage(TextFormat.GREEN + "您成功创建一个点击后打开新界面的按钮！Key：" + Key);
 	}
 
 	/**
@@ -40,7 +88,7 @@ public class MainAddBt {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("Text", Button);
 		map.put("Shop", Shop);
-		map.put("Type", "openshop");
+		map.put("Type", "OpenShop");
 		map.put("Command", Command);
 		map.put("ImageType", ImageType);
 		map.put("Image", ImagePath);
@@ -79,7 +127,7 @@ public class MainAddBt {
 		map.put("Y", y);
 		map.put("Z", z);
 		map.put("Level", Level);
-		map.put("Type", "transfer");
+		map.put("Type", "Transfer");
 		map.put("Command", Command);
 		map.put("ImageType", ImageType);
 		map.put("Image", ImagePath);
@@ -111,7 +159,7 @@ public class MainAddBt {
 				: (new HashMap<>());
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("Text", Button);
-		map.put("Type", "command");
+		map.put("Type", "Command");
 		map.put("Command", Command);
 		map.put("ImageType", ImageType);
 		map.put("Image", ImagePath);
@@ -147,7 +195,7 @@ public class MainAddBt {
 				? (HashMap<String, Object>) (mis.Menus.get("Buttons"))
 				: (new HashMap<>());
 		HashMap<String, Object> map = new HashMap<>();
-		map.put("Type", "make");
+		map.put("Type", "Make");
 		map.put("Text", Message.reloadString(Button));
 		map.put("ImageType", ImageType);
 		map.put("Image", ImagePath);

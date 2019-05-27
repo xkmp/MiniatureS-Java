@@ -17,6 +17,11 @@ import cn.nukkit.utils.TextFormat;
 public class MakeForm {
 	private MiniatureS mis;
 
+	/**
+	 * 主要创建各种界面
+	 * 
+	 * @param mis 插件主累对象
+	 */
 	public MakeForm(MiniatureS mis) {
 		this.mis = mis;
 	}
@@ -61,10 +66,24 @@ public class MakeForm {
 		player.showFormWindow(form, MakeID.MainFormID.getID());
 	}
 
+	/**
+	 * 创建一个简单类型的提示窗口
+	 * 
+	 * @param player 要显示这个窗口的玩家对象
+	 * @param centnt 要显示的窗口内容
+	 */
 	public static void makeTip(Player player, String centnt) {
 		makeTip(player, centnt, "确定", "取消");
 	}
 
+	/**
+	 * 显示一个提示窗口
+	 * 
+	 * @param player  要显示这个提示窗口的玩家对象
+	 * @param centnt  提示窗口的内容
+	 * @param Button1 这个提示窗口的按钮一的文本内容
+	 * @param Button2 这个提示窗口的按钮二的文本内容
+	 */
 	public static void makeTip(Player player, String centnt, String Button1, String Button2) {
 		player.showFormWindow(new FormWindowModal(Tool.getRandColor() + MiniatureS.mis.getName() + Tool.getRandColor()
 				+ "-" + Tool.getRandColor() + player.getName(), centnt, Button1, Button2));

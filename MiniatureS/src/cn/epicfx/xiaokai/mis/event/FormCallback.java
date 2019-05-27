@@ -3,6 +3,8 @@ package cn.epicfx.xiaokai.mis.event;
 import cn.epicfx.xiaokai.mis.MiniatureS;
 import cn.epicfx.xiaokai.mis.form.MakeID;
 import cn.epicfx.xiaokai.mis.form.management.EventClassification;
+import cn.epicfx.xiaokai.mis.form.management.MakeManagFrom;
+import cn.epicfx.xiaokai.mis.form.management.ManagerProcessing;
 import cn.epicfx.xiaokai.mis.form.management.main.MainDispose;
 import cn.epicfx.xiaokai.mis.shop.DataDispose;
 import cn.epicfx.xiaokai.mis.shop.ItemCallback;
@@ -34,11 +36,11 @@ public class FormCallback implements Listener {
 	}
 
 	/**
-	 * 事件监听方法
+	 * 事件监听方法[P♂Y交易进行时~]
 	 * 
 	 * @param e 事件对象
 	 */
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public void onPlayerForm(PlayerFormRespondedEvent e) {
 		if (e.wasClosed() || e.getResponse() == null
 				|| (!(e.getResponse() instanceof FormResponseCustom) && !(e.getResponse() instanceof FormResponseSimple)
@@ -48,6 +50,15 @@ public class FormCallback implements Listener {
 		Player player = e.getPlayer();
 		FormResponse data = e.getResponse();
 		switch (MakeID.getByID(e.getFormID())) {
+		case MakeRemoveButton:
+			(new MakeManagFrom(mis)).MakeIsRemoveButton(player,(FormResponseSimple) data);
+			break;
+		case MakeIsRemoveButton:
+			(new ManagerProcessing(mis)).RemoveButton(player, (FormResponseModal) data);
+			break;
+		case MainAddOpenWindow:
+			(new MainDispose(mis, player)).addOpenWindow((FormResponseCustom) data);
+			break;
 		case MainAddOpenShow:
 			(new MainDispose(mis, player)).addOpenShop((FormResponseCustom) data);
 			break;
@@ -90,7 +101,7 @@ public class FormCallback implements Listener {
 		case ShopMain:
 			shopDispose.Main(player, (FormResponseSimple) data);
 			break;
-		case AddButtonType:
+		case MainAddButtonType:
 			(new EventClassification(mis, player)).MainAddButtonTypeDispose((FormResponseSimple) data);
 			break;
 		case MainFormID:

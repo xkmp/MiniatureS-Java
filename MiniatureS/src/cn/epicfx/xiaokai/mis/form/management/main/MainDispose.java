@@ -6,7 +6,7 @@ import java.util.List;
 import cn.epicfx.xiaokai.mis.MiniatureS;
 import cn.epicfx.xiaokai.mis.form.FormStatic;
 import cn.epicfx.xiaokai.mis.form.MakeForm;
-import cn.epicfx.xiaokai.mis.tool.ItemIDSunName;
+import cn.epicfx.xiaokai.mis.form.management.MakeManagFrom;
 import cn.epicfx.xiaokai.mis.tool.Tool;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
@@ -30,6 +30,33 @@ public class MainDispose {
 	}
 
 	/**
+	 * 处理在主页新建一个点击后可以打开一个新界面的按钮而创建的界面发回的数据
+	 * 
+	 * @param data 发挥的数据
+	 */
+	public void addOpenWindow(FormResponseCustom data) {
+		String buttonString = String.valueOf(data.getResponse(0));
+		if (buttonString.isEmpty()) {
+			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的按钮内容！");
+			return;
+		}
+		String FileName = String.valueOf(data.getResponse(1));
+		if (!String.valueOf(data.getResponse(2)).isEmpty())
+			FileName = String.valueOf(data.getResponse(2));
+		String moneyString = String.valueOf(data.getResponse(3));
+		if (!moneyString.isEmpty())
+			if (!Tool.isInteger(moneyString)) {
+				MakeForm.makeTip(player, TextFormat.RED + "请输入有效的" + mis.getMoneyName() + "数(存整数)！");
+				return;
+			}
+		int Money = Float.valueOf(String.valueOf(moneyString.isEmpty() ? 0 : moneyString)).intValue();
+		String Command = String.valueOf(data.getResponse(4));
+		boolean ImageType = MakeManagFrom.ResponseByImageType(data.getResponse(5));
+		String ImagePath = MakeManagFrom.ResponseByImagePath(data.getResponse(6), ImageType);
+		mainAddBt.addOpenWindow(player, buttonString, FileName, Money, Command, ImageType, ImagePath);
+	}
+
+	/**
 	 * 处理在主页创建一个点击后打开商店分页的阿按钮UI返回的数据
 	 * 
 	 * @param data 发回的数据
@@ -47,14 +74,10 @@ public class MainDispose {
 				MakeForm.makeTip(player, TextFormat.RED + "请输入有效的" + mis.getMoneyName() + "数(存整数)！");
 				return;
 			}
-		int Money = Float.valueOf(String.valueOf(moneyString)).intValue();
+		int Money = Float.valueOf(String.valueOf(moneyString.isEmpty() ? 0 : moneyString)).intValue();
 		String Command = String.valueOf(data.getResponse(3));
-		boolean ImageType = false;
-		if (data.getResponse(4) != null)
-			ImageType = String.valueOf(data.getResponse(4)) == FormStatic.ShopImageType[0] ? false
-					: String.valueOf(data.getResponse(4)) == FormStatic.ShopImageType[1] ? true : false;
-		String ImagePath = ImageType ? ItemIDSunName.UnknownToPath(String.valueOf(data.getResponse(5)))
-				: String.valueOf(data.getResponse(5));
+		boolean ImageType = MakeManagFrom.ResponseByImageType(data.getResponse(4));
+		String ImagePath = MakeManagFrom.ResponseByImagePath(data.getResponse(5), ImageType);
 		Shop = mis.PlayerAddButtonByOpenShop.get(player.getName()).get(Shop);
 		mainAddBt.addOpenShop(player, buttonString, Shop, Money, Command, ImageType, ImagePath);
 	}
@@ -107,14 +130,10 @@ public class MainDispose {
 				MakeForm.makeTip(player, TextFormat.RED + "请输入有效的" + mis.getMoneyName() + "数(纯整数)！");
 				return;
 			}
-		int Money = Float.valueOf(string).intValue();
+		int Money = Float.valueOf(String.valueOf(string.isEmpty() ? 0 : string)).intValue();
 		String Command = String.valueOf(data.getResponse(5));
-		boolean ImageType = false;
-		if (data.getResponse(6) != null)
-			ImageType = String.valueOf(data.getResponse(6)) == FormStatic.ShopImageType[0] ? false
-					: String.valueOf(data.getResponse(6)) == FormStatic.ShopImageType[1] ? true : false;
-		String ImagePath = ImageType ? ItemIDSunName.UnknownToPath(String.valueOf(data.getResponse(7)))
-				: String.valueOf(data.getResponse(7));
+		boolean ImageType = MakeManagFrom.ResponseByImageType(data.getResponse(6));
+		String ImagePath = MakeManagFrom.ResponseByImagePath(data.getResponse(7), ImageType);
 		mainAddBt.addTransfer(player, buttonString, x, y, z, Money, Level, Command, ImageType, ImagePath);
 	}
 
@@ -146,13 +165,9 @@ public class MainDispose {
 				MakeForm.makeTip(player, TextFormat.RED + "请输入有效的金币数(存整数)！");
 				return;
 			}
-		Money = Float.valueOf(moneyString).intValue();
-		boolean ImageType = false;
-		if (data.getResponse(4) != null)
-			ImageType = String.valueOf(data.getResponse(4)) == FormStatic.ShopImageType[0] ? false
-					: String.valueOf(data.getResponse(4)) == FormStatic.ShopImageType[1] ? true : false;
-		String ImagePath = ImageType ? ItemIDSunName.UnknownToPath(String.valueOf(data.getResponse(5)))
-				: String.valueOf(data.getResponse(5));
+		Money = Float.valueOf(String.valueOf(moneyString.isEmpty() ? 0 : moneyString)).intValue();
+		boolean ImageType = MakeManagFrom.ResponseByImageType(data.getResponse(4));
+		String ImagePath = MakeManagFrom.ResponseByImagePath(data.getResponse(5), ImageType);
 		String[] strings = Msg.split(";");
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < strings.length; i++)
@@ -190,15 +205,11 @@ public class MainDispose {
 				MakeForm.makeTip(player, TextFormat.RED + "请输入有效的" + mis.getMoneyName() + "数(存整数)！");
 				return;
 			}
-		int Money = Float.valueOf(String.valueOf(moneyString)).intValue();
+		int Money = Float.valueOf(String.valueOf(moneyString.isEmpty() ? 0 : moneyString)).intValue();
 		Money = Money >= 0 ? Money : 0;
 		String Command = String.valueOf(data.getResponse(5));
-		boolean ImageType = false;
-		if (data.getResponse(4) != null)
-			ImageType = String.valueOf(data.getResponse(6)) == FormStatic.ShopImageType[0] ? false
-					: String.valueOf(data.getResponse(6)) == FormStatic.ShopImageType[1] ? true : false;
-		String ImagePath = ImageType ? ItemIDSunName.UnknownToPath(String.valueOf(data.getResponse(7)))
-				: String.valueOf(data.getResponse(7));
+		boolean ImageType = MakeManagFrom.ResponseByImageType(data.getResponse(6));
+		String ImagePath = MakeManagFrom.ResponseByImagePath(data.getResponse(7), ImageType);
 		mainAddBt.addTip(player, buttonString, Contxt, bt1, bt2, Money, ImageType, ImagePath, Command);
 	}
 }

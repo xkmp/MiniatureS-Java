@@ -29,10 +29,11 @@ public class EventClassification {
 	 * @param data 返回的数据
 	 */
 	public void MainAddButtonTypeDispose(FormResponseSimple data) {
-		// { "提示一个窗口", "打开一个新的界面", "执行命令",
-		// "传送玩家", "打开商店" };
 		int id = data.getClickedButtonId();
 		switch (FormStatic.getButtonOpenTypeArrayList().get(id)) {
+		case "打开一个新的界面":
+			make.addOpenWindows(player);
+			break;
 		case "打开商店":
 			make.addOpenShop(player);
 			break;

@@ -34,7 +34,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import cn.epicfx.xiaokai.mis.cmd.PlayerCommand;
+
+import cn.epicfx.xiaokai.mis.cmd.MainCommand;
+import cn.epicfx.xiaokai.mis.cmd.ShopCommand;
 import cn.epicfx.xiaokai.mis.event.FormCallback;
 import cn.epicfx.xiaokai.mis.event.PlayerEvent;
 import cn.epicfx.xiaokai.mis.form.MakeForm;
@@ -52,11 +54,17 @@ import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 
+/**
+ * @author 帅逼凯
+ */
 public class MiniatureS extends PluginBase {
 	/**
 	 * 当玩家在创建一个按钮时，并且这个按钮时打开商店分页的时候用来存储获得的商店分页的数据
 	 */
 	public LinkedHashMap<String, HashMap<String, String>> PlayerAddButtonByOpenShop = new LinkedHashMap<>();
+	/**
+	 * 要初始化的配置文件
+	 */
 	public static String[] ConfigNameList = { "Config.yml", "Message.yml", "Main.yml", "ShopList.yml" };
 	/**
 	 * 玩家点的这个菜单的上一级
@@ -79,26 +87,63 @@ public class MiniatureS extends PluginBase {
 	 */
 	public static final String MenuConfigPath = "/Menus/";
 	public static final String ShopConfigPath = "/Shops/";
+	/**
+	 * 插件主配置文件
+	 */
 	public Config config;
 	/**
 	 * 插件消息文本文件
 	 */
 	public Config MsgConfig;
 	/**
-	 * 菜单key配置文件名对照表
+	 * 菜单key配置文件名对照表 同时也是主页菜单列表
 	 */
 	public Config Menus;
+	/**
+	 * 当前插件主类对象
+	 */
 	public static MiniatureS mis;
+	/**
+	 * 创建界面也对象
+	 */
 	public MakeForm makeForm;
+	/**
+	 * 各种自定义消息类对象
+	 */
 	private Message message;
-	private PlayerCommand cmd;
+	/**
+	 * 玩家执行命令处理的地方
+	 */
+	private MainCommand MainCmd;
+	private ShopCommand ShopCmd;
 	/**
 	 * 商店按钮列表
 	 */
 	public Config ShopListConfig;
+	/**
+	 * 用于缓存玩家打开的上点分页的商店项目列表
+	 */
 	public LinkedHashMap<String, ArrayList<String>> shopList = new LinkedHashMap<String, ArrayList<String>>();
+	/**
+	 * 用于创建商店UI的地方
+	 */
 	public ShopMakeForm shopMakeForm;
+	/**
+	 * 当玩家需要删除按钮的时候，就用这个玩意来存储玩家要删除的文件对象
+	 */
+	public LinkedHashMap<String, File> RemoveButtonFile = new LinkedHashMap<String, File>();
+	/**
+	 * 当玩家要删除按钮的时候，用这个来存储玩家要删除按钮的那个界面的按钮列表，分别是按钮的文本内容为key，按钮的key为内容
+	 */
+	public LinkedHashMap<String, ArrayList<String>> RemoveButtonKeyList = new LinkedHashMap<>();
+	/**
+	 * 存储玩家在删除按钮时点击的是第几个按钮
+	 */
+	public LinkedHashMap<String, Integer> RemoveButtonKeyID = new LinkedHashMap<>();
 
+	/**
+	 * 明人不说暗话！这就是插件启动事件
+	 */
 	@Override
 	public void onEnable() {
 		PluginManager pm = this.getServer().getPluginManager();
@@ -109,7 +154,8 @@ public class MiniatureS extends PluginBase {
 		config = new Config(this.getDataFolder() + "/Config.yml", 2);
 		MsgConfig = new Config(this.getDataFolder() + "/Message.yml", 2);
 		Menus = new Config(this.getDataFolder() + "/Main.yml", 2);
-		cmd = new PlayerCommand(this);
+		MainCmd = new MainCommand(this);
+		ShopCmd = new ShopCommand(this);
 		shopMakeForm = new ShopMakeForm(this);
 		File file = new File(mis.getDataFolder() + ShopConfigPath);
 		if (!file.exists())
@@ -124,11 +170,24 @@ public class MiniatureS extends PluginBase {
 		super.onEnable();
 	}
 
+	/**
+	 * ZZ玩家又开始瞎搞了，屌毛们执行命令事件
+	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		return cmd.onCommand(sender, command, label, args);
+		switch (command.getName().toLowerCase()) {
+		case "mis":
+			return MainCmd.onCommand(sender, label, args);
+		case "mshop":
+			return ShopCmd.onCommand(sender, label, args);
+		default:
+			return false;
+		}
 	}
 
+	/**
+	 * PY已准备好！插件加载事件
+	 */
 	@Override
 	public void onLoad() {
 		super.onLoad();
@@ -152,6 +211,9 @@ public class MiniatureS extends PluginBase {
 		}
 	}
 
+	/**
+	 * ????这都看不懂？？这是插件关闭事件
+	 */
 	@Override
 	public void onDisable() {
 		super.onDisable();
@@ -167,7 +229,21 @@ public class MiniatureS extends PluginBase {
 		return config.getString("货币单位");
 	}
 
+	/**
+	 * 各种可以自定义以及变量替换类对象,emmm，这么说没问题吧？
+	 * 
+	 * @return
+	 */
 	public Message getMessage() {
 		return message;
+	}
+
+	/**
+	 * 快来和本插件PY交易吧~
+	 * 
+	 * @return
+	 */
+	public static MiniatureS getPY() {
+		return mis;
 	}
 }

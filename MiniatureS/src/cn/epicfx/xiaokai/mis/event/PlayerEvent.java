@@ -20,10 +20,20 @@ import cn.nukkit.item.enchantment.Enchantment;
 public class PlayerEvent implements Listener {
 	private MiniatureS mis;
 
+	/**
+	 * 监听玩家事件
+	 * 
+	 * @param mis 插件主类对象
+	 */
 	public PlayerEvent(MiniatureS mis) {
 		this.mis = mis;
 	}
 
+	/**
+	 * 监听玩家吃多了撑着去破坏方块的事件
+	 * 
+	 * @param e
+	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerBreak(BlockBreakEvent e) {
 		String makeTool = mis.config.getString("快捷工具", null);
@@ -40,6 +50,11 @@ public class PlayerEvent implements Listener {
 		}
 	}
 
+	/**
+	 * 监听玩家瞎几把点瞎几把搞事件事件
+	 * 
+	 * @param e
+	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		String makeTool = mis.config.getString("快捷工具", null);
@@ -57,6 +72,11 @@ public class PlayerEvent implements Listener {
 		}
 	}
 
+	/**
+	 * 监听玩家嗝了屁重新破壳的事件
+	 * 
+	 * @param e
+	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerSpawn(PlayerRespawnEvent e) {
 		String makeTool = mis.config.getString("快捷工具", null);
@@ -86,6 +106,11 @@ public class PlayerEvent implements Listener {
 		}
 	}
 
+	/**
+	 * 监听玩家加入服务器♂事件
+	 * 
+	 * @param e
+	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onJoin(PlayerJoinEvent e) {
 		String makeTool = mis.config.getString("快捷工具", null);

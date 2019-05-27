@@ -14,12 +14,13 @@ commands:
       permission: MiniatureS.Command.Admin
       aliases:
       - adminmis
-   shop:
+   mshop:
       description: §9超级商店主命令
       usage: §b/§6shop §chelp
       permission: MiniatureS.Command.Shop
       aliases:
       - 商店
+      - ms
    mis:
       description: §9菜单工具主命令
       permission: MiniatureS.Command.main

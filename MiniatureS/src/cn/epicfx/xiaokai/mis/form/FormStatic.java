@@ -15,7 +15,7 @@ public class FormStatic {
 	/**
 	 * 创建UI时贴图的类型
 	 */
-	private static final String[] ButtonImageType = { "无贴图", "自带贴图", "网络贴图" };
+	public static final String[] ButtonImageType = { "无贴图", "自带贴图", "网络贴图" };
 	/**
 	 * 创建UI时贴图路径的类型
 	 */

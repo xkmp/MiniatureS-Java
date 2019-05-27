@@ -1,5 +1,6 @@
 package cn.epicfx.xiaokai.mis.form.management.main;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,7 +37,33 @@ public class MainMake {
 	}
 
 	/**
-	 * 在主页添加一个点击后打开上的概念分页的按钮
+	 * 在主页创建一个点击后打开一个新的界面的按钮
+	 * 
+	 * @param player 触发这个事件的玩家对象
+	 */
+	public void addOpenWindows(Player player) {
+		List<Element> list = new ArrayList<>();
+		list.add(new ElementInput(TextFormat.WHITE + "请输入按钮显示的内容",
+				TextFormat.AQUA + "例如: " + TextFormat.GREEN + "点击打开丑逼专属界面"));
+		list.add(new ElementDropdown(TextFormat.WHITE + "要打开的文件名(当自定义文件名不为空时本项不生效)：", getFileList(), 0));
+		list.add(
+				new ElementInput(TextFormat.WHITE + "当本项不为空时，上方选项将不启用！", TextFormat.WHITE + "请输入您想要新建或使用的菜单配置文件名", ""));
+		list.add(new ElementInput(TextFormat.WHITE + "点击该按钮需要花费的" + mis.getMoneyName(), "为空或小于等于零时不启用该功能"));
+		list.add(new ElementInput(TextFormat.WHITE + "点击按钮后要执行的命令", "为空时不启用该功能"));
+		list.add(new ElementStepSlider(TextFormat.WHITE + "贴图类型: " + TextFormat.AQUA, FormStatic.getButtonImageType(),
+				0));
+		String sb = ItemIDSunName.getIDByPath(
+				player.getInventory().getItemInHand().getId() != 0
+						? (player.getInventory().getItemInHand().getId() + ":"
+								+ player.getInventory().getItemInHand().getDamage())
+						: "");
+		list.add(new ElementInput(TextFormat.WHITE + "请输入贴图路径",
+				"例如：http://10086.sb/10010.png、石头 或 textures/blocks/sapling_jungle.png", sb));
+		player.showFormWindow(new FormWindowCustom("Main-Open", list), MakeID.MainAddOpenWindow.getID());
+	}
+
+	/**
+	 * 在主页添加一个点击后打开上的商店分页的按钮
 	 * 
 	 * @param player 触发这个事件的玩家对象
 	 */
@@ -170,5 +197,23 @@ public class MainMake {
 				"例如：http://10086.00/10010.png 或 石头 或 textures/blocks/sapling_jungle.png", sb));
 		player.showFormWindow(new FormWindowCustom("Main-Tip", list, ((sb == null || sb == "") ? (null) : sb)),
 				MakeID.MainAddTipForm.getID());
+	}
+
+	/**
+	 * 获取已经存在的菜单配置文件列表
+	 * 
+	 * @return
+	 */
+	private List<String> getFileList() {
+		List<String> list = new ArrayList<>();
+		File file = new File(mis.getDataFolder() + MiniatureS.MenuConfigPath);
+		for (String string : file.list()) {
+			File file2 = new File(file, string);
+			if (file2.isFile())
+				list.add(string);
+		}
+		if (list.size() < 1)
+			list.add("连个屁都没有");
+		return list;
 	}
 }
