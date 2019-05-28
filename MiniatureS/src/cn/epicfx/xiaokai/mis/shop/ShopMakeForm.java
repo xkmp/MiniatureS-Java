@@ -265,11 +265,13 @@ public class ShopMakeForm {
 				case "以物换物":
 					List.add(new ElementButton(
 							TextFormat.YELLOW
-									+ String.valueOf((map.get("ItemMoeny") == null ? "1" : map.get("ItemMoeny")))
+									+ String.valueOf((map.get("ItemMoeny") == null
+											? "1"
+											: map.get("ItemMoeny")))
 									+ TextFormat.DARK_BLUE + "个" + TextFormat.YELLOW
-									+ ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID"))) + TextFormat.DARK_BLUE
-									+ "可兑换一个" + TextFormat.YELLOW + ItemIDSunName.getIDByName(String.valueOf(map.get(
-											"ToBlockID")))
+									+ ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID")))
+									+ TextFormat.DARK_BLUE + "可兑换一个" + TextFormat.YELLOW + ItemIDSunName.getIDByName(
+											String.valueOf(map.get("ToBlockID")))
 									+ TextFormat.DARK_BLUE
 									+ (Float.valueOf(String.valueOf(map.get("Money"))).intValue() > 0
 											? ("并扣除" + TextFormat.WHITE + String.valueOf(map.get("Money"))
@@ -285,9 +287,9 @@ public class ShopMakeForm {
 				case "回收经验":
 					List.add(
 							new ElementButton(
-									TextFormat.DARK_BLUE
-											+ "出售每级经验可得" + TextFormat.YELLOW + String.valueOf(map.get("Money"))
-											+ TextFormat.DARK_BLUE + mis.config.getString("货币单位")
+									TextFormat.DARK_BLUE + "出售每级经验可得" + TextFormat.YELLOW
+											+ String.valueOf(map.get("Money")) + TextFormat.DARK_BLUE
+											+ mis.config.getString("货币单位")
 											+ (Boolean.valueOf(String.valueOf(map.get("Astrict")))
 													? ("，空余库存：" + TextFormat.WHITE
 															+ String.valueOf(map.get("ExpCount")))
@@ -299,9 +301,9 @@ public class ShopMakeForm {
 				case "出售经验":
 					List.add(
 							new ElementButton(
-									TextFormat.DARK_BLUE
-											+ "购买每级经验需要" + TextFormat.YELLOW + String.valueOf(map.get("Money"))
-											+ TextFormat.DARK_BLUE + mis.config.getString("货币单位")
+									TextFormat.DARK_BLUE + "购买每级经验需要" + TextFormat.YELLOW
+											+ String.valueOf(map.get("Money")) + TextFormat.DARK_BLUE
+											+ mis.config.getString("货币单位")
 											+ (Boolean.valueOf(String.valueOf(map.get("Astrict")))
 													? ("，限制库存：" + TextFormat.WHITE
 															+ String.valueOf(map.get("ExpCount")))
@@ -348,11 +350,11 @@ public class ShopMakeForm {
 		if (player.isOp()) {
 			List.add(new ElementButton(Tool.getRandColor() + "添加物品"));
 		}
+		mis.PlayerMenuBack.put(player.getName(), ShopKey);
 		mis.shopList.put(player.getName(), strings);
 		player.showFormWindow(new FormWindowSimple(Tool.getRandColor() + String.valueOf(Button.get("Text")),
 				config.exists("Content") ? config.get("Content") == null ? "" : config.getString("Content") : "", List),
 				MakeID.Shop.getID());
-		mis.PlayerMenuBack.put(player.getName(), ShopKey);
 	}
 
 	/**
@@ -386,6 +388,7 @@ public class ShopMakeForm {
 		}
 		if (player.isOp())
 			buttons.add(new ElementButton(TextFormat.GREEN + "添加商店"));
+		mis.shopList.put(player.getName(), list);
 		player.showFormWindow(new FormWindowSimple(TextFormat.YELLOW + mis.getName() + TextFormat.GREEN + "商店",
 				TextFormat.LIGHT_PURPLE
 						+ String.valueOf(
@@ -394,8 +397,6 @@ public class ShopMakeForm {
 										: "")
 						+ ((ButtonList == null || ButtonList.size() < 1) ? (TextFormat.RED + "暂无任何商店") : ""),
 				buttons), MakeID.ShopMain.getID());
-		mis.shopList.put(player.getName(), list);
-
 	}
 
 	/**

@@ -227,9 +227,6 @@ public class DataDispose {
 			MakeForm.makeTip(player, TextFormat.RED + "数据解析错误：未知的数据Key或您无权限！");
 			return;
 		}
-		/*
-		 * 当玩家点击的项目ID超过系统记录的ID时默认为创建一个项目
-		 */
 		if (player.isOp() && (data == null || data.getClickedButtonId() >= list_int)) {
 			mis.shopList.remove(player.getName());
 			mis.shopMakeForm.SelectShopType(player);

@@ -59,6 +59,13 @@ import cn.nukkit.utils.Utils;
  */
 public class MiniatureS extends PluginBase {
 	/**
+	 * <b>存储玩家看到的菜单列表</b> </br>
+	 * <b>PS</b>：懒，不想再读取一次配置文件，存着好了</br>
+	 * <b>PS</b>：我记得之前定义过类似的玩意来着，但是我现在忘记我是定义哪一个了，就从新来一个吧</br>
+	 * <b>PS</b>：难道这就是传说中的内存轰炸机？？？
+	 */
+	public LinkedHashMap<String, HashMap<String, Object>> PlayerMenuData = new LinkedHashMap<>();
+	/**
 	 * 当玩家在创建一个按钮时，并且这个按钮时打开商店分页的时候用来存储获得的商店分页的数据
 	 */
 	public LinkedHashMap<String, HashMap<String, String>> PlayerAddButtonByOpenShop = new LinkedHashMap<>();

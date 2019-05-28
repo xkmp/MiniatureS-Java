@@ -33,7 +33,7 @@ public class MakeForm {
 	 */
 	@SuppressWarnings("unchecked")
 	public void makeMain(Player player) {
-		Map<String, Object> AllMap = (HashMap<String, Object>) mis.Menus.getAll().get("Buttons");
+		HashMap<String, Object> AllMap = (HashMap<String, Object>) mis.Menus.getAll().get("Buttons");
 		List<ElementButton> elements = new ArrayList<>();
 		FormWindowSimple form = new FormWindowSimple(mis.getMessage().getText(mis.Menus.getString("Title", "")),
 				mis.getMessage().getText(mis.Menus.getString("Content", ""))
@@ -47,9 +47,11 @@ public class MakeForm {
 			if (ButtonMap.getOrDefault("ImageType", null) != null && ButtonMap.getOrDefault("Image", null) != null) {
 				boolean isLocal = (boolean) ButtonMap.getOrDefault("ImageType", null);
 				ElementButtonImageData data = new ElementButtonImageData(
-						isLocal ? ElementButtonImageData.IMAGE_DATA_TYPE_PATH
-								: ElementButtonImageData.IMAGE_DATA_TYPE_URL,
-						(String) ButtonMap.getOrDefault("Image", null));
+						ButtonMap.getOrDefault("ImageType", null) == null ? null
+								: (isLocal ? ElementButtonImageData.IMAGE_DATA_TYPE_PATH
+										: ElementButtonImageData.IMAGE_DATA_TYPE_URL),
+						ButtonMap.getOrDefault("ImageType", null) == null ? null
+								: ((String) ButtonMap.getOrDefault("Image", null)));
 				button = new ElementButton(text, data);
 			} else
 				button = new ElementButton(text);
@@ -61,8 +63,9 @@ public class MakeForm {
 			elements.add(new ElementButton(TextFormat.RED + "删除按钮"));
 			elements.add(new ElementButton(TextFormat.YELLOW + "配置数据"));
 		}
+		mis.PlayerMenuData.put(player.getName(), AllMap);
 		mis.PlayerMenu.put(player.getName(), Key);
-		mis.PlayerMenuBack.put(player.getName(), "Main");
+		mis.PlayerMenuBack.put(player.getName(), "/Main.yml");
 		player.showFormWindow(form, MakeID.MainFormID.getID());
 	}
 

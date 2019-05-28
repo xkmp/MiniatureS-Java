@@ -6,6 +6,7 @@ import cn.epicfx.xiaokai.mis.form.management.EventClassification;
 import cn.epicfx.xiaokai.mis.form.management.MakeManagFrom;
 import cn.epicfx.xiaokai.mis.form.management.ManagerProcessing;
 import cn.epicfx.xiaokai.mis.form.management.main.MainDispose;
+import cn.epicfx.xiaokai.mis.form.openbt.DealWith;
 import cn.epicfx.xiaokai.mis.shop.DataDispose;
 import cn.epicfx.xiaokai.mis.shop.ItemCallback;
 import cn.nukkit.Player;
@@ -50,8 +51,11 @@ public class FormCallback implements Listener {
 		Player player = e.getPlayer();
 		FormResponse data = e.getResponse();
 		switch (MakeID.getByID(e.getFormID())) {
+		case ShowWindow:
+			(new DealWith(player, (FormResponseSimple) data)).startPy();
+			break;
 		case MakeRemoveButton:
-			(new MakeManagFrom(mis)).MakeIsRemoveButton(player,(FormResponseSimple) data);
+			(new MakeManagFrom(mis)).MakeIsRemoveButton(player, (FormResponseSimple) data);
 			break;
 		case MakeIsRemoveButton:
 			(new ManagerProcessing(mis)).RemoveButton(player, (FormResponseModal) data);

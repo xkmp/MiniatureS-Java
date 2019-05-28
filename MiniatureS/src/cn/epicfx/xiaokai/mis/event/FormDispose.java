@@ -8,6 +8,7 @@ import java.util.Map;
 import cn.epicfx.xiaokai.mis.MiniatureS;
 import cn.epicfx.xiaokai.mis.form.MakeForm;
 import cn.epicfx.xiaokai.mis.form.management.MakeManagFrom;
+import cn.epicfx.xiaokai.mis.form.openbt.OpenButton;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.TextFormat;
@@ -45,8 +46,7 @@ public class FormDispose {
 				(new MakeManagFrom(mis)).MakeGetMainButtonType(player);
 				break;
 			case 2:
-				(new MakeManagFrom(mis)).MakeRemoveButton(player,
-						new File(mis.getDataFolder() + MiniatureS.MenuConfigPath, "Main.yml"));
+				(new MakeManagFrom(mis)).MakeRemoveButton(player, new File(mis.getDataFolder(), "/Main.yml"));
 				break;
 			case 3:
 			default:
@@ -62,7 +62,9 @@ public class FormDispose {
 			MakeForm.makeTip(player, TextFormat.RED + "数据处理失败！\n\n无法获取玩家视图数据（Main 2）！");
 			return;
 		}
-		// 缺少打开处理时间
-		mis.PlayerMenu.remove(player.getName());
+		HashMap<String, Object> SB_FFF = mis.PlayerMenuData.get(player.getName());
+		SB_FFF = (HashMap<String, Object>) SB_FFF
+				.get(mis.PlayerMenu.get(player.getName()).get(formResponse.getClickedButtonId()));
+		(new OpenButton(player, SB_FFF)).Switch();
 	}
 }

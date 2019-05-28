@@ -89,7 +89,11 @@ public enum MakeID {
 	/**
 	 * 玩家删除按钮前的确认提示窗口的ID
 	 */
-	MakeIsRemoveButton(867463114);
+	MakeIsRemoveButton(867463114), 
+	/**
+	 * 显示菜单列表的时候的UI iD
+	 */
+	ShowWindow(524861635);
 	private int code;
 
 	private static final Map<Integer, MakeID> MAP = new HashMap<>();
