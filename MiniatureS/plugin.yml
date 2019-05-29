@@ -1,8 +1,8 @@
 name: MiniatureS
-main: cn.epicfx.xiaokai.mis.MiniatureS
+main: cn.xiaokai.mis.MiniatureS
 api:
 - 1.0.0
-version: 1.0.0
+version: dev_0.0.0
 load: POSTWORLD
 website: http://EpicFX.cn
 description: 附带了一些小功能，其中包括多功能UI菜单，多功能商店

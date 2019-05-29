@@ -2,13 +2,22 @@ Title: '{Rand_Color}{Plugin_Name}'
 Back: null
 Content: ''
 Buttons:
-   xiaokai:
-      Type: make
-      Text: §e关于作者
-      ImageType: true
-      Image: null
-      Content: §b作者：§a帅逼凯{n}§bQQ：§a2508543202{n}§bEmail：§aWinfxk@qq.com{n}{n}§6很感谢您能喜欢这款菜单插件！{n}§6您的每一分支持都是我前进的动力！{n}§6若在使用过程中出现任何BUG，请联系我！{n}§6若您有什么好的点子，请务必告诉我！
-      bt1: 确定
-      bt2: 取消
-      Money: 0
-      Command: null
+  xiaokai:
+    Type: Make
+    Text: §e关于作者
+    ImageType: true
+    Image: null
+    Content: §b作者：§a帅逼凯{n}§bQQ：§a2508543202{n}§bEmail：§aWinfxk@qq.com{n}{n}§6很感谢您能喜欢这款菜单插件！{n}§6您的每一分支持都是我前进的动力！{n}§6若在使用过程中出现任何BUG，请联系我！{n}§6若您有什么好的点子，请务必告诉我！
+    bt1: 确定
+    bt2: 取消
+    Money: 0
+    Command: null
+  Shop:
+    Msg: []
+    Money: 0
+    Type: Command
+    Command: ms
+    Commander: Player
+    Text: §9打开商店
+    Image: null
+    ImageType: false
