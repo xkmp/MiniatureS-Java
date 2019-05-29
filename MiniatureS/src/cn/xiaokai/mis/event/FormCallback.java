@@ -21,6 +21,7 @@ import cn.xiaokai.mis.form.management.son.SonDispose;
 import cn.xiaokai.mis.form.management.son.SonDisposeSwitch;
 import cn.xiaokai.mis.form.openbt.DealWith;
 import cn.xiaokai.mis.form.openbt.overfed.DonFiddle;
+import cn.xiaokai.mis.myshop.MyShopD;
 import cn.xiaokai.mis.shop.DataDispose;
 import cn.xiaokai.mis.shop.ItemCallback;
 
@@ -56,6 +57,9 @@ public class FormCallback implements Listener {
 		Player player = e.getPlayer();
 		FormResponse data = e.getResponse();
 		switch (MakeID.getByID(e.getFormID())) {
+		case MyShopMain:
+			(new MyShopD(player)).Main((FormResponseSimple) data);
+			break;
 		case SonAddOpenWindow:
 			(new SonDisposeSwitch(mis, player)).addOpenWindow((FormResponseCustom) data);
 			break;

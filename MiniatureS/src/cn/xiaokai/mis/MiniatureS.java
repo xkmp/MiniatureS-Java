@@ -34,16 +34,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
+import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.inventory.Inventory;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
-import cn.xiaokai.mis.cmd.MainCommand;
 import cn.xiaokai.mis.cmd.ShopCommand;
 import cn.xiaokai.mis.event.FormCallback;
 import cn.xiaokai.mis.event.PlayerEvent;
@@ -98,6 +102,8 @@ public class MiniatureS extends PluginBase {
 	 */
 	public static final String MenuConfigPath = "/Menus/";
 	public static final String ShopConfigPath = "/Shops/";
+	public static final String MyShopConfigPath = "/MyShops/";
+	public static final String PlayerConfigPath = "/Players/";
 	/**
 	 * 插件主配置文件
 	 */
@@ -106,6 +112,10 @@ public class MiniatureS extends PluginBase {
 	 * 插件消息文本文件
 	 */
 	public Config MsgConfig;
+	/**
+	 * 存储个人商店积分的地方
+	 */
+	public Config MyShopPlayerMoneyConfig;
 	/**
 	 * 菜单key配置文件名对照表 同时也是主页菜单列表
 	 */
@@ -125,7 +135,6 @@ public class MiniatureS extends PluginBase {
 	/**
 	 * 玩家执行命令处理的地方
 	 */
-	private MainCommand MainCmd;
 	private ShopCommand ShopCmd;
 	/**
 	 * 商店按钮列表
@@ -151,6 +160,18 @@ public class MiniatureS extends PluginBase {
 	 * 存储玩家在删除按钮时点击的是第几个按钮
 	 */
 	public LinkedHashMap<String, Integer> RemoveButtonKeyID = new LinkedHashMap<>();
+	/**
+	 * 创建的个人商店主页的任务列表
+	 */
+	public LinkedHashMap<String, ArrayList<File>> MyShopPlayerList = new LinkedHashMap<>();
+	/**
+	 * 存储正在MyShop操作的文件对象
+	 */
+	public LinkedHashMap<String, File> MyShopFileList = new LinkedHashMap<>();
+	/**
+	 * 存储玩家看到的商店项目
+	 */
+	public LinkedHashMap<String, ArrayList<HashMap<String, Object>>> MyShowData = new LinkedHashMap<>();
 
 	/**
 	 * 明人不说暗话！这就是插件启动事件
@@ -165,12 +186,9 @@ public class MiniatureS extends PluginBase {
 		config = new Config(this.getDataFolder() + "/Config.yml", 2);
 		MsgConfig = new Config(this.getDataFolder() + "/Message.yml", 2);
 		Menus = new Config(this.getDataFolder() + "/Main.yml", 2);
-		MainCmd = new MainCommand(this);
+		MyShopPlayerMoneyConfig = new Config(this.getDataFolder() + "/MyShopIc.yml", Config.YAML);
 		ShopCmd = new ShopCommand(this);
 		shopMakeForm = new ShopMakeForm(this);
-		File file = new File(mis.getDataFolder() + ShopConfigPath);
-		if (!file.exists())
-			file.mkdirs();
 		this.ShopListConfig = new Config(mis.getDataFolder() + "/ShopList.yml", 2);
 		Plugin EconomyAPI = mis.getServer().getPluginManager().getPlugin("EconomyAPI");
 		if (EconomyAPI == null || !EconomyAPI.isEnabled())
@@ -188,7 +206,39 @@ public class MiniatureS extends PluginBase {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		switch (command.getName().toLowerCase()) {
 		case "mis":
-			return MainCmd.onCommand(sender, label, args);
+			if (sender.isPlayer()) {
+				String makeTool = mis.config.getString("快捷工具", null);
+				if (makeTool != null && !makeTool.equals("")) {
+					Player player = (Player) sender;
+					Inventory inventory = player.getInventory();
+					Map<Integer, Item> map = inventory.getContents();
+					Item item;
+					boolean Mate = false;
+					for (int site : map.keySet()) {
+						item = map.get(site);
+						if (Mate = Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool))
+							break;
+					}
+					if (!Mate) {
+						int[] ID = Tool.IDtoFullID(makeTool);
+						item = new Item(ID[0], ID[1]);
+						item.addEnchantment(Enchantment.get(Enchantment.ID_SILK_TOUCH));
+						item.setCustomName(
+								mis.getMessage().getMessage("快捷工具名称", new String[] { "{Player}", "{Server_Name}" },
+										new String[] { player.getName(), getServer().getMotd() }));
+						item.setLore(
+								mis.getMessage().getMessage("快捷工具名称2", new String[] { "{Player}", "{Server_Name}" },
+										new String[] { player.getName(), getServer().getMotd() }));
+						inventory.addItem(item);
+						player.sendMessage(
+								mis.getMessage().getMessage("进服给快捷工具", new String[] { "{Player}", "{Server_Name}" },
+										new String[] { player.getName(), getServer().getMotd() }));
+					}
+				}
+				mis.makeForm.makeMain((Player) sender);
+			} else
+				sender.sendMessage(TextFormat.RED + "请在游戏内执行此命令！");
+			return true;
 		case "mshop":
 			return ShopCmd.onCommand(sender, label, args);
 		default:
@@ -201,10 +251,18 @@ public class MiniatureS extends PluginBase {
 	 */
 	@Override
 	public void onLoad() {
-		super.onLoad();
-		mis = this;
 		this.getServer().getLogger().info(Tool.getColorFont(this.getName() + "正在加载..."));
-		File file = new File(this.getDataFolder() + MenuConfigPath);
+		mis = this;
+		File file = new File(mis.getDataFolder() + ShopConfigPath);
+		if (!file.exists())
+			file.mkdirs();
+		new File(mis.getDataFolder() + MyShopConfigPath);
+		if (!file.exists())
+			file.mkdirs();
+		file = new File(this.getDataFolder() + MenuConfigPath);
+		if (!file.exists())
+			file.mkdirs();
+		file = new File(this.getDataFolder() + PlayerConfigPath);
 		if (!file.exists())
 			file.mkdirs();
 		for (int i = 0; i < ConfigNameList.length; i++) {
@@ -220,6 +278,7 @@ public class MiniatureS extends PluginBase {
 				this.getServer().getPluginManager().disablePlugin(this);
 			}
 		}
+		super.onLoad();
 	}
 
 	/**

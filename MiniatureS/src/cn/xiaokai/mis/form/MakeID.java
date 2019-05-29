@@ -7,6 +7,10 @@ import cn.xiaokai.mis.tool.Tool;
 
 public enum MakeID {
 	/**
+	 * 个人商店主页UI的ID 
+	 */
+	MyShopMain(84161654),
+	/**
 	 * 在非主业创建一个点击后弹出一个窗口的按钮的窗口的ID
 	 */
 	SonAddTipForm(7889446),

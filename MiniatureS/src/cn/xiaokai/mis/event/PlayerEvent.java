@@ -10,11 +10,14 @@ import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerInteractEvent.Action;
 import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.player.PlayerRespawnEvent;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
+import cn.nukkit.utils.Config;
 import cn.xiaokai.mis.MiniatureS;
+import cn.xiaokai.mis.myshop.CPlayer;
 import cn.xiaokai.mis.tool.Tool;
 
 public class PlayerEvent implements Listener {
@@ -27,6 +30,35 @@ public class PlayerEvent implements Listener {
 	 */
 	public PlayerEvent(MiniatureS mis) {
 		this.mis = mis;
+	}
+
+	/**
+	 * 玩家滚蛋事件
+	 * 
+	 * @param e
+	 */
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+	public void onPlayerQuit(PlayerQuitEvent e) {
+		if (mis.sb.containsKey(e.getPlayer().getName()))
+			mis.sb.remove(e.getPlayer().getName());
+		if (mis.PlayerMenuData.containsKey(e.getPlayer().getName()))
+			mis.PlayerMenuData.remove(e.getPlayer().getName());
+		if (mis.PlayerAddButtonByOpenShop.containsKey(e.getPlayer().getName()))
+			mis.PlayerAddButtonByOpenShop.remove(e.getPlayer().getName());
+		if (mis.PlayerMenuBack.containsKey(e.getPlayer().getName()))
+			mis.PlayerMenuBack.remove(e.getPlayer().getName());
+		if (mis.PlayerMenu.containsKey(e.getPlayer().getName()))
+			mis.PlayerMenu.remove(e.getPlayer().getName());
+		if (mis.PlayerShopInteract.containsKey(e.getPlayer().getName()))
+			mis.PlayerShopInteract.remove(e.getPlayer().getName());
+		if (mis.PlayerShopItemData.containsKey(e.getPlayer().getName()))
+			mis.PlayerShopItemData.remove(e.getPlayer().getName());
+		if (mis.RemoveButtonFile.containsKey(e.getPlayer().getName()))
+			mis.RemoveButtonFile.remove(e.getPlayer().getName());
+		if (mis.RemoveButtonKeyList.containsKey(e.getPlayer().getName()))
+			mis.RemoveButtonKeyList.remove(e.getPlayer().getName());
+		if (mis.RemoveButtonKeyID.containsKey(e.getPlayer().getName()))
+			mis.RemoveButtonKeyID.remove(e.getPlayer().getName());
 	}
 
 	/**
@@ -119,6 +151,11 @@ public class PlayerEvent implements Listener {
 		Player player = e.getPlayer();
 		Inventory inventory = player.getInventory();
 		Map<Integer, Item> map = inventory.getContents();
+		if (!CPlayer.isPlayerConfig(player)) {
+			Config cp = CPlayer.getPlayerConfig(player);
+			cp.setAll(CPlayer.getConfig());
+			cp.save();
+		}
 		Item item;
 		boolean Mate = false;
 		for (int site : map.keySet()) {

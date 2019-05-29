@@ -8,6 +8,12 @@ website: http://EpicFX.cn
 description: 附带了一些小功能，其中包括多功能UI菜单，多功能商店
 author: EpicFX
 commands:
+   myshop:
+      description: §6MiniatureS§7个人商店§9管理员命令
+      usage: §b/§myshop §chelp
+      permission: MiniatureS.Command.MyShop
+      aliases:
+      - mys
    admis:
       description: §6MiniatureS§9管理员命令
       usage: §b/§admis §chelp
@@ -15,7 +21,7 @@ commands:
       aliases:
       - adminmis
    mshop:
-      description: §9超级商店主命令
+      description: §9打开菜单
       usage: §b/§6shop §chelp
       permission: MiniatureS.Command.Shop
       aliases:
@@ -30,6 +36,9 @@ commands:
       - miniatures
       - 菜单
 permissions:
+   MiniatureS.Command.MyShop:
+      description: MiniatureS个人商店管理员命令
+      default: true
    MiniatureS.Command.Admin:
       description: MiniatureS管理员命令
       default: false
