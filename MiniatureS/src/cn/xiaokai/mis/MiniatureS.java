@@ -48,12 +48,14 @@ import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
+import cn.xiaokai.mis.cmd.MyShopCommand;
 import cn.xiaokai.mis.cmd.ShopCommand;
 import cn.xiaokai.mis.event.FormCallback;
 import cn.xiaokai.mis.event.PlayerEvent;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.openbt.HandsomeXiaoKai;
 import cn.xiaokai.mis.msg.Message;
+import cn.xiaokai.mis.myshop.TonsFx;
 import cn.xiaokai.mis.shop.ShopData;
 import cn.xiaokai.mis.shop.ShopMakeForm;
 import cn.xiaokai.mis.tool.Tool;
@@ -161,17 +163,13 @@ public class MiniatureS extends PluginBase {
 	 */
 	public LinkedHashMap<String, Integer> RemoveButtonKeyID = new LinkedHashMap<>();
 	/**
-	 * 创建的个人商店主页的任务列表
+	 * 存储正在MyShop操作的对象
 	 */
-	public LinkedHashMap<String, ArrayList<File>> MyShopPlayerList = new LinkedHashMap<>();
+	public LinkedHashMap<String, TonsFx> MyShopData = new LinkedHashMap<>();
 	/**
-	 * 存储正在MyShop操作的文件对象
+	 * 处理来至个人商店的命令
 	 */
-	public LinkedHashMap<String, File> MyShopFileList = new LinkedHashMap<>();
-	/**
-	 * 存储玩家看到的商店项目
-	 */
-	public LinkedHashMap<String, ArrayList<HashMap<String, Object>>> MyShowData = new LinkedHashMap<>();
+	public MyShopCommand msc;
 
 	/**
 	 * 明人不说暗话！这就是插件启动事件
@@ -189,6 +187,7 @@ public class MiniatureS extends PluginBase {
 		MyShopPlayerMoneyConfig = new Config(this.getDataFolder() + "/MyShopIc.yml", Config.YAML);
 		ShopCmd = new ShopCommand(this);
 		shopMakeForm = new ShopMakeForm(this);
+		msc = new MyShopCommand(this);
 		this.ShopListConfig = new Config(mis.getDataFolder() + "/ShopList.yml", 2);
 		Plugin EconomyAPI = mis.getServer().getPluginManager().getPlugin("EconomyAPI");
 		if (EconomyAPI == null || !EconomyAPI.isEnabled())
@@ -239,6 +238,8 @@ public class MiniatureS extends PluginBase {
 			} else
 				sender.sendMessage(TextFormat.RED + "请在游戏内执行此命令！");
 			return true;
+		case "myshop":
+			return msc.onCommand(sender, label, args);
 		case "mshop":
 			return ShopCmd.onCommand(sender, label, args);
 		default:

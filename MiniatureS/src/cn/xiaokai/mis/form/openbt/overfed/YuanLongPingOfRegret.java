@@ -19,8 +19,7 @@ public class YuanLongPingOfRegret {
 	private HandsomeXiaoKai sb10086;
 
 	/**
-	 * <b> 少年君，</br>
-	 * 吾乃吾辈之帅逼也</br>
+	 * <b> 吾乃吾辈之帅逼也</br>
 	 * 勿崇我， 吾观少年汝吃多矣，</br>
 	 * 食为贵之， 当惜， 不费，</br>
 	 * 袁隆平皆悔令汝饱，</br>

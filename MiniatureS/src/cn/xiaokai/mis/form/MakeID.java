@@ -7,7 +7,27 @@ import cn.xiaokai.mis.tool.Tool;
 
 public enum MakeID {
 	/**
-	 * 个人商店主页UI的ID 
+	 * 开始在个人商店项目购买东西确认窗口的ID
+	 */
+	startMyShopItem(9455498),
+	/**
+	 * 個人商店显示某人的商店项目列表的UI的ID
+	 */
+	MyShopItem(785641651),
+	/**
+	 * 玩家在个人商店搜索物品，显示搜索结果的UI ID
+	 */
+	MyShopFormSeek(86466861),
+	/**
+	 * 个人商店搜索主页ID
+	 */
+	MyShopSeekMain(74894156),
+	/**
+	 * 添加个人商店项目的UI的ID
+	 */
+	newMyShopItem(563210521),
+	/**
+	 * 个人商店主页UI的ID
 	 */
 	MyShopMain(84161654),
 	/**

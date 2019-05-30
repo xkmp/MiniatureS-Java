@@ -10,7 +10,6 @@ import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
-import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.form.management.EventClassification;
@@ -21,6 +20,7 @@ import cn.xiaokai.mis.form.management.son.SonDispose;
 import cn.xiaokai.mis.form.management.son.SonDisposeSwitch;
 import cn.xiaokai.mis.form.openbt.DealWith;
 import cn.xiaokai.mis.form.openbt.overfed.DonFiddle;
+import cn.xiaokai.mis.myshop.MyShop;
 import cn.xiaokai.mis.myshop.MyShopD;
 import cn.xiaokai.mis.shop.DataDispose;
 import cn.xiaokai.mis.shop.ItemCallback;
@@ -57,6 +57,18 @@ public class FormCallback implements Listener {
 		Player player = e.getPlayer();
 		FormResponse data = e.getResponse();
 		switch (MakeID.getByID(e.getFormID())) {
+		case startMyShopItem:
+			(new MyShop(player)).Switch((FormResponseCustom) data);
+			break;
+		case MyShopItem:
+			(new MyShopD(player)).MyShopItem((FormResponseSimple) data);
+			break;
+		case MyShopSeekMain:
+			(new MyShopD(player)).SeekMain((FormResponseCustom) data);
+			break;
+		case newMyShopItem:
+			(new MyShopD(player)).newMyShopItem((FormResponseCustom) data);
+			break;
 		case MyShopMain:
 			(new MyShopD(player)).Main((FormResponseSimple) data);
 			break;
@@ -142,8 +154,6 @@ public class FormCallback implements Listener {
 			dispose.Main(player, (FormResponseSimple) data);
 			break;
 		default:
-			player.sendMessage(TextFormat.WHITE + "[" + TextFormat.GREEN + mis.getName() + TextFormat.WHITE + "]"
-					+ TextFormat.RED + "本宝宝不知道你打开了什么窗口并且向你扔了一个狗子");
 			break;
 		}
 	}

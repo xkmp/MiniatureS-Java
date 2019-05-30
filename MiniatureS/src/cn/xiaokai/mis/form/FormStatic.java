@@ -36,6 +36,14 @@ public class FormStatic {
 	 * 当玩家点击一个可以自行命令的按钮后，执行这个命令的对象
 	 */
 	public static final String[] AddCommandPlayer = { "点击玩家", "控制台" };
+	/**
+	 * 个人商店的商店类型
+	 */
+	public static final String[] MyShopType = { "出售", "收购" };
+	/**
+	 * 个人商店搜索的商店类型
+	 */
+	public static final String[] SeekMyShopType = { "不限制", "出售", "收购" };
 
 	/**
 	 * 将已经有了的商店类型转换为按钮列表

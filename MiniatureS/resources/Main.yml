@@ -21,3 +21,12 @@ Buttons:
     Text: §9打开商店
     Image: null
     ImageType: false
+  MyShop:
+    Msg: []
+    Money: 0
+    Type: Command
+    Command: myshop
+    Commander: Player
+    Text: §6个人商店
+    Image: null
+    ImageType: false

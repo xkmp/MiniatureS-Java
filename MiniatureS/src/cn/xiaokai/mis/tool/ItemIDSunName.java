@@ -757,14 +757,14 @@ public enum ItemIDSunName {
 			else if (getIDByPath(ID + ":0") != null)
 				return ID + ":0";
 			else
-				return null;
+				return ID;
 		} else {
 			if (getIDByPath(ID) != null)
 				return ID;
 			else if (getNameByPath(ID) != null)
 				return getNameByID(ID) + ":" + getNameByDamage(ID);
 			else
-				return null;
+				return ID;
 		}
 	}
 

@@ -16,6 +16,8 @@ public class Tool {
 	 * @return
 	 */
 	public static boolean isMateID(String ID1, String ID2) {
+		if (ID1 == null || ID2 == null)
+			return false;
 		if (!ID1.contains(":"))
 			ID1 += ":0";
 		if (!ID2.contains(":"))
