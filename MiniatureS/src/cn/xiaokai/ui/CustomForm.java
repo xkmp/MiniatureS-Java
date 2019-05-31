@@ -16,7 +16,9 @@ import cn.nukkit.form.element.ElementSlider;
 import cn.nukkit.form.element.ElementStepSlider;
 import cn.nukkit.form.element.ElementToggle;
 import cn.nukkit.form.window.FormWindowCustom;
-
+/**
+ * @author Winfxk
+ */
 public class CustomForm {
 	private List<Element> list = new ArrayList<Element>();
 	private int ID;

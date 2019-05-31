@@ -12,7 +12,9 @@ import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class Shop {
 	private MiniatureS mis;

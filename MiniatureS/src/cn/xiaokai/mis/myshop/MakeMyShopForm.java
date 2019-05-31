@@ -30,6 +30,9 @@ import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
 
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class MakeMyShopForm {
 	private Player player;
@@ -45,6 +48,12 @@ public class MakeMyShopForm {
 		this.mis = MiniatureS.mis;
 	}
 
+	/**
+	 * 开始交易
+	 * 
+	 * @param map  要交易的项目的数据
+	 * @param file 项目所在的文件对象
+	 */
 	public void startPyItem(HashMap<String, Object> map, File file) {
 		if (!mis.config.getBoolean("个人商店")) {
 			MakeForm.makeTip(player, TextFormat.RED + "个人商店已关闭！若需使用请联系管理员！");

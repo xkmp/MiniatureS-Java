@@ -14,7 +14,9 @@ import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 public class MakeForm {
 	private MiniatureS mis;
 

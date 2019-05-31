@@ -17,7 +17,9 @@ import cn.xiaokai.mis.myshop.seek.MySeek;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
-
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class MyShopD {
 	private Player player;
@@ -134,12 +136,19 @@ public class MyShopD {
 			Map<Integer, Item> items = inventory.getContents();
 			for (Integer i : items.keySet()) {
 				Item item = items.get(i);
-				if (Tool.isMateID(item.getId() + ":" + item.getDamage(), ID))
+				if (Tool.isMateID(item.getId() + ":" + item.getDamage(), ID) && item.getEnchantments().length == 0)
 					ItemCount += item.getCount();
 			}
 			if (ItemCount < Count) {
-				MakeForm.makeTip(player, TextFormat.RED + "您的" + TextFormat.WHITE + ItemIDSunName.getIDByName(ID)
-						+ TextFormat.RED + "不足！\n" + TextFormat.WHITE + "还需：" + (Count - ItemCount));
+				MakeForm.makeTip(player,
+						TextFormat.RED + "您的" + TextFormat.WHITE + ItemIDSunName.getIDByName(ID) + TextFormat.RED
+								+ "不足！\n" + TextFormat.WHITE + "还需：" + (Count - ItemCount) + TextFormat.RED
+								+ " PS：当前暂时无法上架附魔物品！");
+				return;
+			}
+		} else {
+			if (EconomyAPI.getInstance().myMoney(player) < (Count * Money)) {
+				MakeForm.makeTip(player, TextFormat.RED + "您的余额不足以支付收购这些物品的费用！");
 				return;
 			}
 		}
@@ -161,9 +170,12 @@ public class MyShopD {
 				MakeForm.makeTip(player, TextFormat.RED + "您的物品ID解析失败！");
 				return;
 			}
-			inventory.remove(new Item(Float.valueOf(ID.split(":")[0]).intValue(),
-					Float.valueOf(ID.split(":")[1]).intValue(), Count));
-		}
+			String[] sb = ID.split(":");
+			int IDD = Float.valueOf(sb[0]).intValue();
+			int DD = Float.valueOf(sb[1]).intValue();
+			inventory.remove(new Item(IDD, DD, Count));
+		} else
+			EconomyAPI.getInstance().reduceMoney(player, (Count * Money));
 		(new MakeMyShop(player, ID, Count, Money, ShopType, Sb_you)).newItemSwitch();
 	}
 

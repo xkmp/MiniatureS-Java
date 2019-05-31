@@ -22,9 +22,13 @@ import cn.xiaokai.mis.form.openbt.DealWith;
 import cn.xiaokai.mis.form.openbt.overfed.DonFiddle;
 import cn.xiaokai.mis.myshop.MyShop;
 import cn.xiaokai.mis.myshop.MyShopD;
+import cn.xiaokai.mis.myshop.seek.BnsoxK;
 import cn.xiaokai.mis.shop.DataDispose;
 import cn.xiaokai.mis.shop.ItemCallback;
 
+/**
+ * @author Winfxk
+ */
 public class FormCallback implements Listener {
 	private FormDispose dispose;
 	private DataDispose shopDispose;
@@ -57,6 +61,12 @@ public class FormCallback implements Listener {
 		Player player = e.getPlayer();
 		FormResponse data = e.getResponse();
 		switch (MakeID.getByID(e.getFormID())) {
+		case SettingConfig:
+			(new ManagerProcessing(mis)).SettingConfig(player, (FormResponseCustom) data);
+			break;
+		case MyShopFormSeek:
+			(new BnsoxK(player, (FormResponseSimple) data)).Switch();
+			break;
 		case startMyShopItem:
 			(new MyShop(player)).Switch((FormResponseCustom) data);
 			break;

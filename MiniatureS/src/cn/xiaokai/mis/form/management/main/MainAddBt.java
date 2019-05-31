@@ -12,7 +12,9 @@ import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.msg.Message;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class MainAddBt {
 	private MiniatureS mis;

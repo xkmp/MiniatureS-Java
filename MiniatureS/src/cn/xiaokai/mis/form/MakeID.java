@@ -5,6 +5,9 @@ import java.util.Map;
 
 import cn.xiaokai.mis.tool.Tool;
 
+/**
+ * @author Winfxk
+ */
 public enum MakeID {
 	/**
 	 * 开始在个人商店项目购买东西确认窗口的ID
@@ -145,7 +148,11 @@ public enum MakeID {
 	/**
 	 * 在主页以外的界面创建按钮时让选择按钮类型的UI的ID
 	 */
-	SonAddButtonByType(7891231);
+	SonAddButtonByType(7891231),
+	/**
+	 * 配置属性页ID
+	 */
+	SettingConfig(68461861);
 	private int code;
 
 	private static final Map<Integer, MakeID> MAP = new HashMap<>();

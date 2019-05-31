@@ -11,7 +11,9 @@ import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 public class DataDispose {
 	private MiniatureS mis;
 

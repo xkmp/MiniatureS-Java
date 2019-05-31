@@ -9,7 +9,9 @@ import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.form.openbt.HandsomeXiaoKai;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 public class NewButton {
 	private Player player;
 	private MiniatureS mis;

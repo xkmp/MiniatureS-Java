@@ -17,9 +17,13 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.utils.Config;
 import cn.xiaokai.mis.MiniatureS;
+import cn.xiaokai.mis.event.yousb.Fuck;
 import cn.xiaokai.mis.myshop.CPlayer;
 import cn.xiaokai.mis.tool.Tool;
 
+/**
+ * @author Winfxk
+ */
 public class PlayerEvent implements Listener {
 	private MiniatureS mis;
 
@@ -153,6 +157,7 @@ public class PlayerEvent implements Listener {
 		Map<Integer, Item> map = inventory.getContents();
 		if (!CPlayer.isPlayerConfig(player)) {
 			Config cp = CPlayer.getPlayerConfig(player);
+			player.sendMessage(mis.getMessage().getMessage("玩家加入提示1"));
 			cp.setAll(CPlayer.getConfig());
 			cp.save();
 		}
@@ -175,5 +180,6 @@ public class PlayerEvent implements Listener {
 			player.sendMessage(mis.getMessage().getMessage("进服给快捷工具", new String[] { "{Player}", "{Server_Name}" },
 					new String[] { player.getName(), mis.getServer().getMotd() }));
 		}
+		(new Fuck()).Switch(player);
 	}
 }

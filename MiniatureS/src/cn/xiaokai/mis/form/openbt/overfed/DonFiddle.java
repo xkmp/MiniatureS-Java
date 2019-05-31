@@ -13,7 +13,9 @@ import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.openbt.HandsomeXiaoKai;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
-
+/**
+ * @author Winfxk
+ */
 public class DonFiddle {
 	private MiniatureS mis;
 	private Player player;

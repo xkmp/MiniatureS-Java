@@ -8,7 +8,9 @@ import java.util.LinkedHashMap;
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 import cn.xiaokai.mis.MiniatureS;
-
+/**
+ * @author Winfxk
+ */
 public class CPlayer {
 	/**
 	 * 默认的玩家配置文件都有那些东西
@@ -17,7 +19,8 @@ public class CPlayer {
 	 */
 	public static LinkedHashMap<String, Object> getConfig() {
 		LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-		map.put("Items", new HashMap<>());
+		ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
+		map.put("Items", arrayList);
 		map.put("Money", 0);
 		map.put("Msg", new ArrayList<String>());
 		return map;

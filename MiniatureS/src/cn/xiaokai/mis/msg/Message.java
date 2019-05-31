@@ -5,7 +5,9 @@ import java.util.Map;
 
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 public class Message {
 	private MiniatureS mis;
 	private String[] Global_Key;
@@ -32,8 +34,8 @@ public class Message {
 	 * 更新数据
 	 */
 	public void update() {
-		Global_Key = new String[] { "{n}", "{Plugin_Name}", "{Server_Name}", "{Time}", "{Data}", "{Rand_Color}" };
-		Global_Data = new String[] { "\n", mis.getName(), mis.getServer().getMotd(), Tool.getTime(), Tool.getDate(),
+		Global_Key = new String[] { "{MoneyName}","{n}", "{Plugin_Name}", "{Server_Name}", "{Time}", "{Data}", "{Rand_Color}" };
+		Global_Data = new String[] {mis.getMoneyName(), "\n", mis.getName(), mis.getServer().getMotd(), Tool.getTime(), Tool.getDate(),
 				Tool.getRandColor() };
 	}
 

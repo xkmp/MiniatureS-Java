@@ -4,7 +4,9 @@ import java.util.List;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.window.FormWindowModal;
-
+/**
+ * @author Winfxk
+ */
 public class ModalForm {
 	private int ID;
 	private String Title = "";

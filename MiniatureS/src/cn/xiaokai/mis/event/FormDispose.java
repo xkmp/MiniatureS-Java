@@ -13,6 +13,9 @@ import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.management.MakeManagFrom;
 import cn.xiaokai.mis.form.openbt.OpenButton;
 
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class FormDispose {
 	private MiniatureS mis;

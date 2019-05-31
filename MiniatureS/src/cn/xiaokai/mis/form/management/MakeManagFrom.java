@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
+import cn.nukkit.form.element.Element;
 import cn.nukkit.form.element.ElementButton;
 import cn.nukkit.form.element.ElementButtonImageData;
+import cn.nukkit.form.element.ElementInput;
+import cn.nukkit.form.element.ElementToggle;
 import cn.nukkit.form.response.FormResponseSimple;
+import cn.nukkit.form.window.FormWindowCustom;
 import cn.nukkit.form.window.FormWindowModal;
 import cn.nukkit.form.window.FormWindowSimple;
 import cn.nukkit.utils.Config;
@@ -20,6 +24,9 @@ import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.tool.Tool;
 
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class MakeManagFrom {
 	private MiniatureS mis;
@@ -111,7 +118,19 @@ public class MakeManagFrom {
 	 * @param player 要修改配置的玩家对象
 	 */
 	public void MakeSettingConfig(Player player) {
-
+		if (!player.isOp()) {
+			player.sendMessage(TextFormat.RED + "权限不足！");
+			return;
+		}
+		List<Element> list = new ArrayList<>();
+		list.add(new ElementInput(TextFormat.WHITE + "请输入快捷工具的ID", "支持物品ID或物品名称", mis.config.getString("快捷工具")));
+		list.add(new ElementToggle(TextFormat.WHITE + "快捷打开为商店", mis.config.getBoolean("快捷打开为商店")));
+		list.add(new ElementInput(TextFormat.WHITE + "服务器货币名称", "", mis.config.getString("货币单位")));
+		list.add(new ElementToggle(TextFormat.WHITE + "启用个人商店", mis.config.getBoolean("个人商店")));
+		list.add(new ElementInput(TextFormat.WHITE + "个人商店上架耗资", "", mis.config.getString("上架耗资")));
+		list.add(new ElementInput(TextFormat.WHITE + "个人商店介绍修改费用", "", mis.config.getString("个人商店介绍修改费用")));
+		player.showFormWindow(new FormWindowCustom(
+				TextFormat.WHITE + mis.getName() + TextFormat.LIGHT_PURPLE + "-" + TextFormat.YELLOW + "Setting", list),
+				MakeID.SettingConfig.getID());
 	}
-
 }

@@ -3,7 +3,9 @@ package cn.xiaokai.mis.tool;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
-
+/**
+ * @author Winfxk
+ */
 public class Tool {
 	private static String colorKeyString = "123456789abcdef";
 	private static String randString = "0123456789-+abcdefghijklmnopqrstuvwxyz_=";

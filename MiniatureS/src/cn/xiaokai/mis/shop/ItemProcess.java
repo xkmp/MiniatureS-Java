@@ -21,7 +21,9 @@ import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
-
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class ItemProcess {
 	private MiniatureS mis;

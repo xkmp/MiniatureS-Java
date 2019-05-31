@@ -7,7 +7,9 @@ import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.management.main.MainMake;
-
+/**
+ * @author Winfxk
+ */
 public class EventClassification {
 	private Player player;
 	private MainMake make;

@@ -4,7 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import cn.nukkit.Player;
-
+/**
+ * @author Winfxk
+ */
 public class TonsFx {
 	/**
 	 * 创建的个人商店主页的任务列表

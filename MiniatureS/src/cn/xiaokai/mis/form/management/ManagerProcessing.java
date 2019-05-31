@@ -6,12 +6,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.nukkit.Player;
+import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeForm;
+import cn.xiaokai.mis.tool.ItemIDSunName;
+import cn.xiaokai.mis.tool.Tool;
 
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class ManagerProcessing {
 	private MiniatureS mis;
@@ -25,6 +31,67 @@ public class ManagerProcessing {
 		this.mis = mis;
 	}
 
+	/**
+	 * 配置数据
+	 * 
+	 * @param player 触发这个事件的玩家对象
+	 * @param data   处罚的数据
+	 */
+
+	public void SettingConfig(Player player, FormResponseCustom data) {
+		if (!player.isOp()) {
+			player.sendMessage(TextFormat.RED + "您没有这样做的权限");
+			return;
+		}
+		if (data.getResponse(0) == null || String.valueOf(data.getResponse(0)).isEmpty()) {
+			player.sendMessage(TextFormat.RED + "请输入物品ID或名称");
+			return;
+		}
+		String ID = ItemIDSunName.UnknownToID(String.valueOf(data.getResponse(0)));
+		boolean isShop = Boolean.valueOf(String.valueOf(data.getResponse(1)));
+		if (data.getResponse(2) == null || String.valueOf(data.getResponse(2)).isEmpty()) {
+			player.sendMessage(TextFormat.RED + "请输入货币名称");
+			return;
+		}
+		String MoneyName = String.valueOf(data.getResponse(2));
+		boolean isMyShop = Boolean.valueOf(String.valueOf(data.getResponse(3)));
+		if (data.getResponse(4) == null || String.valueOf(data.getResponse(4)).isEmpty()) {
+			player.sendMessage(TextFormat.RED + "请输入个人商店上架耗资");
+			return;
+		}
+		String moneyString = String.valueOf(data.getResponse(4));
+		if (!Tool.isInteger(moneyString)) {
+			player.sendMessage(TextFormat.RED + "请输入正确的个人商店上架耗资(纯整数)");
+			return;
+		}
+		int Money1 = Float.valueOf(moneyString).intValue();
+		if (Money1 < 1) {
+			player.sendMessage(TextFormat.RED + "请输入正确的个人商店上架耗资(正整数)");
+			return;
+		}
+		if (data.getResponse(5) == null || String.valueOf(data.getResponse(5)).isEmpty()) {
+			player.sendMessage(TextFormat.RED + "请输入个人商店介绍修改费用");
+			return;
+		}
+		moneyString = String.valueOf(data.getResponse(5));
+		if (!Tool.isInteger(moneyString)) {
+			player.sendMessage(TextFormat.RED + "请输入正确的个人商店介绍修改费用(纯整数)");
+			return;
+		}
+		int Money2 = Float.valueOf(moneyString).intValue();
+		if (Money1 < 1) {
+			player.sendMessage(TextFormat.RED + "请输入正确的个人商店介绍修改费用(正整数)");
+			return;
+		}
+		(new SB10086()).Save(player, ID, isShop, isMyShop, MoneyName, Money1, Money2);
+	}
+
+	/**
+	 * 处理删除按钮的数据
+	 * 
+	 * @param player 触发事件的玩家对象
+	 * @param data   返回的数据
+	 */
 	public void RemoveButton(Player player, FormResponseModal data) {
 		File file = mis.RemoveButtonFile.get(player.getName());
 		ArrayList<String> keyList = mis.RemoveButtonKeyList.get(player.getName());

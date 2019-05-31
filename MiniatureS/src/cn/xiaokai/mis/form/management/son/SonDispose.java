@@ -5,7 +5,9 @@ import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeForm;
-
+/**
+ * @author Winfxk
+ */
 public class SonDispose {
 	/**
 	 * 判断这帮沙雕点击的是哪一种类型的按钮

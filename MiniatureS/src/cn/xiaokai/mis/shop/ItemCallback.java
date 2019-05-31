@@ -15,7 +15,9 @@ import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
-
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class ItemCallback {
 	private MiniatureS mis;

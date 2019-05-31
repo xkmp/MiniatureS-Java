@@ -15,7 +15,9 @@ import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.msg.Message;
-
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class MakeWindow {
 	private MiniatureS mis;

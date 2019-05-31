@@ -7,7 +7,9 @@ import cn.nukkit.Player;
 import cn.nukkit.form.element.ElementButton;
 import cn.nukkit.form.element.ElementButtonImageData;
 import cn.nukkit.form.window.FormWindowSimple;
-
+/**
+ * @author Winfxk
+ */
 public class SimpleForm {
 	private ArrayList<ElementButton> list = new ArrayList<>();
 	private int ID;

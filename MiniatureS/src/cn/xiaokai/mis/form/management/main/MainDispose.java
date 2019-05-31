@@ -10,7 +10,9 @@ import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 public class MainDispose {
 	private MiniatureS mis;
 	private Player player;

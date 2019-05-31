@@ -4,7 +4,9 @@ import java.io.File;
 import java.util.HashMap;
 
 import cn.nukkit.Player;
-
+/**
+ * @author Winfxk
+ */
 public class HandsomeXiaoKai {
 	public HashMap<String, Object> Button;
 	public Player player;

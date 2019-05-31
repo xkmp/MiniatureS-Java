@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
+import cn.nukkit.command.CommandSender;
 import cn.nukkit.form.element.ElementButton;
 import cn.nukkit.form.element.ElementButtonImageData;
 import cn.nukkit.form.window.FormWindowSimple;
@@ -18,7 +19,9 @@ import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.myshop.TonsFx;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class MySeek {
 	private MiniatureS mis;
@@ -37,11 +40,12 @@ public class MySeek {
 	/**
 	 * 开始搜索，并且将搜索结果已文本的方式返回
 	 * 
+	 * @param player   控制台对象
 	 * @param ID       要搜索的物品ID
 	 * @param ShopType 要搜索的商品的类型
 	 */
-	public void MsgSeek(String ID, String ShopType) {
-		File Dir = new File(mis.getDataFolder() + MiniatureS.MyShopConfigPath);
+	public static void MsgSeek(CommandSender player, String ID, String ShopType) {
+		File Dir = new File(MiniatureS.mis.getDataFolder() + MiniatureS.MyShopConfigPath);
 		String SB_FFF = "";
 		int Count = 0;
 		for (String fileName : Dir.list()) {
@@ -63,7 +67,8 @@ public class MySeek {
 							+ ItemIDSunName.getIDByName(String.valueOf(item.get("Item"))) + TextFormat.LIGHT_PURPLE
 							+ " 价格：" + TextFormat.DARK_BLUE
 							+ Float.valueOf(String.valueOf(item.get("Money"))).intValue() + TextFormat.LIGHT_PURPLE
-							+ "  类型：" + TextFormat.GOLD + String.valueOf(item.get("Type")) + "\n";
+							+ "  类型：" + TextFormat.GOLD
+							+ (String.valueOf(item.get("Type")).toLowerCase().equals("sell") ? "出售" : "回收") + "\n";
 				}
 			}
 		}
@@ -75,8 +80,8 @@ public class MySeek {
 				+ TextFormat.WHITE + "[" + Tool.getColorFont("搜索结果") + TextFormat.WHITE + TextFormat.YELLOW + "==="
 				+ TextFormat.GOLD + "===" + TextFormat.GREEN + "===\n" + SB_FFF + "\n" + TextFormat.GREEN + "==="
 				+ TextFormat.GOLD + "===" + TextFormat.YELLOW + "===" + TextFormat.WHITE + "["
-				+ Tool.getColorFont("搜索结果") + TextFormat.WHITE + TextFormat.YELLOW + "===" + TextFormat.GOLD + "==="
-				+ TextFormat.GREEN + "===\n" + TextFormat.GREEN + "若想交易请在游戏内使用UI完成！");
+				+ Tool.getColorFont("搜索结果") + TextFormat.WHITE + "]" + TextFormat.YELLOW + "===" + TextFormat.GOLD
+				+ "===" + TextFormat.GREEN + "===\n" + TextFormat.GREEN + "若想交易请在游戏内使用UI完成！");
 	}
 
 	/**
@@ -103,14 +108,20 @@ public class MySeek {
 				if ((ShopType.toLowerCase().equals("all")
 						|| ShopType.toLowerCase().equals(String.valueOf(item.get("Type")).toLowerCase()))
 						&& (Tool.isMateID(ID, String.valueOf(item.get("Item"))))) {
+					item.put("FFF_SB", file);
 					maps.add(item);
-					list.add(new ElementButton(TextFormat.DARK_AQUA + String.valueOf(item.get("Player"))
-							+ TextFormat.LIGHT_PURPLE + "|" + TextFormat.YELLOW
-							+ ItemIDSunName.getIDByName(String.valueOf(item.get("Item"))) + TextFormat.LIGHT_PURPLE
-							+ "|" + TextFormat.DARK_BLUE + Float.valueOf(String.valueOf(item.get("Money"))).intValue()
-							+ TextFormat.LIGHT_PURPLE + "|" + TextFormat.GOLD + String.valueOf(item.get("Type")),
-							new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
-									ItemIDSunName.getIDByPath(String.valueOf(item.get("Item"))))));
+					list.add(
+							new ElementButton(
+									TextFormat.DARK_AQUA + String.valueOf(item.get("Player")) + TextFormat.LIGHT_PURPLE
+											+ "|" + TextFormat.YELLOW
+											+ ItemIDSunName.getIDByName(String.valueOf(item.get("Item")))
+											+ TextFormat.LIGHT_PURPLE + "|" + TextFormat.DARK_BLUE
+											+ Float.valueOf(String.valueOf(item.get("Money"))).intValue()
+											+ TextFormat.LIGHT_PURPLE + "|" + TextFormat.GOLD
+											+ (String.valueOf(item.get("Type")).toLowerCase().equals("sell") ? "出售"
+													: "回收"),
+									new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
+											ItemIDSunName.getIDByPath(String.valueOf(item.get("Item"))))));
 				}
 			}
 		}

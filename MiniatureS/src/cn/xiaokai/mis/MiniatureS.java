@@ -61,7 +61,7 @@ import cn.xiaokai.mis.shop.ShopMakeForm;
 import cn.xiaokai.mis.tool.Tool;
 
 /**
- * @author 帅逼凯
+ * @author Winfxk
  */
 public class MiniatureS extends PluginBase {
 	/**
@@ -176,12 +176,12 @@ public class MiniatureS extends PluginBase {
 	 */
 	@Override
 	public void onEnable() {
+		config = new Config(this.getDataFolder() + "/Config.yml", 2);
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new PlayerEvent(this), this);
 		pm.registerEvents(new FormCallback(this), this);
 		message = new Message(this);
 		makeForm = new MakeForm(this);
-		config = new Config(this.getDataFolder() + "/Config.yml", 2);
 		MsgConfig = new Config(this.getDataFolder() + "/Message.yml", 2);
 		Menus = new Config(this.getDataFolder() + "/Main.yml", 2);
 		MyShopPlayerMoneyConfig = new Config(this.getDataFolder() + "/MyShopIc.yml", Config.YAML);

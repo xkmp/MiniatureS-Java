@@ -6,7 +6,9 @@ import java.util.List;
 
 import cn.nukkit.form.element.ElementButton;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 public class FormStatic {
 	/**
 	 * 按钮有的功能

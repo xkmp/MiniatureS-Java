@@ -19,7 +19,9 @@ import cn.xiaokai.mis.msg.Message;
 import cn.xiaokai.mis.shop.ShopMakeForm;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
-
+/**
+ * @author Winfxk
+ */
 public class OpenButton {
 	private MiniatureS mis;
 	private Player player;

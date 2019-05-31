@@ -10,7 +10,9 @@ import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.management.WhatThing;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class DealWith {
 	private Player player;

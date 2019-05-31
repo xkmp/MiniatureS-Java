@@ -24,7 +24,9 @@ import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
-
+/**
+ * @author Winfxk
+ */
 @SuppressWarnings("unchecked")
 public class SonMakeWindow {
 	private Player player;

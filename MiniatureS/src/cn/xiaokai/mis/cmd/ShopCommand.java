@@ -7,6 +7,9 @@ import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.cmd.scmd.SCmd;
 import cn.xiaokai.mis.tool.Tool;
 
+/**
+ * @author Winfxk
+ */
 public class ShopCommand {
 	private MiniatureS mis;
 
