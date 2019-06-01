@@ -15,18 +15,21 @@
 > - 多种商店购买方式
 > - 自动获取物品图标
 > - 智能控制黑名单白名单
-
+> - 智能个人商店
+> - 个人商店支持自定义搜索，快速搜索需要购买的物品，方便又快捷
 ## MiniatureS 该如何使用？
 
 #### 命令介绍
 
-| 命令 | 描述 | 用法 | 别名 | 权限 | 使用 |
+| 命令 | 描述 | 用法 | 别名 | 权限 | 适用对象 |
 | ---- | :--: | :--: | :--: | :--: | :--: |
-| /admis | MiniatureS管理员命令 | /admis help | adminmis | MiniatureS.Command.Admin | false |
-| /shop | 超级商店主命令 | /shop help | 商店 | MiniatureS.Command.Shop | true |
-| /mis | 菜单工具主命令 | /mis help | 菜单 | MiniatureS.Command.main | true |
+| /admis | MiniatureS管理员命令 | /admis help | adminmis | MiniatureS.Command.Admin | 服务器管理员及控制台 |
+| /shop | 超级商店主命令 | /shop help | 商店 | MiniatureS.Command.Shop | 所有玩家 |
+| /mis | 菜单工具主命令 | /mis help | 菜单 | MiniatureS.Command.main | 所有玩家 |
 
 
+#### 依赖：
+> - 本插件当前需要[EconomyAPI](https://nukkitx.com/resources/economyapi.14/)的支持才能正常使用所有功能
 
 #### 计划实现功能
 > - [x] 支持创建多个按钮
@@ -34,8 +37,8 @@
 > - [x] 点击按钮打开界面（自定义界面）
 > - [x] 按钮前显示自定义图片（资源包or网络图片）
 > - [x] UI商店，指令或UI控制，修改。
-> - [ ] 物品ID表，通过物品ID或名称获取ID或名称或图像路径
->   - [ ] `ItemIDSunName.java`
+> - [x] 物品ID表，通过物品ID或名称获取ID或名称或图像路径
+>   - [x] `ItemIDSunName.java`
 
 ## 问题反馈
 #### 在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流

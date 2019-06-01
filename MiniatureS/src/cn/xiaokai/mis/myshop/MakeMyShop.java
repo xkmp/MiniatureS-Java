@@ -10,6 +10,7 @@ import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
@@ -86,6 +87,10 @@ public class MakeMyShop {
 		player.sendMessage(TextFormat.GREEN + "上架物品成功！" + IsMoney + "\n" + TextFormat.WHITE + "每个" + TextFormat.RED
 				+ ItemIDSunName.getIDByName(ID) + TextFormat.AQUA + Money + TextFormat.WHITE + mis.getMoneyName() + "\n"
 				+ Tool.getRandColor() + "Key:" + Tool.getRandColor() + Key);
+		int SB_Ic = mis.MyShopPlayerMoneyConfig.getInt(player.getName());
+		SB_Ic += this.Count;
+		mis.MyShopPlayerMoneyConfig.set(player.getName(), SB_Ic);
+		mis.MyShopPlayerMoneyConfig.save();
 	}
 
 	/**

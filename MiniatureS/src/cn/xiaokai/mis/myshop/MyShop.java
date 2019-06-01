@@ -17,6 +17,7 @@ import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
+
 /**
  * @author Winfxk
  */
@@ -150,6 +151,10 @@ public class MyShop {
 			p2.sendMessage(TextFormat.BLUE + player.getName() + TextFormat.GREEN + "卖给你" + TextFormat.RED + this.Count
 					+ TextFormat.GREEN + "个" + TextFormat.WHITE + ItemIDSunName.getIDByName(ID, Meta)
 					+ (String.valueOf(map.get("Player")).equals(player.getName()) ? TextFormat.RED + " 自卖侠！牛逼！" : ""));
+		int SB_Ic = mis.MyShopPlayerMoneyConfig.getInt(player.getName());
+		SB_Ic += this.Count;
+		mis.MyShopPlayerMoneyConfig.set(player.getName(), SB_Ic);
+		mis.MyShopPlayerMoneyConfig.save();
 		end();
 	}
 
@@ -206,6 +211,10 @@ public class MyShop {
 					+ (String.valueOf(map.get("Player")).equals(player.getName()) ? TextFormat.RED + " 自卖侠！牛逼！" : ""));
 			EconomyAPI.getInstance().addMoney(p2, (Money * Count));
 		}
+		int SB_Ic = mis.MyShopPlayerMoneyConfig.getInt(player.getName());
+		SB_Ic += this.Count + Money;
+		mis.MyShopPlayerMoneyConfig.set(player.getName(), SB_Ic);
+		mis.MyShopPlayerMoneyConfig.save();
 		end();
 	}
 }

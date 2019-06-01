@@ -1,14 +1,53 @@
 package cn.xiaokai.mis.tool;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.Temporal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
+
 /**
  * @author Winfxk
  */
 public class Tool {
 	private static String colorKeyString = "123456789abcdef";
 	private static String randString = "0123456789-+abcdefghijklmnopqrstuvwxyz_=";
+
+	/**
+	 * 获取从一个时间点到现在的时间差
+	 * 
+	 * @param time 时间点
+	 * @return
+	 */
+	public static String getTimeTo(Temporal time) {
+		return getTimeBy(Duration.between(time, Instant.now()).toMillis() / 1000);
+	}
+
+	/**
+	 * 将秒长度转换为日期长度
+	 * 
+	 * @param time 秒长度
+	 * @return
+	 */
+	public static String getTimeBy(double time) {
+		int y = (int) (time / 31556926);
+		time = time % 31556926;
+		int d = (int) (time / 86400);
+		time = time % 86400;
+		int h = (int) (time / 3600);
+		time = time % 3600;
+		int i = (int) (time / 60);
+		time = time % 60;
+		return (y > 0 ? y + "年" : "") + (d > 0 ? d + "天" : "") + (h > 0 ? h + "小时" : "") + (i > 0 ? i + "分钟" : "")
+				+ (time > 0 ? time + "秒" : "");
+	}
 
 	/**
 	 * 判断两个ID是否匹配，x忽略匹配
@@ -206,5 +245,28 @@ public class Tool {
 		for (int i = 1; i < hex.length; i++)
 			string.append((char) Integer.parseInt(hex[i], 16));
 		return string.toString();
+	}
+
+	/**
+	 * 将Map按数据升序排列
+	 * 
+	 * @param map
+	 * @return
+	 */
+	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueDescending(Map<K, V> map) {
+		List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+			@Override
+			public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+				int compare = (o1.getValue()).compareTo(o2.getValue());
+				return -compare;
+			}
+		});
+
+		Map<K, V> result = new LinkedHashMap<K, V>();
+		for (Map.Entry<K, V> entry : list) {
+			result.put(entry.getKey(), entry.getValue());
+		}
+		return result;
 	}
 }

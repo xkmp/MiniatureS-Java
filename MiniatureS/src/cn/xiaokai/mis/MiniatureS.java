@@ -31,23 +31,21 @@ package cn.xiaokai.mis;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
-
-import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.inventory.Inventory;
-import cn.nukkit.item.Item;
-import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
+import cn.xiaokai.mis.cmd.AdminCommand;
+import cn.xiaokai.mis.cmd.MainCommand;
 import cn.xiaokai.mis.cmd.MyShopCommand;
 import cn.xiaokai.mis.cmd.ShopCommand;
 import cn.xiaokai.mis.event.FormCallback;
@@ -55,6 +53,7 @@ import cn.xiaokai.mis.event.PlayerEvent;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.openbt.HandsomeXiaoKai;
 import cn.xiaokai.mis.msg.Message;
+import cn.xiaokai.mis.msg.ReloadConfig;
 import cn.xiaokai.mis.myshop.TonsFx;
 import cn.xiaokai.mis.shop.ShopData;
 import cn.xiaokai.mis.shop.ShopMakeForm;
@@ -64,21 +63,22 @@ import cn.xiaokai.mis.tool.Tool;
  * @author Winfxk
  */
 public class MiniatureS extends PluginBase {
+	private Instant loadTime = Instant.now();
 	/**
 	 * <b>内行看笑话，外行看装逼，且看我将此逼装也</b>
 	 */
-	public LinkedHashMap<String, HandsomeXiaoKai> sb = new LinkedHashMap<>();
+	public LinkedHashMap<String, HandsomeXiaoKai> sb;
 	/**
 	 * <b>存储玩家看到的菜单列表</b> </br>
 	 * <b>PS</b>：懒，不想再读取一次配置文件，存着好了</br>
 	 * <b>PS</b>：我记得之前定义过类似的玩意来着，但是我现在忘记我是定义哪一个了，就从新来一个吧</br>
 	 * <b>PS</b>：难道这就是传说中的内存轰炸机？？？
 	 */
-	public LinkedHashMap<String, HashMap<String, Object>> PlayerMenuData = new LinkedHashMap<>();
+	public LinkedHashMap<String, HashMap<String, Object>> PlayerMenuData;
 	/**
 	 * 当玩家在创建一个按钮时，并且这个按钮时打开商店分页的时候用来存储获得的商店分页的数据
 	 */
-	public LinkedHashMap<String, HashMap<String, String>> PlayerAddButtonByOpenShop = new LinkedHashMap<>();
+	public LinkedHashMap<String, HashMap<String, String>> PlayerAddButtonByOpenShop;
 	/**
 	 * 要初始化的配置文件
 	 */
@@ -86,19 +86,19 @@ public class MiniatureS extends PluginBase {
 	/**
 	 * 玩家点的这个菜单的上一级
 	 */
-	public LinkedHashMap<String, String> PlayerMenuBack = new LinkedHashMap<String, String>();
+	public LinkedHashMap<String, String> PlayerMenuBack;
 	/**
 	 * 玩家当前页面的按钮列表
 	 */
-	public LinkedHashMap<String, ArrayList<String>> PlayerMenu = new LinkedHashMap<String, ArrayList<String>>();
+	public LinkedHashMap<String, ArrayList<String>> PlayerMenu;
 	/**
 	 * 存储玩家在购买东西时点击项目的项目数据
 	 */
-	public LinkedHashMap<String, HashMap<String, Object>> PlayerShopInteract = new LinkedHashMap<>();
+	public LinkedHashMap<String, HashMap<String, Object>> PlayerShopInteract;
 	/**
 	 * 存储玩家在购买东西时点击项目的项目数据
 	 */
-	public LinkedHashMap<String, ShopData> PlayerShopItemData = new LinkedHashMap<>();
+	public LinkedHashMap<String, ShopData> PlayerShopItemData;
 	/**
 	 * 菜单配置文件存储路径
 	 */
@@ -145,7 +145,7 @@ public class MiniatureS extends PluginBase {
 	/**
 	 * 用于缓存玩家打开的上点分页的商店项目列表
 	 */
-	public LinkedHashMap<String, ArrayList<String>> shopList = new LinkedHashMap<String, ArrayList<String>>();
+	public LinkedHashMap<String, ArrayList<String>> shopList;
 	/**
 	 * 用于创建商店UI的地方
 	 */
@@ -153,49 +153,51 @@ public class MiniatureS extends PluginBase {
 	/**
 	 * 当玩家需要删除按钮的时候，就用这个玩意来存储玩家要删除的文件对象
 	 */
-	public LinkedHashMap<String, File> RemoveButtonFile = new LinkedHashMap<String, File>();
+	public LinkedHashMap<String, File> RemoveButtonFile;
 	/**
 	 * 当玩家要删除按钮的时候，用这个来存储玩家要删除按钮的那个界面的按钮列表，分别是按钮的文本内容为key，按钮的key为内容
 	 */
-	public LinkedHashMap<String, ArrayList<String>> RemoveButtonKeyList = new LinkedHashMap<>();
+	public LinkedHashMap<String, ArrayList<String>> RemoveButtonKeyList;
 	/**
 	 * 存储玩家在删除按钮时点击的是第几个按钮
 	 */
-	public LinkedHashMap<String, Integer> RemoveButtonKeyID = new LinkedHashMap<>();
+	public LinkedHashMap<String, Integer> RemoveButtonKeyID;
 	/**
 	 * 存储正在MyShop操作的对象
 	 */
-	public LinkedHashMap<String, TonsFx> MyShopData = new LinkedHashMap<>();
+	public LinkedHashMap<String, TonsFx> MyShopData;
 	/**
 	 * 处理来至个人商店的命令
 	 */
 	public MyShopCommand msc;
+	/**
+	 * 处理主要命令
+	 */
+	public MainCommand MainCommand;
+
+	/**
+	 * 处理管理命令
+	 */
+	public AdminCommand AdminCommand;
 
 	/**
 	 * 明人不说暗话！这就是插件启动事件
 	 */
 	@Override
 	public void onEnable() {
-		config = new Config(this.getDataFolder() + "/Config.yml", 2);
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new PlayerEvent(this), this);
 		pm.registerEvents(new FormCallback(this), this);
-		message = new Message(this);
-		makeForm = new MakeForm(this);
-		MsgConfig = new Config(this.getDataFolder() + "/Message.yml", 2);
-		Menus = new Config(this.getDataFolder() + "/Main.yml", 2);
-		MyShopPlayerMoneyConfig = new Config(this.getDataFolder() + "/MyShopIc.yml", Config.YAML);
-		ShopCmd = new ShopCommand(this);
-		shopMakeForm = new ShopMakeForm(this);
-		msc = new MyShopCommand(this);
 		this.ShopListConfig = new Config(mis.getDataFolder() + "/ShopList.yml", 2);
-		Plugin EconomyAPI = mis.getServer().getPluginManager().getPlugin("EconomyAPI");
-		if (EconomyAPI == null || !EconomyAPI.isEnabled())
-			mis.getLogger().info(TextFormat.GREEN + "EconomyAPI" + TextFormat.RED + "未安装或未启用，您无法使用" + TextFormat.GREEN
-					+ mis.getName() + TextFormat.RED + "商店的部分功能！");
-		mis.getLogger().info(TextFormat.YELLOW + mis.getName() + TextFormat.GRAY + "商店" + TextFormat.GREEN + "启动！");
-		this.getServer().getLogger().info(Tool.getColorFont(this.getName() + "启动！"));
+		Plugin Economy = getServer().getPluginManager().getPlugin("EconomyAPI");
+		if (getServer().getPluginManager().isPluginEnabled(Economy))
+			this.getLogger()
+					.info(TextFormat.YELLOW + mis.getName() + TextFormat.GRAY + "商店" + TextFormat.GREEN + "启动！");
 		super.onEnable();
+		this.getServer().getLogger()
+				.info(Tool.getColorFont(this.getName() + "启动！") + TextFormat.GREEN + "耗时：" + TextFormat.BLUE
+						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000) + TextFormat.GREEN
+						+ "s");
 	}
 
 	/**
@@ -204,40 +206,10 @@ public class MiniatureS extends PluginBase {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		switch (command.getName().toLowerCase()) {
+		case "admis":
+			return AdminCommand.onCommand(sender, label, args);
 		case "mis":
-			if (sender.isPlayer()) {
-				String makeTool = mis.config.getString("快捷工具", null);
-				if (makeTool != null && !makeTool.equals("")) {
-					Player player = (Player) sender;
-					Inventory inventory = player.getInventory();
-					Map<Integer, Item> map = inventory.getContents();
-					Item item;
-					boolean Mate = false;
-					for (int site : map.keySet()) {
-						item = map.get(site);
-						if (Mate = Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool))
-							break;
-					}
-					if (!Mate) {
-						int[] ID = Tool.IDtoFullID(makeTool);
-						item = new Item(ID[0], ID[1]);
-						item.addEnchantment(Enchantment.get(Enchantment.ID_SILK_TOUCH));
-						item.setCustomName(
-								mis.getMessage().getMessage("快捷工具名称", new String[] { "{Player}", "{Server_Name}" },
-										new String[] { player.getName(), getServer().getMotd() }));
-						item.setLore(
-								mis.getMessage().getMessage("快捷工具名称2", new String[] { "{Player}", "{Server_Name}" },
-										new String[] { player.getName(), getServer().getMotd() }));
-						inventory.addItem(item);
-						player.sendMessage(
-								mis.getMessage().getMessage("进服给快捷工具", new String[] { "{Player}", "{Server_Name}" },
-										new String[] { player.getName(), getServer().getMotd() }));
-					}
-				}
-				mis.makeForm.makeMain((Player) sender);
-			} else
-				sender.sendMessage(TextFormat.RED + "请在游戏内执行此命令！");
-			return true;
+			return MainCommand.onCommand(sender, label, args);
 		case "myshop":
 			return msc.onCommand(sender, label, args);
 		case "mshop":
@@ -266,7 +238,7 @@ public class MiniatureS extends PluginBase {
 		file = new File(this.getDataFolder() + PlayerConfigPath);
 		if (!file.exists())
 			file.mkdirs();
-		for (int i = 0; i < ConfigNameList.length; i++) {
+		for (int i = 0; i < ConfigNameList.length; i++)
 			try {
 				file = new File(this.getDataFolder(), ConfigNameList[i]);
 				if (!file.exists()) {
@@ -278,7 +250,30 @@ public class MiniatureS extends PluginBase {
 						+ TextFormat.RED + "加载错误！\n" + TextFormat.WHITE + "错误详情：" + e.getMessage());
 				this.getServer().getPluginManager().disablePlugin(this);
 			}
-		}
+		ReloadConfig.start();
+		config = new Config(this.getDataFolder() + "/Config.yml", 2);
+		PlayerAddButtonByOpenShop = new LinkedHashMap<>();
+		PlayerShopInteract = new LinkedHashMap<>();
+		PlayerMenu = new LinkedHashMap<String, ArrayList<String>>();
+		PlayerMenuBack = new LinkedHashMap<String, String>();
+		PlayerMenuData = new LinkedHashMap<>();
+		sb = new LinkedHashMap<>();
+		PlayerShopItemData = new LinkedHashMap<>();
+		shopList = new LinkedHashMap<String, ArrayList<String>>();
+		RemoveButtonFile = new LinkedHashMap<String, File>();
+		RemoveButtonKeyList = new LinkedHashMap<>();
+		RemoveButtonKeyID = new LinkedHashMap<>();
+		MyShopData = new LinkedHashMap<>();
+		makeForm = new MakeForm(this);
+		MsgConfig = new Config(this.getDataFolder() + "/Message.yml", 2);
+		message = new Message(this);
+		Menus = new Config(this.getDataFolder() + "/Main.yml", 2);
+		MyShopPlayerMoneyConfig = new Config(this.getDataFolder() + "/MyShopIc.yml", Config.YAML);
+		ShopCmd = new ShopCommand(this);
+		shopMakeForm = new ShopMakeForm(this);
+		MainCommand = new MainCommand(this);
+		msc = new MyShopCommand(this);
+		AdminCommand = new AdminCommand(this);
 		super.onLoad();
 	}
 
@@ -287,8 +282,11 @@ public class MiniatureS extends PluginBase {
 	 */
 	@Override
 	public void onDisable() {
+		this.getServer().getLogger()
+				.info(Tool.getColorFont(this.getName() + "关闭！") + TextFormat.GREEN + "本次运行时长" + TextFormat.BLUE
+						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000) + TextFormat.GREEN
+						+ "s");
 		super.onDisable();
-		this.getServer().getLogger().info(Tool.getColorFont(this.getName() + "关闭！"));
 	}
 
 	/**

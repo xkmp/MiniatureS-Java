@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 import cn.xiaokai.mis.MiniatureS;
+
 /**
  * @author Winfxk
  */
@@ -22,6 +23,7 @@ public class CPlayer {
 		ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
 		map.put("Items", arrayList);
 		map.put("Money", 0);
+		map.put("MyShop", 0);
 		map.put("Msg", new ArrayList<String>());
 		return map;
 	}
