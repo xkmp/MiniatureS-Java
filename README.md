@@ -1,5 +1,7 @@
 <h1>MiniatureS - 附加功能<img src="https://raw.githubusercontent.com/xkmp/Test/master/MiniatureS-Logo.png" height="64" width="64" align="left"></img></h1>
 <br>
+<h1>MiniatureS - 附加功能<img src="https://raw.githubusercontent.com/xkmp/Test/master/MiniatureS-Logo.png" height="64" width="64" align="left"></img></h1>
+<br>
 
 ## MiniatureS 是什么?
 
@@ -10,6 +12,7 @@
 > - 多种UI（多按钮，确认框，杂项form）
 > - 按钮前显示自定义图片（资源包or网络图片）
 > - 点击按钮执行命令（控制台or玩家）
+	> - 命令可设置变量，在玩家使用该按钮时，插件会自动解析所需变量并设置编辑框要求玩家输入
 > - 点击按钮打开界面（自定义界面）
 > - 拥有高度自由的可配置商店
 > - 多种商店购买方式
@@ -17,6 +20,7 @@
 > - 智能控制黑名单白名单
 > - 智能个人商店
 > - 个人商店支持自定义搜索，快速搜索需要购买的物品，方便又快捷
+> - 玩家可见文本几乎已实现100%可自定义！难道您不想有一个个性的标签？
 ## MiniatureS 该如何使用？
 
 #### 命令介绍
