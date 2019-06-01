@@ -30,7 +30,8 @@
 
 #### 依赖：
 > - 本插件当前需要[EconomyAPI](https://nukkitx.com/resources/economyapi.14/)的支持才能正常使用所有功能
-
+#### PocketMine-MP ：
+> - 或许您需要一个PM版本的Mis？没问题就在这了！[PocketMine-MP版本](https://github.com/xkmp/MiniatureS-PHP)
 #### 计划实现功能
 > - [x] 支持创建多个按钮
 > - [x] 点击按钮执行命令（控制台or玩家）
