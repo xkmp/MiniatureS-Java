@@ -21,6 +21,7 @@ import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
+
 /**
  * @author Winfxk
  */
@@ -42,21 +43,21 @@ public class ItemProcess {
 	public void Selection(Player player, String Key, String Shop) {
 		Plugin Economy = mis.getServer().getPluginManager().getPlugin("EconomyAPI");
 		if (Economy == null || !Economy.isEnabled()) {
-			MakeForm.makeTip(player, TextFormat.RED + "未检测到经济插件(" + TextFormat.WHITE + "EconomyAPI" + TextFormat.RED
-					+ ")！可能未安装或未启用！商店功能不可用！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "NotEconomyAPI"));
 			return;
 		}
 		if (!(mis.ShopListConfig.get("Buttons") instanceof Map)) {
-			MakeForm.makeTip(player, TextFormat.RED + "无法打开该项目！请联系服务器管理员或反馈Bug。\nError：无商店列表");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "SBDataError") + "\nError：无商店列表");
 			return;
 		}
 		if (!(((HashMap<String, Object>) mis.ShopListConfig.get("Buttons")).get(Shop) instanceof Map)) {
-			MakeForm.makeTip(player, TextFormat.RED + "无法打开该项目！请联系服务器管理员或反馈Bug。\nError：无法获取目标商店数据");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "SBDataError") + "\nError：无法获取目标商店数据");
 			return;
 		}
 		if (((HashMap<String, Object>) ((HashMap<String, Object>) mis.ShopListConfig.get("Buttons")).get(Shop))
 				.get("File") == null) {
-			MakeForm.makeTip(player, TextFormat.RED + "无法打开该项目！请联系服务器管理员或反馈Bug。\nError：无法获取商店数据，可能已被删除或配置错误，请检查！");
+			MakeForm.makeTip(player,
+					mis.getMessage().getSon("Shop", "SBDataError") + "\nError：无法获取商店数据，可能已被删除或配置错误，请检查！");
 			return;
 		}
 		String ConfigFileName = String.valueOf(
@@ -64,16 +65,17 @@ public class ItemProcess {
 						.get("File"));
 		File file = new File(mis.getDataFolder() + MiniatureS.ShopConfigPath, ConfigFileName);
 		if (!file.exists()) {
-			MakeForm.makeTip(player, TextFormat.RED + "无法打开该项目！请联系服务器管理员或反馈Bug。\nError：目标商店配置数据不存在！可能已被更名活不存在！请检查！");
+			MakeForm.makeTip(player,
+					mis.getMessage().getSon("Shop", "SBDataError") + "\nError：目标商店配置数据不存在！可能已被更名活不存在！请检查！");
 			return;
 		}
 		Config config = new Config(file, Config.YAML);
 		if (!(config.get("Buttons") instanceof Map)) {
-			MakeForm.makeTip(player, TextFormat.RED + "无法打开该项目！请联系服务器管理员或反馈\nBug。Error：无法获取目标商店项目列表！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "SBDataError") + "\nError：无法获取目标商店项目列表！");
 			return;
 		}
 		if (!((((HashMap<String, Object>) config.get("Buttons")).get(Key)) instanceof Map)) {
-			MakeForm.makeTip(player, TextFormat.RED + "无法打开该项目！请联系服务器管理员或反馈\nBug。Error：无法获取目目标项目数据！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "SBDataError") + "\nError：无法获取目目标项目数据！");
 			return;
 		}
 		HashMap<String, Object> dataHashMap = (HashMap<String, Object>) ((HashMap<String, Object>) config
@@ -100,7 +102,7 @@ public class ItemProcess {
 			this.ClickItemToItem(player, dataHashMap, Shop, Key);
 			break;
 		default:
-			MakeForm.makeTip(player, TextFormat.RED + "无法打开该项目！请联系服务器管理员或反馈Bug。Error：未知项目类型！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "SBDataError") + "\nError：未知项目类型！");
 			break;
 		}
 	}

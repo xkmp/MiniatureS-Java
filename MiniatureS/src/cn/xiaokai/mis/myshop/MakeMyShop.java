@@ -6,7 +6,6 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
-import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
@@ -82,11 +81,11 @@ public class MakeMyShop {
 		if (config.getString("Player") == null || config.getString("Player").isEmpty())
 			config.set("Player", player.getName());
 		if (config.getString("Contxt") == null || config.getString("Contxt").isEmpty())
-			config.set("Contxt", Tool.getColorFont("这个人很懒！什么都没留下！"));
+			config.set("Contxt", mis.getMessage().getSon("MyShop", "newPlayer"));
 		config.save();
-		player.sendMessage(TextFormat.GREEN + "上架物品成功！" + IsMoney + "\n" + TextFormat.WHITE + "每个" + TextFormat.RED
-				+ ItemIDSunName.getIDByName(ID) + TextFormat.AQUA + Money + TextFormat.WHITE + mis.getMoneyName() + "\n"
-				+ Tool.getRandColor() + "Key:" + Tool.getRandColor() + Key);
+		player.sendMessage(mis.getMessage().getSon("MyShop", "newItem",
+				new String[] { "{reMoneyString}", "{ItemName}", "{Money}", "{Key}" },
+				new Object[] { IsMoney, ItemIDSunName.getIDByName(ID), Money, Key }));
 		int SB_Ic = mis.MyShopPlayerMoneyConfig.getInt(player.getName());
 		SB_Ic += this.Count;
 		mis.MyShopPlayerMoneyConfig.set(player.getName(), SB_Ic);

@@ -24,6 +24,7 @@ import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
@@ -265,85 +266,74 @@ public class ShopMakeForm {
 				case "itemtoitem":
 				case "以物换物":
 					List.add(new ElementButton(
-							TextFormat.YELLOW
-									+ String.valueOf((map.get("ItemMoeny") == null
-											? "1"
-											: map.get("ItemMoeny")))
-									+ TextFormat.DARK_BLUE + "个" + TextFormat.YELLOW
-									+ ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID")))
-									+ TextFormat.DARK_BLUE + "可兑换一个" + TextFormat.YELLOW + ItemIDSunName.getIDByName(
-											String.valueOf(map.get("ToBlockID")))
-									+ TextFormat.DARK_BLUE
-									+ (Float.valueOf(String.valueOf(map.get("Money"))).intValue() > 0
-											? ("并扣除" + TextFormat.WHITE + String.valueOf(map.get("Money"))
-													+ TextFormat.DARK_BLUE + mis.config.getString("货币单位"))
-											: "")
-									+ (Boolean.valueOf(String.valueOf(map.get("Astrict")))
-											? ("，空余库存：" + TextFormat.WHITE + String.valueOf(map.get("ExpCount")))
-											: "，不限制库存"),
+							mis.getMessage().getSurname("Shop", "Items", "itemtoitem",
+									new String[] { "{MoneyItem}", "{MoneyItemName}", "{ItemName}", "{IsReMoney}",
+											"{ItemCount}" },
+									new Object[] {
+											String.valueOf((map.get("ItemMoeny") == null ? "1" : map.get("ItemMoeny"))),
+											ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID"))), ItemIDSunName
+													.getIDByName(String.valueOf(map.get("ToBlockID"))),
+											(Float.valueOf(String.valueOf(map.get("Money"))).intValue() > 0
+													? ("并扣除" + TextFormat.WHITE + String.valueOf(map.get("Money"))
+															+ TextFormat.DARK_BLUE + mis.config.getString("货币单位"))
+													: ""),
+											(Boolean.valueOf(String.valueOf(map.get("Astrict")))
+													? ("，空余库存：" + TextFormat.WHITE
+															+ String.valueOf(map.get("ExpCount")))
+													: "") }),
 							new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
 									"textures/ui/cartography_table_glass.png")));
 					break;
 				case "sell_exp":
 				case "回收经验":
-					List.add(
-							new ElementButton(
-									TextFormat.DARK_BLUE + "出售每级经验可得" + TextFormat.YELLOW
-											+ String.valueOf(map.get("Money")) + TextFormat.DARK_BLUE
-											+ mis.config.getString("货币单位")
-											+ (Boolean.valueOf(String.valueOf(map.get("Astrict")))
-													? ("，空余库存：" + TextFormat.WHITE
-															+ String.valueOf(map.get("ExpCount")))
-													: "，不限制库存"),
-									new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
-											"textures/items/gold_nugget.png")));
+					List.add(new ElementButton(
+							mis.getMessage().getSurname("Shop", "Items", "sellExp",
+									new String[] { "{Money}", "{ItemCount}" },
+									new Object[] { map.get("Money"),
+											(Boolean.valueOf(String.valueOf(map.get("Astrict"))) ? ("，空余库存："
+													+ TextFormat.WHITE + String.valueOf(map.get("ExpCount"))) : "") }),
+							new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
+									"textures/items/gold_nugget.png")));
 					break;
 				case "shop_exp":
 				case "出售经验":
-					List.add(
-							new ElementButton(
-									TextFormat.DARK_BLUE + "购买每级经验需要" + TextFormat.YELLOW
-											+ String.valueOf(map.get("Money")) + TextFormat.DARK_BLUE
-											+ mis.config.getString("货币单位")
-											+ (Boolean.valueOf(String.valueOf(map.get("Astrict")))
-													? ("，限制库存：" + TextFormat.WHITE
-															+ String.valueOf(map.get("ExpCount")))
-													: "，不限制库存"),
-									new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
-											"textures/items/gold_nugget.png")));
+					List.add(new ElementButton(
+							mis.getMessage().getSurname("Shop", "Items", "shopExp",
+									new String[] { "{Money}", "{ItemCount}" },
+									new Object[] { map.get("Money"),
+											(Boolean.valueOf(String.valueOf(map.get("Astrict"))) ? ("，空余库存："
+													+ TextFormat.WHITE + String.valueOf(map.get("ExpCount"))) : "") }),
+							new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
+									"textures/items/gold_nugget.png")));
 					break;
 				case "shop_item":
 				case "回收物品":
-					List.add(
-							new ElementButton(
-									TextFormat.DARK_BLUE + "出售每个" + TextFormat.YELLOW
-											+ ItemIDSunName.getIDByName(String.valueOf(map.get("ID")))
-											+ TextFormat.DARK_BLUE + "可得" + TextFormat.BLUE
-											+ String.valueOf(map.get("Money")) + TextFormat.DARK_BLUE
-											+ mis.config.getString("货币单位")
-											+ (Boolean.valueOf(String.valueOf(map.get("Astrict")))
+					List.add(new ElementButton(
+							mis.getMessage().getSurname("Shop", "Items", "shopItem",
+									new String[] { "{ItemName}", "{Money}", "{ItemCount}" },
+									new Object[] { ItemIDSunName.getIDByName(String.valueOf(map.get("ID"))),
+											map.get("Money"),
+											(Boolean.valueOf(String.valueOf(map.get("Astrict")))
 													? (TextFormat.WHITE + " 库存："
 															+ String.valueOf(map.get("Item_Count")))
-													: ""),
-									new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
-											ItemIDSunName.UnknownToPath(String.valueOf(map.get("ID"))))));
+													: "") }),
+							new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
+									ItemIDSunName.UnknownToPath(String.valueOf(map.get("ID"))))));
 					break;
 				case "出售物品":
 				case "sell_item":
 				default:
-					List.add(
-							new ElementButton(
-									TextFormat.DARK_BLUE + "每个" + TextFormat.YELLOW
-											+ ItemIDSunName.getIDByName(String.valueOf(map.get("ID")))
-											+ TextFormat.DARK_BLUE + "购买需花费" + TextFormat.BLUE
-											+ String.valueOf(map.get("Money")) + TextFormat.DARK_BLUE
-											+ mis.config.getString("货币单位")
-											+ (Boolean.valueOf(String.valueOf(map.get("Astrict")))
+					List.add(new ElementButton(
+							mis.getMessage().getSurname("Shop", "Items", "sellItem",
+									new String[] { "{ItemName}", "{Money}", "{ItemCount}" },
+									new Object[] { ItemIDSunName.getIDByName(String.valueOf(map.get("ID"))),
+											map.get("Money"),
+											(Boolean.valueOf(String.valueOf(map.get("Astrict")))
 													? (TextFormat.WHITE + " 库存："
 															+ String.valueOf(map.get("Item_Count")))
-													: ""),
-									new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
-											ItemIDSunName.UnknownToPath(String.valueOf(map.get("ID"))))));
+													: "") }),
+							new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
+									ItemIDSunName.UnknownToPath(String.valueOf(map.get("ID"))))));
 					break;
 				}
 			}

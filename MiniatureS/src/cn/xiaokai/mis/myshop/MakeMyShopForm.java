@@ -56,7 +56,7 @@ public class MakeMyShopForm {
 	 */
 	public void startPyItem(HashMap<String, Object> map, File file) {
 		if (!mis.config.getBoolean("个人商店")) {
-			MakeForm.makeTip(player, TextFormat.RED + "个人商店已关闭！若需使用请联系管理员！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "MyShopOK"));
 			return;
 		}
 		List<Element> list = new ArrayList<Element>();
@@ -73,26 +73,28 @@ public class MakeMyShopForm {
 				if (Tool.isMateID(ID, item.getId() + ":" + item.getDamage()))
 					Count += item.getCount();
 			}
-			Msg = TextFormat.WHITE + "您当前有" + TextFormat.GREEN + Count + TextFormat.WHITE + "个"
-					+ ItemIDSunName.getIDByName(ID) + "\n" + TextFormat.GREEN + "全部出售约能获利" + TextFormat.RED
-					+ ((Count > ItemCount ? ItemCount : Count) * Money) + TextFormat.GREEN + mis.getMoneyName();
+			Msg = mis.getMessage().getSon("MyShop", "SellHintTitle",
+					new String[] { "{Count}", "{ItemName}", "{getMoney}" }, new Object[] { Count,
+							ItemIDSunName.getIDByName(ID), ((Count > ItemCount ? ItemCount : Count) * Money) });
 		} else {
-			Msg = TextFormat.WHITE + "您当前有" + TextFormat.GREEN + EconomyAPI.getInstance().myMoney(player)
-					+ TextFormat.WHITE + mis.getMoneyName() + "\n" + TextFormat.WHITE + "最多约能买" + TextFormat.RED
-					+ (((EconomyAPI.getInstance().myMoney(player) / Money) > ItemCount) ? ItemCount
-							: ((EconomyAPI.getInstance().myMoney(player) / Money)))
-					+ "" + TextFormat.WHITE + "个" + TextFormat.GREEN + ItemIDSunName.getIDByName(ID);
+			Msg = mis.getMessage().getSon("MyShop", "ShopHintTitle",
+					new String[] { "{MyMoney}", "{Count}", "{ItemName}" },
+					new Object[] { EconomyAPI.getInstance().myMoney(player),
+							(((EconomyAPI.getInstance().myMoney(player) / Money) > ItemCount) ? ItemCount
+									: ((EconomyAPI.getInstance().myMoney(player) / Money))),
+							ItemIDSunName.getIDByName(ID) });
 		}
-		list.add(new ElementLabel(TextFormat.WHITE + "您需要" + ShopType + "多少个" + TextFormat.GREEN
-				+ ItemIDSunName.getIDByName(ID) + TextFormat.WHITE + "？\n" + Msg + "\n" + TextFormat.YELLOW + "每个"
-				+ TextFormat.GREEN + ItemIDSunName.getIDByName(ID) + TextFormat.RED + Money + TextFormat.YELLOW
-				+ mis.getMoneyName()));
+		list.add(new ElementLabel(mis.getMessage().getSon("MyShop", "MyShopStartPY",
+				new String[] { "{ShopType}", "{ItemName}", "{HintTitle}", "{Money}" },
+				new Object[] { ShopType, ItemIDSunName.getIDByName(ID), Msg, Money })));
 		list.add(new ElementSlider(TextFormat.WHITE + ShopType + "数量", 1, ItemCount, 1, 1));
 		TonsFx fx = mis.MyShopData.get(player.getName());
 		fx.MainItem = map;
 		mis.MyShopData.put(player.getName(), fx);
 		player.showFormWindow(new FormWindowCustom(
-				Tool.getRandColor() + String.valueOf(map.get("Player")) + Tool.getRandColor() + "的商店", list,
+				mis.getMessage().getSon("MyShop", "MyShopTitle", new String[] { "{ByPlayer}", "{Player}" },
+						new Object[] { map.get("Player"), player.getName() }),
+				list,
 				new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH, ItemIDSunName.getIDByName(ID))),
 				MakeID.startMyShopItem.getID());
 	}
@@ -113,12 +115,12 @@ public class MakeMyShopForm {
 	 */
 	public void ShowPlayer(File file) {
 		if (!mis.config.getBoolean("个人商店")) {
-			MakeForm.makeTip(player, TextFormat.RED + "个人商店已关闭！若需使用请联系管理员！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "MyShopOK"));
 			return;
 		}
 		Config config = new Config(file, Config.YAML);
 		if (!(config.getSection("Item") instanceof Map)) {
-			MakeForm.makeTip(player, TextFormat.RED + "这个人貌似还没有上架任何东西o!");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "PlayerIsNotItem"));
 			return;
 		}
 		HashMap<String, Object> Items = config.getSection("Items");
@@ -127,26 +129,25 @@ public class MakeMyShopForm {
 		for (String Key : Items.keySet()) {
 			HashMap<String, Object> item = (HashMap<String, Object>) Items.get(Key);
 			arrayList.add(item);
-			list.add(new ElementButton(
-					TextFormat.AQUA + String.valueOf(item.get("Player")) + TextFormat.LIGHT_PURPLE + "|"
-							+ TextFormat.DARK_BLUE + ItemIDSunName.getIDByName(String.valueOf(item.get("Item")))
-							+ TextFormat.LIGHT_PURPLE + "|" + TextFormat.GREEN + String.valueOf(item.get("Money"))
-							+ TextFormat.LIGHT_PURPLE + "|" + Tool.getRandColor() + String.valueOf(item.get("Type")),
+			list.add(new ElementButton(mis.getMessage().getSon("MyShop", "PlayerItemTxt",
+					new String[] { "{BtPlayer}", "{ItemName}", "{Money}", "{ShopType}" },
+					new Object[] { item.get("Player"), ItemIDSunName.getIDByName(String.valueOf(item.get("Item"))),
+							item.get("Money"), item.get("Type") }),
 					new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
 							ItemIDSunName.getIDByPath(String.valueOf(item.get("Item"))))));
 		}
 		if (list.size() < 1) {
-			MakeForm.makeTip(player, TextFormat.RED + "这个人貌似还没有上架任何东西o!");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "PlayerIsNotItem"));
 			return;
 		}
 		TonsFx fx = new TonsFx();
 		fx.ShopItems = arrayList;
 		fx.file = file;
 		mis.MyShopData.put(player.getName(), fx);
-		player.showFormWindow(
-				new FormWindowSimple(Tool.getRandColor() + config.getString("Player") + Tool.getColorFont(" 的商店"),
-						config.getString("Contxt"), list),
-				MakeID.MyShopItem.getID());
+		player.showFormWindow(new FormWindowSimple(
+				mis.getMessage().getSon("MyShop", "MyShopTitle", new String[] { "{ByPlayer}", "{Player}" },
+						new Object[] { config.getString("Player"), player.getName() }),
+				config.getString("Contxt"), list), MakeID.MyShopItem.getID());
 	}
 
 	/**
@@ -154,11 +155,11 @@ public class MakeMyShopForm {
 	 */
 	public void Seek() {
 		if (!mis.config.getBoolean("个人商店")) {
-			MakeForm.makeTip(player, TextFormat.RED + "个人商店已关闭！若需使用请联系管理员！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "MyShopOK"));
 			return;
 		}
 		List<Element> list = new ArrayList<>();
-		list.add(new ElementInput(TextFormat.WHITE + "请输入您想要搜索的物品ID或名称"));
+		list.add(new ElementInput(mis.getMessage().getSurname("MyShop", "Seek", "InputItemIDTxt")));
 		list.add(new ElementStepSlider(TextFormat.WHITE + "请选择搜索范围", Arrays.asList(FormStatic.SeekMyShopType), 0));
 		player.showFormWindow(
 				new FormWindowCustom(Tool.getColorFont(mis.getName()) + TextFormat.WHITE + "-"
@@ -171,7 +172,7 @@ public class MakeMyShopForm {
 	 */
 	public void addItem() {
 		if (!mis.config.getBoolean("个人商店")) {
-			MakeForm.makeTip(player, TextFormat.RED + "个人商店已关闭！若需使用请联系管理员！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "MyShopOK"));
 			return;
 		}
 		PlayerInventory inventory = player.getInventory();
@@ -188,11 +189,15 @@ public class MakeMyShopForm {
 			}
 		}
 		List<Element> list = new ArrayList<>();
-		list.add(new ElementInput(TextFormat.WHITE + "请输入您需要上架的物品名称或物品ID", "x表示不限制，即[x:x]表示搜索所有", id));
-		list.add(new ElementInput(TextFormat.WHITE + "请输入您想要上架的数量", "", String.valueOf(Count)));
-		list.add(new ElementInput(TextFormat.WHITE + "请输入您上架的物品单价", "您认为合适的物品单价",
+		list.add(new ElementInput(mis.getMessage().getSurname("MyShop", "addItem", "InputItemIDTxt"),
+				mis.getMessage().getSurname("MyShop", "addItem", "InputItemIDHint"), id));
+		list.add(new ElementInput(mis.getMessage().getSurname("MyShop", "addItem", "InputItemCountTxt"),
+				mis.getMessage().getSurname("MyShop", "addItem", "InputItemCountHint"), String.valueOf(Count)));
+		list.add(new ElementInput(mis.getMessage().getSurname("MyShop", "addItem", "InputItemMoneyTxt"),
+				mis.getMessage().getSurname("MyShop", "addItem", "InputItemMoneyHint"),
 				String.valueOf(10000 / (Count < 1 ? 1 : Count))));
-		list.add(new ElementStepSlider(TextFormat.WHITE + "请输入您的商店类型", Arrays.asList(FormStatic.MyShopType), 0));
+		list.add(new ElementStepSlider(mis.getMessage().getSurname("MyShop", "addItem", "ItemShopTypeTxt"),
+				Arrays.asList(FormStatic.MyShopType), 0));
 		player.showFormWindow(new FormWindowCustom(Tool.getColorFont(mis.getName()) + TextFormat.WHITE + "-"
 				+ Tool.getColorFont(player.getName()) + TextFormat.WHITE + "-" + Tool.getColorFont("Add Item"), list),
 				MakeID.newMyShopItem.getID());
@@ -203,7 +208,7 @@ public class MakeMyShopForm {
 	 */
 	public void MakeMain() {
 		if (!mis.config.getBoolean("个人商店")) {
-			MakeForm.makeTip(player, TextFormat.RED + "个人商店已关闭！若需使用请联系管理员！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "MyShopOK"));
 			return;
 		}
 		File file = new File(mis.getDataFolder() + MiniatureS.MyShopConfigPath);
@@ -217,9 +222,9 @@ public class MakeMyShopForm {
 					fx.delete();
 					continue;
 				}
-				buttons.add(new ElementButton(Tool.getRandColor() + config.getString("Player") + TextFormat.LIGHT_PURPLE
-						+ "|" + TextFormat.WHITE + " 商品：" + TextFormat.YELLOW
-						+ ((HashMap<String, Object>) config.get("Items")).size()));
+				buttons.add(new ElementButton(mis.getMessage().getSon("MyShop", "MainItemTxt",
+						new String[] { "{ByPlayer}", "{Count}" }, new Object[] { config.getString("Player"),
+								((HashMap<String, Object>) config.get("Items")).size() })));
 				files.add(fx);
 			}
 		TonsFx fxaFx = new TonsFx();
@@ -231,7 +236,7 @@ public class MakeMyShopForm {
 		player.showFormWindow(
 				new FormWindowSimple(
 						Tool.getColorFont(mis.getName()) + TextFormat.WHITE + "-" + TextFormat.YELLOW + "MyShop",
-						buttons.size() < 1 ? (TextFormat.RED + "暂无任何人上架物品！快来添加一个吧~") : "", buttons),
+						buttons.size() < 1 ? mis.getMessage().getSon("MyShop", "NotItem") : "", buttons),
 				MakeID.MyShopMain.getID());
 	}
 }

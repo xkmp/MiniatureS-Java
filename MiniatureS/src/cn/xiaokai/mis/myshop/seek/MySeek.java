@@ -19,6 +19,7 @@ import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.myshop.TonsFx;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
@@ -62,13 +63,13 @@ public class MySeek {
 						|| ShopType.toLowerCase().equals(String.valueOf(item.get("Type")).toLowerCase()))
 						&& (Tool.isMateID(ID, String.valueOf(item.get("Item"))))) {
 					Count++;
-					SB_FFF += TextFormat.BLUE + "店家：" + TextFormat.DARK_AQUA + String.valueOf(item.get("Player"))
-							+ TextFormat.LIGHT_PURPLE + " 商品：" + TextFormat.YELLOW
-							+ ItemIDSunName.getIDByName(String.valueOf(item.get("Item"))) + TextFormat.LIGHT_PURPLE
-							+ " 价格：" + TextFormat.DARK_BLUE
-							+ Float.valueOf(String.valueOf(item.get("Money"))).intValue() + TextFormat.LIGHT_PURPLE
-							+ "  类型：" + TextFormat.GOLD
-							+ (String.valueOf(item.get("Type")).toLowerCase().equals("sell") ? "出售" : "回收") + "\n";
+					SB_FFF += MiniatureS.mis.getMessage().getSurname("MyShop", "Seek", "ItemSendTxt",
+							new String[] { "{ByPlayer}", "{ItemName}", "{Money}", "{ShopType}" },
+							new Object[] { item.get("Player"),
+									ItemIDSunName.getIDByName(String.valueOf(item.get("Item"))),
+									Float.valueOf(String.valueOf(item.get("Money"))).intValue()
+											+ (String.valueOf(item.get("Type")).toLowerCase().equals("sell") ? "出售"
+													: "回收") });
 				}
 			}
 		}
@@ -76,12 +77,8 @@ public class MySeek {
 			player.sendMessage(TextFormat.RED + "未找到相关项目！请更改搜索条件重试！");
 			return;
 		}
-		player.sendMessage(TextFormat.GREEN + "===" + TextFormat.GOLD + "===" + TextFormat.YELLOW + "==="
-				+ TextFormat.WHITE + "[" + Tool.getColorFont("搜索结果") + TextFormat.WHITE + TextFormat.YELLOW + "==="
-				+ TextFormat.GOLD + "===" + TextFormat.GREEN + "===\n" + SB_FFF + "\n" + TextFormat.GREEN + "==="
-				+ TextFormat.GOLD + "===" + TextFormat.YELLOW + "===" + TextFormat.WHITE + "["
-				+ Tool.getColorFont("搜索结果") + TextFormat.WHITE + "]" + TextFormat.YELLOW + "===" + TextFormat.GOLD
-				+ "===" + TextFormat.GREEN + "===\n" + TextFormat.GREEN + "若想交易请在游戏内使用UI完成！");
+		player.sendMessage(MiniatureS.mis.getMessage().getSurname("MyShop", "Seek", "SekkOKMsg",
+				new String[] { "{SeekMsg}" }, new Object[] { SB_FFF }));
 	}
 
 	/**
@@ -112,14 +109,15 @@ public class MySeek {
 					maps.add(item);
 					list.add(
 							new ElementButton(
-									TextFormat.DARK_AQUA + String.valueOf(item.get("Player")) + TextFormat.LIGHT_PURPLE
-											+ "|" + TextFormat.YELLOW
-											+ ItemIDSunName.getIDByName(String.valueOf(item.get("Item")))
-											+ TextFormat.LIGHT_PURPLE + "|" + TextFormat.DARK_BLUE
-											+ Float.valueOf(String.valueOf(item.get("Money"))).intValue()
-											+ TextFormat.LIGHT_PURPLE + "|" + TextFormat.GOLD
-											+ (String.valueOf(item.get("Type")).toLowerCase().equals("sell") ? "出售"
-													: "回收"),
+									MiniatureS.mis.getMessage()
+											.getSurname("MyShop", "Seek", "ItemUITxt",
+													new String[] { "{ByPlayer}", "{ItemName}", "{Money}",
+															"{ShopType}" },
+													new Object[] { item.get("Player"),
+															ItemIDSunName.getIDByName(String.valueOf(item.get("Item"))),
+															Float.valueOf(String.valueOf(item.get("Money"))).intValue(),
+															(String.valueOf(item.get("Type")).toLowerCase()
+																	.equals("sell") ? "出售" : "回收") }),
 									new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
 											ItemIDSunName.getIDByPath(String.valueOf(item.get("Item"))))));
 				}
@@ -134,7 +132,8 @@ public class MySeek {
 		player.showFormWindow(new FormWindowSimple(
 				Tool.getColorFont(mis.getName()) + TextFormat.WHITE + "-" + Tool.getColorFont(player.getName())
 						+ TextFormat.WHITE + "-" + Tool.getColorFont("搜索结果"),
-				TextFormat.GREEN + "搜索完毕！共搜索到 " + TextFormat.WHITE + list.size() + TextFormat.GREEN + " 个项目", list),
-				MakeID.MyShopFormSeek.getID());
+				mis.getMessage().getSurname("MyShop", "Seek", "SeekOk", new String[] { "{Count}" },
+						new Object[] { list.size() }),
+				list), MakeID.MyShopFormSeek.getID());
 	}
 }

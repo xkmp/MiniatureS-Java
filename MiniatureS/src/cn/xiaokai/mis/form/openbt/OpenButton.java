@@ -11,7 +11,6 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.plugin.Plugin;
-import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.openbt.overfed.YuanLongPingOfRegret;
@@ -19,6 +18,7 @@ import cn.xiaokai.mis.msg.Message;
 import cn.xiaokai.mis.shop.ShopMakeForm;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
+
 /**
  * @author Winfxk
  */
@@ -95,14 +95,13 @@ public class OpenButton {
 		Plugin ePlugin = mis.getServer().getPluginManager().getPlugin("EconomyAPI");
 		if (Money > 0 && ePlugin != null && ePlugin.isEnabled()) {
 			if (EconomyAPI.getInstance().myMoney(player) < Money) {
-				MakeForm.makeTip(player,
-						TextFormat.RED + "噢！\n\n" + Tool.getColorFont("很抱歉！该按钮禁止穷逼使用！") + "\n\n" + TextFormat.YELLOW
-								+ "若想使用，请在准备" + TextFormat.GOLD + (Money - EconomyAPI.getInstance().myMoney(player))
-								+ TextFormat.YELLOW + mis.getMoneyName());
+				MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotMoney", new String[] { "{Money}" },
+						new Object[] { (EconomyAPI.getInstance().myMoney(player) - Money) }));
 				return;
 			}
 			EconomyAPI.getInstance().reduceMoney(player, Money);
-			player.sendMessage(Tool.getColorFont("已扣除使用该按钮的费用：" + Money));
+			player.sendMessage(msg.getSurname("UI", "Click", "reClickButtonMoney", new String[] { "{Money}" },
+					new Object[] { Money }));
 		}
 		if (Command != null && !Command.isEmpty())
 			if (!String.valueOf(Button.get("Commander")).toLowerCase().equals("player"))
@@ -118,8 +117,9 @@ public class OpenButton {
 		String levelName = String.valueOf(Button.get("Level"));
 		Level level = Server.getInstance().getLevelByName(levelName);
 		if (level == null) {
-			MakeForm.makeTip(player, TextFormat.RED + "无法传送您到目标点！\n\n" + TextFormat.YELLOW + "地图" + TextFormat.AQUA
-					+ levelName + TextFormat.AQUA + "不存在或未加载！");
+
+			MakeForm.makeTip(player, msg.getSurname("UI", "Click", "ErrorPos", new String[] { "{LevelName}" },
+					new Object[] { levelName }));
 			return;
 		}
 		int Money = Button.get("Money") == null ? 0
@@ -129,14 +129,13 @@ public class OpenButton {
 		Plugin ePlugin = mis.getServer().getPluginManager().getPlugin("EconomyAPI");
 		if (Money > 0 && ePlugin != null && ePlugin.isEnabled()) {
 			if (EconomyAPI.getInstance().myMoney(player) < Money) {
-				MakeForm.makeTip(player,
-						TextFormat.RED + "噢！\n\n" + Tool.getColorFont("很抱歉！该按钮禁止穷逼使用！") + "\n\n" + TextFormat.YELLOW
-								+ "若想使用，请在准备" + TextFormat.GOLD + (Money - EconomyAPI.getInstance().myMoney(player))
-								+ TextFormat.YELLOW + mis.getMoneyName());
+				MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotMoney", new String[] { "{Money}" },
+						new Object[] { (EconomyAPI.getInstance().myMoney(player) - Money) }));
 				return;
 			}
 			EconomyAPI.getInstance().reduceMoney(player, Money);
-			player.sendMessage(Tool.getColorFont("已扣除使用该按钮的费用：" + Money));
+			player.sendMessage(msg.getSurname("UI", "Click", "reClickButtonMoney", new String[] { "{Money}" },
+					new Object[] { Money }));
 		}
 		String Command = Button.get("Command") == null ? null : String.valueOf(Button.get("Command"));
 		if (Command != null && !Command.isEmpty())
@@ -163,17 +162,17 @@ public class OpenButton {
 	 */
 	private void PlayerClickOpenWindowsType() {
 		if (Button.get("FileName") == null) {
-			MakeForm.makeTip(player, TextFormat.RED + "打开失败(1)！无法获取对应的菜单文件！请联系管理员！");
+			MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotFileError") + "(1)");
 			return;
 		}
 		String fileName = (String) Button.get("FileName");
 		if (fileName.isEmpty()) {
-			MakeForm.makeTip(player, TextFormat.RED + "打开失败(2)！无法获取对应的菜单文件！请联系管理员！");
+			MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotFileError") + "(2)");
 			return;
 		}
 		File file = new File(mis.getDataFolder() + MiniatureS.MenuConfigPath, fileName);
 		if (!file.exists()) {
-			MakeForm.makeTip(player, TextFormat.RED + "打开失败！不存在的数据！");
+			MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotData"));
 			return;
 		}
 		int Money = Button.get("Money") == null ? 0
@@ -183,14 +182,13 @@ public class OpenButton {
 		Plugin ePlugin = mis.getServer().getPluginManager().getPlugin("EconomyAPI");
 		if (Money > 0 && ePlugin != null && ePlugin.isEnabled()) {
 			if (EconomyAPI.getInstance().myMoney(player) < Money) {
-				MakeForm.makeTip(player,
-						TextFormat.RED + "噢！\n\n" + Tool.getColorFont("很抱歉！该按钮禁止穷逼使用！") + "\n\n" + TextFormat.YELLOW
-								+ "若想使用，请在准备" + TextFormat.GOLD + (Money - EconomyAPI.getInstance().myMoney(player))
-								+ TextFormat.YELLOW + mis.getMoneyName());
+				MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotMoney", new String[] { "{Money}" },
+						new Object[] { (EconomyAPI.getInstance().myMoney(player) - Money) }));
 				return;
 			}
 			EconomyAPI.getInstance().reduceMoney(player, Money);
-			player.sendMessage(Tool.getColorFont("已扣除使用该按钮的费用：" + Money));
+			player.sendMessage(msg.getSurname("UI", "Click", "reClickButtonMoney", new String[] { "{Money}" },
+					new Object[] { Money }));
 		}
 		String Command = Button.get("Command") == null ? null : String.valueOf(Button.get("Command"));
 		if (Command != null && !Command.isEmpty())
@@ -209,14 +207,13 @@ public class OpenButton {
 		Plugin ePlugin = mis.getServer().getPluginManager().getPlugin("EconomyAPI");
 		if (Money > 0 && ePlugin != null && ePlugin.isEnabled()) {
 			if (EconomyAPI.getInstance().myMoney(player) < Money) {
-				MakeForm.makeTip(player,
-						TextFormat.RED + "噢！\n\n" + Tool.getColorFont("很抱歉！该按钮禁止穷逼使用！") + "\n\n" + TextFormat.YELLOW
-								+ "若想使用，请在准备" + TextFormat.GOLD + (Money - EconomyAPI.getInstance().myMoney(player))
-								+ TextFormat.YELLOW + mis.getMoneyName());
+				MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotMoney", new String[] { "{Money}" },
+						new Object[] { (EconomyAPI.getInstance().myMoney(player) - Money) }));
 				return;
 			}
 			EconomyAPI.getInstance().reduceMoney(player, Money);
-			player.sendMessage(Tool.getColorFont("已扣除使用该按钮的费用：" + Money));
+			player.sendMessage(msg.getSurname("UI", "Click", "reClickButtonMoney", new String[] { "{Money}" },
+					new Object[] { Money }));
 		}
 		String Command = Button.get("Command") == null ? null : String.valueOf(Button.get("Command"));
 		if (Command != null && !Command.isEmpty())
@@ -230,8 +227,7 @@ public class OpenButton {
 	 * 当玩家点击了一个不知道是什么类型的按钮的时候 ,会提示的东西
 	 */
 	private void ServerStupid() {
-		String zz_clicl_don_know_what_tip_String = Tool
-				.getColorFont("亲！\n您可能点击了一个数据已经损坏了的按钮！\n\n我们无法判断这个按钮的类型！请联系管理员处理！\n\n");
+		String zz_clicl_don_know_what_tip_String = msg.getSurname("UI", "Click", "DataSB");
 		for (String zz_click_map_key : Button.keySet())
 			zz_clicl_don_know_what_tip_String += Tool.getRandColor() + zz_click_map_key + Tool.getRandColor() + " : "
 					+ Tool.getRandColor() + String.valueOf(Button.get(zz_click_map_key)) + "\n";

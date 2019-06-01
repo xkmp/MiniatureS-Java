@@ -1,8 +1,14 @@
 #请不要修改这个数据！
-文件版本: 1
+文件版本: 2
 #各种可以自定义的内容
 #注：若是可以使用变量，变量一律用{}包围，如{Server_Name}
 #注：变量对大小写敏感！
+#注意！！！！
+#注意！！！！#注意！！！！#注意！！！！
+#注意！！！！#注意！！！！#注意！！！！#注意！！！！#注意！！！！
+#大阔海开头的值请一律用'包围！如以下，若不是大括号开头，则可以不限
+#FF_SB: '{true}'
+#Winfxk: 是{帅逼}
 #注：当前已有全局变量包括：n：换行、Server_Name：服务器名称、Plugin_Name：插件名称、Rand_Color：随机颜色、服务器货币名称：{MoneyName}
 # 进服若是检测没有快捷菜单将提示的内容，可用变量：Player：玩家名
 进服给快捷工具: §e系统给了你一个快捷工具！右键可以打开快捷菜单，快去试试吧~
@@ -11,13 +17,102 @@
 #这个是快捷工具的Lore，我也不知道改怎么翻译
 快捷工具名称2: §e据说长得帅的人用这个点击都可以打开一个菜单哦~{n}§9赶快试试吧!
 玩家加入提示1: §e欢迎来到{Server_Name}, 本服务器支持高级个人商店，为了您能正常的接收个人商店的物品，建议每次退出前清空背包哦！
+Shop:
+   Items:
+      itemtoitem: §f{MoneyItem}§6个§f{MoneyItemName}§6可兑换一个§4{ItemName}{IsReMoney}{ItemCount}
+      sellExp: §1出售每级经验可得§f{Money}§f{MoneyName}{ItemCount}
+      shopExp: §2购买每级经验需要§f{Money}§2{MoneyName}{ItemCount}
+      shopItem: §9出售每个§e{ItemName}§9可得§4{Money}§9{MoneyName}{ItemCount}
+      sellItem: '§6每个§f{ItemName}§6购买需花费§f{Money}§9{MoneyName}{ItemCount}'
+   ItemToItemMoenySB: §4物品兑换失败！{n}Error：你没有足够的{MoneyName}来完成兑换！{n}§e兑换需消耗§4{reMoney}§e§{MoneyName}{n}§e本次兑换需要§c{Money}§e{MoneyName}{n}§e您当前有§4{MyMoney}§e{MoneyName}{n}§e还需§4{asMoney}§e{MoneyName}
+   ItemItemCountSB: §4Error：请输入一个大于零的回收数！
+   NetExpSB: §4经验出售失败！{n}§4Error：你没有足够的经验来出售！{n}§4需要：{Count}{n}§6您有：{Exp}{n}§e还差：§f{getExp}
+   ItemCount0: §4仓库已空！您可以联系管理员添加库存！
+   ExpPyOKNotSbShop: §6成功购买§f{Count}§6级经验，花费:§f{Money}§6{MoneyName}
+   ShopItemOKNotSB: §6您成功购买了§4{ItemName}§6，花费：§f{Money}§6{MoneyName}
+   ExpPyOKNotSB: §6你成功出售了§f{Count}§6级经验！获利：§4{Money}§6{MoneyName}
+   NotEconomyAPI: §4未检测到经济插件(§fEconomyAPI§4)！可能未安装或未启用！商店功能不可用！
+   SBDataError: 无法打开该项目！请联系服务器管理员或反馈Bug。
+   PYItemOKNotSB: §6成功出售 §f{Count}§6 个§f{ItemName}§6，获得§f{Money}§6{MoneyName}
+   SBPlayerNotItem: §4物品兑换失败！{n}§4Error：你没有足够的物品！{n}§4需要：§f{Count}{n}§4您有：§f{MyCount}{n}还差：§4{reMoney}
+   ItemCountas0: §4物品回收失败！{n}Error：仓库剩余库存不足！无法购买，您可以联系管理员添加库存！{n}§4剩余库存：§9{Count}§4所需库存：§6{asCount} [n]§4欠缺库存：§9{getCount}
+   ItemToItemItemSB: §4物品兑换失败！{n}Error：您的物品不足！{n}§e本次兑换您需要§4{asCount}{n}§e您当前§6{isOK}§4{ItemName}{n}§e还需要§4{getCount}§e个§4{ItemName}
+   ItemToItemOK: §6您成功使用§4{asCount}§6个§4{ItemName}§6兑换了§4{Count}§6个§4{toItem}§6{T}
 #个人商店部分提示内容
 MyShop:
+   Join:
+      Join1: §6在您离开的这段时间里
+      MoneyAdd: §6个人商店出售物品获利§b{Money}§a{MoneyName}
+      ItemAdd: §6以下资源来至个人商店收购
+      ItemAddMsg: §6获得§f{Count}§6个§a{ItemName}
    NotPlayer: §4请在游戏内自行此命令
+   SBPlayerNotMoney: §4您的余额不足以支付收购这些物品的费用！
+   NotItems: §4您的§f{ItemName}§4不足！{n}§f还需：§4{Count}§dPS：当前暂时无法上架附魔物品！
+   NotDataList: §4打开失败！无法获取项目列表！
+   ItemOKRemove: §4打开失败！该商品已售罄删除！
+   InputItemSB: §4请输入有效的物品ID或物品名称！
+   InputItemCountSB: §4请输入有效的上架物品数量！
+   InputItemCountSBNotInt: 请输入有效的上架物品数量(纯整数)！
+   InputItemCountSBNotInt0: 请输入有效的上架物品数量(大于零纯整数)！
+   InputItemMoneySB: 请输入有效的上架物品单价！
+   InputItemMoneySBNotInt: 请输入有效的上架物品单价(纯整数)！
+   InputItemMoneySBNotInt0: 请输入有效的上架物品单价(大于零纯整数)！
    NullID: §4请输入物品ID
+   cmd_getIC: '{Rand_Color}您的商城贡献为{Rand_Color}{IC}'
+   getIDError: §4您的物品ID解析失败！
    SettingMyDataNullString: §4请输入您想要修改的内容
    NotMoney: §4您的{MoneyName}不足以支付修改介绍所需的费用！
    SettingMyDataOK: §6您成功将您的个人商店介绍修改为{Msg}
    NotData: §4暂无数据！
-Admin: 
+   newPlayer: 这个人很懒！什么都没留下！
+   newItem: §6上架物品成功！{reMoneyString}{n}§f每个§c{ItemName} §d{Money}§f{MoneyName}{n}{Rand_Color}Key:{Rand_Color}{Key}
+   MyShopOK: §4个人商店已关闭！若需使用请联系管理员！
+   SellHintTitle: §f您当前有§6{Count}§f个{ItemName}{n}§6全部出售约能获利§4{getMoney}{MoneyName}
+   ShopHintTitle: §f您当前有§6{MyMoney}§f{MoneyName}{n}§f最多约能买§4{Count}§f个§4{ItemName}
+   MyShopStartPY: §f您需要{ShopType}多少个§6{ItemName}？{n}{HintTitle}{n}§f每个§6{ItemName}§4{Money}§f{MoneyName}
+   MyShopTitle: '{Rand_Color}{ByPlayer}{Rand_Color}的商店'
+   PlayerIsNotItem: §4这个人貌似还没有上架任何东西o!
+   PlayerItemTxt: '{Rand_Color}{BtPlayer}§d|§1{ItemName}§d|§6{Money}§d|{Rand_Color}{ShopType}'
+   MainItemTxt: '{Rand_Color}{ByPlayer}§d|§f 商品：§e{Count}'
+   NotItem: §4暂无任何人上架物品！快来添加一个吧~
+   ItemOK: §6您的商品§f{ItemName}§6已§f{ShopType}§6删除
+   ItemDeficiency: §4您的物品数量不足！请检查！
+   MyShopItemSB: '§4您的§6{MoneyName}§4不足以支付上架物品所需的费用！{n}§f总共所需: §4{Money}§f还差：§6{isMoney}'
+   ItemShopIsOK: §6成功出售§f{Count}§6个§f{ItemName}§6给§4{ByPlayer}§6获利§4{Money}§6{MoneyName}
+   ItemSellPYOK: §6{Name}§f卖给你§4{Count}§f个§6{ItemName}§f{isPlayerTxt}
+   ItemSellPYOK_isPlayerTxt: §4自卖侠！牛逼！
+   LackOfBackpackSpace: §4您的背包空间不足！请清理背包空间后重试~
+   ItemShopPYOK: §6您成功购买了§9{ByPlayer}§6的§f{ItemName}§6，花费§4{Money}§6{MoneyName}
+   ItemShopOK: §4{Name}§6购买了您的§f{ItemName}§6，获利§4{Money}§6{MoneyName}§f{isPlayerTxt}
+   reMoney: §6同时扣除上架所需费用：§4{Money}
+   Seek:
+      InputItemIDTxt: §6请输入您想要搜索的物品ID或名称
+      ItemSendTxt: §9店家：§6{ByPlayer}§5 商品：§e{ItemName}§1 价格：§1{Money}§2  类型：§3{ShopType}{n}
+      ItemUITxt: §7{ByPlayer}§f |§6{ItemName}§f |§4{Money} §f|§d{ShopType}
+      SeekOk: §7搜索完毕！共搜索到§4{Count}§7个项目
+      SekkOKMsg: §6===§c===§e===§f[{Rand_Color}搜索结果§f]§e===§c===§6==={n}{SeekMsg}{n}§6===§c===§e===§f[{Rand_Color}搜索结果§f]§e===§c===§6==={n}§6若想交易请在游戏内使用UI完成！
+   addItem:
+      InputItemIDTxt: §6请输入您需要上架的物品名称或物品ID
+      InputItemIDHint: §6x表示不限制，即[x:x]表示搜索所有
+      InputItemCountHint: §6请输入您想要上架的数量
+      InputItemCountTxt: §6这个数值必须为大于或等于零的纯整数！
+      InputItemMoneyTxt: §6请输入您上架的物品单价
+      InputItemMoneyHint: §6您认为合适的物品单价
+      ItemShopTypeTxt: 请输入您的商店类型
+Admin:
    NotPlayer: §4请在游戏内自行此命令
+UI:
+   Main:
+      NotButton: '{n}{n}当前暂无任何按钮'
+      DataError: §4数据处理失败！{n}{n}无法获取玩家视图数据
+   Click:
+      NotOp: §4错误！您的权限不足！
+      NotList: '{n} §e还没有任何项目哦！快去{OP?}添加一个吧~'
+      NotMoney: §4噢！{n}{n} §4很抱歉！该按钮禁止穷逼使用！{n}{n}§4若想使用，请在准备§6{Money}§d{MoneyName}
+      reClickButtonMoney: §e已扣除使用该按钮的费用:§4{Money}
+      ErrorPos: §4错误！无法传送您到目标点！{n}{n}§4地图§6{LevelName}§4不存在或未加载！
+      NotFileError: §4打开失败！无法获取对应的菜单文件！请联系管理员！
+      NotData: §4打开失败！不存在的数据
+      DataSB: §4亲！{n}您可能点击了一个数据已经损坏了的按钮！{n}{n}我们无法判断这个按钮的类型！请联系管理员处理！{n}{n}
+      NotCommandFileName: 不知道是啥东西
+      CommandHint: '{Rand_Color}请输入参数{ID}'

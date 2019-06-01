@@ -65,15 +65,17 @@ public class MyShop {
 				Config config1 = CPlayer.getPlayerConfig(String.valueOf(map.get("Player")));
 				ArrayList<String> list = (config1.get("Msg") instanceof List) ? ((ArrayList<String>) config1.get("Msg"))
 						: new ArrayList<>();
-				list.add(TextFormat.GREEN + "您的商品" + TextFormat.WHITE + ItemIDSunName.getIDByName(ID, Meta)
-						+ TextFormat.GREEN + "已"
-						+ (String.valueOf(map.get("Type")).toLowerCase().equals("sell") ? "售完" : "收购结束") + "删除");
+				list.add(mis.getMessage()
+						.getSon("MyShop", "ItemOK", new String[] { "{ItemName}", "{ShopType}" }, new Object[] {
+								ItemIDSunName.getIDByName(ID, Meta),
+								(String.valueOf(map.get("Type")).toLowerCase().equals("sell") ? "售完" : "收购结束") }));
 				config1.set("Msg", list);
 				config1.save();
 			} else {
-				p2.sendMessage(TextFormat.GREEN + "您的商品" + TextFormat.WHITE + ItemIDSunName.getIDByName(ID, Meta)
-						+ TextFormat.GREEN + "已"
-						+ (String.valueOf(map.get("Type")).toLowerCase().equals("sell") ? "售完" : "收购结束") + "删除");
+				p2.sendMessage(mis.getMessage()
+						.getSon("MyShop", "ItemOK", new String[] { "{ItemName}", "{ShopType}" }, new Object[] {
+								ItemIDSunName.getIDByName(ID, Meta),
+								(String.valueOf(map.get("Type")).toLowerCase().equals("sell") ? "售完" : "收购结束") }));
 			}
 		} else {
 			map.put("Count", Float.valueOf(String.valueOf(map.get("Count"))).intValue() - Count);
@@ -119,15 +121,14 @@ public class MyShop {
 				Count += item.getCount();
 		}
 		if (Count < this.Count) {
-			player.sendMessage(TextFormat.RED + "您的物品数量不足！请检查！");
+			player.sendMessage(mis.getMessage().getSon("MyShop", "ItemDeficiency"));
 			return;
 		}
 		inventory.remove(new Item(ID, Meta, this.Count));
 		EconomyAPI.getInstance().addMoney(player, (this.Count * Money));
-		player.sendMessage(TextFormat.GREEN + "成功出售" + TextFormat.WHITE + this.Count + TextFormat.GREEN + "个"
-				+ TextFormat.WHITE + ItemIDSunName.getIDByName(ID, Meta) + TextFormat.GREEN + "给" + TextFormat.BLUE
-				+ String.valueOf(map.get("Player")) + TextFormat.GREEN + "，获利" + TextFormat.RED + (this.Count * Money)
-				+ TextFormat.GREEN + mis.getMoneyName());
+		player.sendMessage(mis.getMessage().getSon("MyShop", "ItemShopIsOK",
+				new String[] { "{Count}", "{ItemName}", "{ByPlayer}", "{Money}", "{MoneyName}" }, new Object[] {
+						this.Count, ItemIDSunName.getIDByName(ID, Meta), map.get("Player"), (this.Count * Money) }));
 		Player p2 = Server.getInstance().getPlayer(String.valueOf(map.get("Player")));
 		if (p2 == null || !p2.isOnline()) {
 			Config config = CPlayer.getPlayerConfig(String.valueOf(map.get("Player")));
@@ -141,16 +142,22 @@ public class MyShop {
 			arrayList.add(iteMap);
 			ArrayList<String> list = (config.get("Msg") instanceof List) ? ((ArrayList<String>) config.get("Msg"))
 					: new ArrayList<>();
-			list.add(TextFormat.BLUE + player.getName() + TextFormat.GREEN + "卖给你" + TextFormat.RED + this.Count
-					+ TextFormat.GREEN + "个" + TextFormat.WHITE + ItemIDSunName.getIDByName(ID, Meta)
-					+ (String.valueOf(map.get("Player")).equals(player.getName()) ? TextFormat.RED + " 自卖侠！牛逼！" : ""));
+			list.add(mis.getMessage().getSon("MyShop", "ItemSellPYOK",
+					new String[] { "{Name}", "{Count}", "{ItemName}", "{isPlayerTxt}" },
+					new Object[] { player.getName(), this.Count, ItemIDSunName.getIDByName(ID, Meta),
+							(String.valueOf(map.get("Player")).equals(player.getName())
+									? mis.getMessage().getSon("MyShop", "ItemSellPYOK_isPlayerTxt")
+									: "") }));
 			config.set("Msg", list);
 			config.set("Items", arrayList);
 			config.save();
 		} else
-			p2.sendMessage(TextFormat.BLUE + player.getName() + TextFormat.GREEN + "卖给你" + TextFormat.RED + this.Count
-					+ TextFormat.GREEN + "个" + TextFormat.WHITE + ItemIDSunName.getIDByName(ID, Meta)
-					+ (String.valueOf(map.get("Player")).equals(player.getName()) ? TextFormat.RED + " 自卖侠！牛逼！" : ""));
+			p2.sendMessage(mis.getMessage().getSon("MyShop", "ItemSellPYOK",
+					new String[] { "{Name}", "{Count}", "{ItemName}", "{isPlayerTxt}" },
+					new Object[] { player.getName(), this.Count, ItemIDSunName.getIDByName(ID, Meta),
+							(String.valueOf(map.get("Player")).equals(player.getName())
+									? mis.getMessage().getSon("MyShop", "ItemSellPYOK_isPlayerTxt")
+									: "") }));
 		int SB_Ic = mis.MyShopPlayerMoneyConfig.getInt(player.getName());
 		SB_Ic += this.Count;
 		mis.MyShopPlayerMoneyConfig.set(player.getName(), SB_Ic);
@@ -181,7 +188,7 @@ public class MyShop {
 		}
 		NullCount += (inventory.getSize() - SB_FFF) * item.getMaxStackSize();
 		if (NullCount < Count) {
-			player.sendMessage(TextFormat.RED + "您的背包空间不足！请清理背包空间后重试~");
+			player.sendMessage(mis.getMessage().getSon("MyShop", "LackOfBackpackSpace"));
 			return;
 		}
 		int ItemCount = Float.valueOf(String.valueOf(map.get("Count"))).intValue();
@@ -189,26 +196,30 @@ public class MyShop {
 		map.put("Count", ItemCount);
 		EconomyAPI.getInstance().reduceMoney(player, (Money * Count));
 		inventory.addItem(item);
-		player.sendMessage(TextFormat.GREEN + "您成功购买了" + TextFormat.BLUE + String.valueOf(map.get("Player"))
-				+ TextFormat.GREEN + "的" + TextFormat.WHITE + ItemIDSunName.getIDByName(ID, Meta) + TextFormat.GREEN
-				+ "，花费" + TextFormat.AQUA + (Money * Count) + TextFormat.GREEN + mis.getMoneyName());
+		player.sendMessage(mis.getMessage().getSon("MyShop", "ItemShopPYOK",
+				new String[] { "{ByPlayer}", "{ItemName}", "{Money}", "{MoneyName}" },
+				new Object[] { map.get("Player"), ItemIDSunName.getIDByName(ID, Meta), (Money * Count) }));
 		Player p2 = Server.getInstance().getPlayer(String.valueOf(map.get("Player")));
 		if (p2 == null || !p2.isOnline()) {
 			Config config = CPlayer.getPlayerConfig(String.valueOf(map.get("Player")));
 			config.set("Money", config.getDouble("Money") + (Money * Count));
 			ArrayList<String> list = (config.get("Msg") instanceof List) ? ((ArrayList<String>) config.get("Msg"))
 					: new ArrayList<>();
-			list.add(TextFormat.BLUE + player.getName() + TextFormat.GREEN + "购买了您的" + TextFormat.WHITE
-					+ ItemIDSunName.getIDByName(ID, Meta) + TextFormat.GREEN + "，获利" + TextFormat.AQUA + (Money * Count)
-					+ TextFormat.GREEN + mis.getMoneyName()
-					+ (String.valueOf(map.get("Player")).equals(player.getName()) ? TextFormat.RED + " 自卖侠！牛逼！" : ""));
+			list.add(mis.getMessage().getSon("MyShop", "ItemShopOK",
+					new String[] { "{Name}", "{ItemName}", "{Money}", "{isPlayerTxt}" },
+					new Object[] { player.getName(), ItemIDSunName.getIDByName(ID, Meta), (Money * Count),
+							(String.valueOf(map.get("Player")).equals(player.getName())
+									? mis.getMessage().getSon("MyShop", "ItemSellPYOK_isPlayerTxt")
+									: "") }));
 			config.set("Msg", list);
 			config.save();
 		} else {
-			player.sendMessage(TextFormat.BLUE + player.getName() + TextFormat.GREEN + "购买了您的" + TextFormat.WHITE
-					+ ItemIDSunName.getIDByName(ID, Meta) + TextFormat.GREEN + "，获利" + TextFormat.AQUA + (Money * Count)
-					+ TextFormat.GREEN + mis.getMoneyName()
-					+ (String.valueOf(map.get("Player")).equals(player.getName()) ? TextFormat.RED + " 自卖侠！牛逼！" : ""));
+			player.sendMessage(mis.getMessage().getSon("MyShop", "ItemShopOK",
+					new String[] { "{Name}", "{ItemName}", "{Money}", "{isPlayerTxt}" },
+					new Object[] { player.getName(), ItemIDSunName.getIDByName(ID, Meta), (Money * Count),
+							(String.valueOf(map.get("Player")).equals(player.getName())
+									? mis.getMessage().getSon("MyShop", "ItemSellPYOK_isPlayerTxt")
+									: "") }));
 			EconomyAPI.getInstance().addMoney(p2, (Money * Count));
 		}
 		int SB_Ic = mis.MyShopPlayerMoneyConfig.getInt(player.getName());

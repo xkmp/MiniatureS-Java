@@ -9,7 +9,6 @@ import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
-import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeForm;
@@ -17,6 +16,7 @@ import cn.xiaokai.mis.myshop.seek.MySeek;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
+
 /**
  * @author Winfxk
  */
@@ -42,7 +42,7 @@ public class MyShopD {
 	 */
 	public void MyShopItem(FormResponseSimple data) {
 		if (!mis.config.getBoolean("个人商店")) {
-			MakeForm.makeTip(player, TextFormat.RED + "个人商店已关闭！若需使用请联系管理员！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "MyShopOK"));
 			return;
 		}
 		TonsFx fx = mis.MyShopData.get(player.getName());
@@ -51,14 +51,13 @@ public class MyShopD {
 		if (Count < 1) {
 			Config config = new Config(fx.file, Config.YAML);
 			if (!(config.get("Items") instanceof Map)) {
-				MakeForm.makeTip(player, TextFormat.RED + "打开失败！无法获取项目列表！");
-				return;
+				MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "NotDataList"));
 			}
 			HashMap<String, Object> items = (HashMap<String, Object>) config.get("Items");
 			items.remove(String.valueOf(map.get("Key")));
 			config.set("Items", items);
 			config.save();
-			MakeForm.makeTip(player, TextFormat.RED + "打开失败！该商品已售罄删除！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "ItemOKRemove"));
 			return;
 		}
 		(new MakeMyShopForm(player)).startPyItem(map, fx.file);
@@ -71,12 +70,12 @@ public class MyShopD {
 	 */
 	public void SeekMain(FormResponseCustom data) {
 		if (!mis.config.getBoolean("个人商店")) {
-			MakeForm.makeTip(player, TextFormat.RED + "个人商店已关闭！若需使用请联系管理员！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "MyShopOK"));
 			return;
 		}
 		String ID = String.valueOf(data.getResponse(0));
 		if (data.getResponse(0) == null || ID.isEmpty()) {
-			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的物品ID或物品名称！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "InputItemSB"));
 			return;
 		}
 		ID = ItemIDSunName.UnknownToID(ID);
@@ -92,41 +91,41 @@ public class MyShopD {
 	 */
 	public void newMyShopItem(FormResponseCustom data) {
 		if (!mis.config.getBoolean("个人商店")) {
-			MakeForm.makeTip(player, TextFormat.RED + "个人商店已关闭！若需使用请联系管理员！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "MyShopOK"));
 			return;
 		}
 		String ID = String.valueOf(data.getResponse(0));
 		if (data.getResponse(0) == null || ID.isEmpty()) {
-			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的物品ID或物品名称！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "InputItemSB"));
 			return;
 		}
 		ID = ItemIDSunName.UnknownToID(ID);
 		String countString = String.valueOf(data.getResponse(1));
 		if (data.getResponse(1) == null || countString.isEmpty()) {
-			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的上架物品数量！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "InputItemCountSB"));
 			return;
 		}
 		if (!Tool.isInteger(countString)) {
-			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的上架物品数量(纯整数)！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "InputItemCountSBNotInt"));
 			return;
 		}
 		int Count = Float.valueOf(countString).intValue();
 		if (Count <= 0) {
-			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的上架物品数量(大于零纯整数)！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "InputItemCountSBNotInt0"));
 			return;
 		}
 		String MoneytString = String.valueOf(data.getResponse(2));
 		if (data.getResponse(2) == null || MoneytString.isEmpty()) {
-			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的上架物品单价！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "InputItemMoneySB"));
 			return;
 		}
 		if (!Tool.isInteger(MoneytString)) {
-			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的上架物品单价(纯整数)！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "InputItemMoneySBNotInt"));
 			return;
 		}
 		int Money = Float.valueOf(MoneytString).intValue();
 		if (Money <= 0) {
-			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的上架物品单价(大于零纯整数)！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "InputItemMoneySBNotInt0"));
 			return;
 		}
 		PlayerInventory inventory = player.getInventory();
@@ -141,35 +140,36 @@ public class MyShopD {
 			}
 			if (ItemCount < Count) {
 				MakeForm.makeTip(player,
-						TextFormat.RED + "您的" + TextFormat.WHITE + ItemIDSunName.getIDByName(ID) + TextFormat.RED
-								+ "不足！\n" + TextFormat.WHITE + "还需：" + (Count - ItemCount) + TextFormat.RED
-								+ " PS：当前暂时无法上架附魔物品！");
+						mis.getMessage().getSon("MyShop", "NotItems", new String[] { "{ItemName}", "{Count}" },
+								new Object[] { ItemIDSunName.getIDByName(ID), (Count - ItemCount) }));
 				return;
 			}
 		} else {
 			if (EconomyAPI.getInstance().myMoney(player) < (Count * Money)) {
-				MakeForm.makeTip(player, TextFormat.RED + "您的余额不足以支付收购这些物品的费用！");
+				MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "SBPlayerNotMoney"));
 				return;
 			}
 		}
 		int xxMoney = mis.config.getInt("上架耗资");
 		String Sb_you = "";
+		if (ShopType == "Sell")
+			if (!Tool.isInteger(ID.split(":")[1]) || !Tool.isInteger(ID.split(":")[0])) {
+				MakeForm.makeTip(player,  mis.getMessage().getSon("MyShop", "getIDError"));
+				return;
+			}
 		if (xxMoney > 1) {
 			if (EconomyAPI.getInstance().myMoney(player) < xxMoney * Count) {
 				MakeForm.makeTip(player,
-						TextFormat.RED + "您的！" + mis.getMoneyName() + "不足以支付上架物品所需的费用！\n" + TextFormat.WHITE + "总共所需: "
-								+ (xxMoney * Count) + "\n" + TextFormat.WHITE + "还差："
-								+ ((xxMoney * Count) - EconomyAPI.getInstance().myMoney(player)));
+						mis.getMessage().getSon("MyShop", "MyShopItemSB", new String[] { "{Money}", "{isMoney}" },
+								new Object[] { (xxMoney * Count),
+										((xxMoney * Count) - EconomyAPI.getInstance().myMoney(player)) }));
 				return;
 			}
 			EconomyAPI.getInstance().reduceMoney(player, xxMoney * Count);
-			Sb_you = TextFormat.RED + "同时扣除上架所需费用：" + TextFormat.BLUE + (xxMoney * Count);
+			Sb_you = mis.getMessage().getSon("MyShop", "reMoney", new String[] { "{Money}" },
+					new Object[] { (xxMoney * Count) });
 		}
 		if (ShopType == "Sell") {
-			if (!Tool.isInteger(ID.split(":")[1]) || !Tool.isInteger(ID.split(":")[0])) {
-				MakeForm.makeTip(player, TextFormat.RED + "您的物品ID解析失败！");
-				return;
-			}
 			String[] sb = ID.split(":");
 			int IDD = Float.valueOf(sb[0]).intValue();
 			int DD = Float.valueOf(sb[1]).intValue();
@@ -187,7 +187,7 @@ public class MyShopD {
 	public void Main(FormResponseSimple data) {
 		int ID = data.getClickedButtonId();
 		if (!mis.config.getBoolean("个人商店")) {
-			MakeForm.makeTip(player, TextFormat.RED + "个人商店已关闭！若需使用请联系管理员！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("MyShop", "MyShopOK"));
 			return;
 		}
 		TonsFx fx = mis.MyShopData.get(player.getName());

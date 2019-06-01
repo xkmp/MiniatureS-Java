@@ -7,12 +7,11 @@ import cn.nukkit.Server;
 import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.plugin.Plugin;
-import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.openbt.HandsomeXiaoKai;
-import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
+
 /**
  * @author Winfxk
  */
@@ -55,13 +54,13 @@ public class DonFiddle {
 		if (Money > 0 && ePlugin != null && ePlugin.isEnabled()) {
 			if (EconomyAPI.getInstance().myMoney(player) < Money) {
 				MakeForm.makeTip(player,
-						TextFormat.RED + "噢！\n\n" + Tool.getColorFont("很抱歉！该按钮禁止穷逼使用！") + "\n\n" + TextFormat.YELLOW
-								+ "若想使用，请在准备" + TextFormat.GOLD + (Money - EconomyAPI.getInstance().myMoney(player))
-								+ TextFormat.YELLOW + mis.getMoneyName());
+						mis.getMessage().getSurname("UI", "Click", "NotMoney", new String[] { "{Money}" },
+								new Object[] { (EconomyAPI.getInstance().myMoney(player) - Money) }));
 				return;
 			}
 			EconomyAPI.getInstance().reduceMoney(player, Money);
-			player.sendMessage(Tool.getColorFont("已扣除使用该按钮的费用：" + Money));
+			player.sendMessage(mis.getMessage().getSurname("UI", "Click", "reClickButtonMoney",
+					new String[] { "{Money}" }, new Object[] { Money }));
 		}
 		if (SX != null && !SX.isEmpty())
 			if (String.valueOf(kai.Button.get("Commander")).toLowerCase() == "player")

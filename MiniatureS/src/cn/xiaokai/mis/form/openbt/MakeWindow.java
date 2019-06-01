@@ -15,6 +15,7 @@ import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.msg.Message;
+
 /**
  * @author Winfxk
  */
@@ -53,7 +54,8 @@ public class MakeWindow {
 				? msg.getText(String.valueOf(config.get("Content")))
 				: "")
 				+ (Buttons.size() > 1 ? ""
-						: ("\n" + TextFormat.YELLOW + "还没有任何项目哦！快去" + (player.isOp() ? "" : "找管理员") + "添加一个吧~"));
+						: msg.getSurname("UI", "Click", "NotList", new String[] { "{OP?}" },
+								new String[] { (player.isOp() ? "" : "找管理员") }));
 		List<ElementButton> list = new ArrayList<ElementButton>();
 		ArrayList<String> keyList = new ArrayList<>();
 		for (String Key : Buttons.keySet()) {

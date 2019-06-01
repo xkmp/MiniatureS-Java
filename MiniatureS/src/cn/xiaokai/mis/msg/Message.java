@@ -3,11 +3,14 @@ package cn.xiaokai.mis.msg;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
+@SuppressWarnings("unchecked")
 public class Message {
 	private MiniatureS mis;
 	private String[] Global_Key;
@@ -21,22 +24,55 @@ public class Message {
 	}
 
 	/**
+	 * 获取孙级自定义消息
+	 * 
+	 * @param Main    父级Key
+	 * @param Son     子级Key
+	 * @param Surname 孙级Key
+	 * @return
+	 */
+	public String getSurname(String Main, String Son, String Surname) {
+		return getSurname(Main, Son, Surname, new String[] {}, new Object[] {});
+	}
+
+	/**
+	 * 获取孙级自定义消息
+	 * 
+	 * @param Main    父级Key
+	 * @param Son     子级Key
+	 * @param Surname 孙级Key
+	 * @param MsgKey  要替换的数据键
+	 * @param MsgData 要替换的数据值
+	 * @return
+	 */
+	public String getSurname(String Main, String Son, String Surname, String[] MsgKey, Object[] MsgData) {
+		HashMap<String, Object> map = new HashMap<>();
+		if (mis.MsgConfig.get(Main) instanceof Map)
+			map = (HashMap<String, Object>) mis.MsgConfig.get(Main);
+		HashMap<Object, String> SurnameMap = new HashMap<>();
+		if (map.get(Son) instanceof Map)
+			SurnameMap = (HashMap<Object, String>) map.get(Son);
+		return getText(SurnameMap.get(Surname), MsgKey, MsgData);
+	}
+
+	/**
 	 * 获取语言消息
 	 * 
 	 * @param Key 语言消息存储在配置文件中的索引键
 	 * @return 语言消息
 	 */
 	public String getMessage(String Key) {
-		return this.getMessage(Key, new String[] {}, new String[] {});
+		return this.getMessage(Key, new String[] {}, new Object[] {});
 	}
 
 	/**
 	 * 更新数据
 	 */
 	public void update() {
-		Global_Key = new String[] { "{MoneyName}","{n}", "{Plugin_Name}", "{Server_Name}", "{Time}", "{Data}", "{Rand_Color}" };
-		Global_Data = new String[] {mis.getMoneyName(), "\n", mis.getName(), mis.getServer().getMotd(), Tool.getTime(), Tool.getDate(),
-				Tool.getRandColor() };
+		Global_Key = new String[] { "{MoneyName}", "{n}", "{Plugin_Name}", "{Server_Name}", "{Time}", "{Data}",
+				"{Rand_Color}" };
+		Global_Data = new String[] { mis.getMoneyName(), "\n", mis.getName(), mis.getServer().getMotd(), Tool.getTime(),
+				Tool.getDate(), Tool.getRandColor() };
 	}
 
 	/**
@@ -59,8 +95,7 @@ public class Message {
 	 * @param MsgData 要替换成的内容
 	 * @return 对应的消息
 	 */
-	@SuppressWarnings("unchecked")
-	public String getSon(String Main, String Son, String[] MsgKey, String[] MsgData) {
+	public String getSon(String Main, String Son, String[] MsgKey, Object[] MsgData) {
 		HashMap<String, String> map = new HashMap<>();
 		if (mis.MsgConfig.get(Main) instanceof Map)
 			map = (HashMap<String, String>) mis.MsgConfig.get(Main);
@@ -88,7 +123,7 @@ public class Message {
 	 * @param MsgData 要替换成的内容
 	 * @return 替换完毕的内容
 	 */
-	public String getMessage(String Key, String[] MsgKey, String[] MsgData) {
+	public String getMessage(String Key, String[] MsgKey, Object[] MsgData) {
 		String msg = mis.MsgConfig.getString(Key, null);
 		if (msg == null)
 			return null;
@@ -102,7 +137,7 @@ public class Message {
 	 * @return
 	 */
 	public String getText(String msg) {
-		return getText(msg, new String[] {}, new String[] {});
+		return getText(msg, new String[] {}, new Object[] {});
 	}
 
 	/**
@@ -113,14 +148,18 @@ public class Message {
 	 * @param MsgData 替换后的内容
 	 * @return
 	 */
-	public String getText(String msg, String[] MsgKey, String[] MsgData) {
+	public String getText(String msg, String[] MsgKey, Object[] MsgData) {
+		if (msg == null || msg.isEmpty()) {
+			mis.getServer().getLogger().info(TextFormat.RED+"数据错误！");
+			return msg;
+		}
 		update();
 		for (int j1 = 0; j1 < Global_Key.length && j1 < Global_Data.length; j1++)
 			if (msg.contains(Global_Key[j1]))
 				msg = msg.replace(Global_Key[j1], Global_Data[j1]);
 		for (int i = 0; i < MsgKey.length && i < MsgData.length; i++)
 			if (msg.contains(MsgKey[i]))
-				msg = msg.replace(MsgKey[i], MsgData[i]);
+				msg = msg.replace(MsgKey[i], String.valueOf(MsgData[i]));
 		return msg;
 	}
 }

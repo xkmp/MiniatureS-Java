@@ -14,6 +14,7 @@ import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
@@ -43,7 +44,7 @@ public class MakeForm {
 		List<ElementButton> elements = new ArrayList<>();
 		FormWindowSimple form = new FormWindowSimple(mis.getMessage().getText(Menus.getString("Title", "")),
 				mis.getMessage().getText(Menus.getString("Content", ""))
-						+ (AllMap.size() > 0 ? "" : "\n\n当前暂无任何按钮"),
+						+ (AllMap.size() > 0 ? "" : mis.getMessage().getSurname("UI", "Main", "NotButton")),
 				elements);
 		ElementButton button;
 		ArrayList<String> Key = new ArrayList<>();

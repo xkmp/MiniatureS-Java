@@ -15,6 +15,7 @@ import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
 import me.onebone.economyapi.EconomyAPI;
+
 /**
  * @author Winfxk
  */
@@ -77,7 +78,7 @@ public class ItemCallback {
 	 */
 	private void ItemToItem() {
 		if (Float.valueOf(String.valueOf(data.getResponse(0))).intValue() < 1) {
-			MakeForm.makeTip(player, TextFormat.RED + "经验出售失败！Error：请输入一个大于零的回收数！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemItemCountSB"));
 			return;
 		}
 		int Count = Float.valueOf(String.valueOf(data.getResponse(0))).intValue();
@@ -89,15 +90,11 @@ public class ItemCallback {
 		int Money = Float.valueOf(String.valueOf(map.get("Money"))).intValue() * Count;
 		if (Money > EconomyAPI.getInstance().myMoney(player)) {
 			MakeForm.makeTip(player,
-					TextFormat.RED + "物品兑换失败！Error：你没有足够的" + mis.config.getString("货币单位") + "来完成兑换！\n"
-							+ TextFormat.YELLOW + "每个物品兑换需消耗" + TextFormat.WHITE
-							+ Float.valueOf(String.valueOf(map.get("Money"))).intValue() + TextFormat.YELLOW
-							+ mis.config.getString("货币单位") + "\n" + TextFormat.YELLOW + "本次兑换需要" + TextFormat.WHITE
-							+ Money + TextFormat.YELLOW + mis.config.getString("货币单位") + "\n" + TextFormat.YELLOW
-							+ "您当前有" + TextFormat.WHITE + EconomyAPI.getInstance().myMoney(player) + TextFormat.YELLOW
-							+ mis.config.getString("货币单位") + "\n" + TextFormat.YELLOW + "还需" + TextFormat.WHITE
-							+ (Money - EconomyAPI.getInstance().myMoney(player)) + TextFormat.YELLOW
-							+ mis.config.getString("货币单位"));
+					mis.getMessage().getSon("Shop", "ItemToItemMoenySB",
+							new String[] { "{reMoney}", "{Money}", "{MyMoney}", "{asMoney}" },
+							new Object[] { Float.valueOf(String.valueOf(map.get("Money"))).intValue(), Money,
+									EconomyAPI.getInstance().myMoney(player),
+									(Money - EconomyAPI.getInstance().myMoney(player)) }));
 			return;
 		}
 		PlayerInventory inventory = player.getInventory();
@@ -108,27 +105,22 @@ public class ItemCallback {
 			MyCount += item.getCount();
 		}
 		if (MyCount < (Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count)) {
-			MakeForm.makeTip(player, TextFormat.RED + "物品兑换失败！Error：您的物品不足！\n" + TextFormat.YELLOW + "本次兑换您需要"
-					+ TextFormat.AQUA + (Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count)
-					+ ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID"))) + "\n" + TextFormat.YELLOW + "您当前"
-					+ (MyCount > 0 ? ("有" + TextFormat.AQUA + MyCount + TextFormat.YELLOW + "个") : "还没有没有")
-					+ TextFormat.WHITE + ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID"))) + "\n"
-					+ TextFormat.YELLOW + "还需要" + TextFormat.AQUA
-					+ ((Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count) - MyCount)
-					+ TextFormat.YELLOW + "个" + TextFormat.WHITE
-					+ ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID"))));
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemToItemItemSB",
+					new String[] { "{asCount}", "{isOK}", "{ItemName}", "{getCount}" },
+					new Object[] { (Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count),
+							(MyCount > 0 ? ("有" + TextFormat.AQUA + MyCount + TextFormat.YELLOW + "个") : "还没有没有"),
+							ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID"))),
+							((Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count) - MyCount) }));
 			return;
 		}
 		if (Boolean.valueOf(String.valueOf(map.get("Astrict")))) {
 			if (Float.valueOf(String.valueOf(map.get("ItemCount"))).intValue() < 1) {
-				MakeForm.makeTip(player, TextFormat.RED + "物品回收失败！Error：仓库已空！无法购买，您可以联系管理员添加库存！");
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemCount0"));
 				return;
 			} else if (Float.valueOf(String.valueOf(map.get("ItemCount"))).intValue() < Count) {
-				MakeForm.makeTip(player,
-						TextFormat.RED + "物品回收失败！Error：仓库剩余库存不足！无法购买，您可以联系管理员添加库存！\n" + TextFormat.YELLOW + "剩余库存："
-								+ TextFormat.WHITE + String.valueOf(map.get("ItemCount")) + "\n" + TextFormat.YELLOW
-								+ "所需库存：" + TextFormat.WHITE + Count + "\n" + TextFormat.YELLOW + "欠缺库存："
-								+ (Count - Float.valueOf(String.valueOf(map.get("ItemCount"))).intValue()));
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemCountas0",
+						new String[] { "{Count}", "{asCount}", "{getCount}" }, new Object[] { map.get("ItemCount"),
+								Count, (Count - Float.valueOf(String.valueOf(map.get("ItemCount"))).intValue()) }));
 				return;
 			} else {
 				map.put("Item_Count", Float.valueOf(String.valueOf(map.get("ItemCount"))).intValue() - Count);
@@ -151,15 +143,15 @@ public class ItemCallback {
 		IDi = ItemIDSunName.UnknownToID(String.valueOf(map.get("ToBlockID")));
 		IDs = IDi.split(":");
 		inventory.addItem(new Item(Integer.valueOf(IDs[0]), Integer.valueOf(IDs[1]), Count));
-		player.sendMessage(TextFormat.GREEN + "您成功使用" + TextFormat.AQUA
-				+ (Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count) + TextFormat.WHITE
-				+ ItemIDSunName.getIDByName(ItemIDSunName.UnknownToID(String.valueOf(map.get("BlockID")))) + "兑换了"
-				+ TextFormat.AQUA + Count + TextFormat.GREEN + "个" + TextFormat.WHITE + Count
-				+ ItemIDSunName.getIDByName(IDi)
-				+ (Money > 0
-						? (TextFormat.GREEN + ",同时消耗" + TextFormat.WHITE + Money + TextFormat.GREEN
-								+ mis.config.getString("货币单位"))
-						: ""));
+		player.sendMessage(mis.getMessage().getSon("Shop", "ItemToItemOK",
+				new String[] { "{asCount}", "{ItemName}", "{Count}", "{toItem}", "{T}" },
+				new Object[] { (Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count),
+						ItemIDSunName.getIDByName(ItemIDSunName.UnknownToID(String.valueOf(map.get("BlockID")))), Count,
+						ItemIDSunName.getIDByName(IDi),
+						(Money > 0
+								? (TextFormat.GREEN + ",同时消耗" + TextFormat.WHITE + Money + TextFormat.GREEN
+										+ mis.config.getString("货币单位"))
+								: "") }));
 		this.remove();
 	}
 
@@ -168,7 +160,7 @@ public class ItemCallback {
 	 */
 	private void SellExp() {
 		if (Float.valueOf(String.valueOf(data.getResponse(0))).intValue() < 1) {
-			MakeForm.makeTip(player, TextFormat.RED + "经验出售失败！Error：请输入一个大于零的回收数！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemItemCountSB"));
 			return;
 		}
 		int Count = Float.valueOf(String.valueOf(data.getResponse(0))).intValue();
@@ -179,23 +171,17 @@ public class ItemCallback {
 						: Count);
 		int Money = Count * Float.valueOf(String.valueOf(map.get("Money"))).intValue();
 		if (Count > player.getExperienceLevel()) {
-			MakeForm.makeTip(player,
-					TextFormat.RED + "经验出售失败！Error：你没有足够的经验来出售！\n" + TextFormat.YELLOW + "需要：" + TextFormat.WHITE
-							+ Count + "\n" + TextFormat.YELLOW + "您有：" + TextFormat.WHITE + player.getExperienceLevel()
-							+ "\n" + TextFormat.YELLOW + "还差：" + TextFormat.WHITE
-							+ (Count - player.getExperienceLevel()));
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "NetExpSB",
+					new String[] { "{Count}", "{Exp}", "{getExp}" },
+					new Object[] { Count, player.getExperienceLevel(), (Count - player.getExperienceLevel()) }));
 			return;
 		}
 		if (Boolean.valueOf(String.valueOf(map.get("Astrict")))) {
 			if (Float.valueOf(String.valueOf(map.get("ExpCount"))).intValue() < 1) {
-				MakeForm.makeTip(player, TextFormat.RED + "物品回收失败！Error：仓库已空！无法购买，您可以联系管理员添加库存！");
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemCount0"));
 				return;
 			} else if (Float.valueOf(String.valueOf(map.get("ExpCount"))).intValue() < Count) {
-				MakeForm.makeTip(player,
-						TextFormat.RED + "物品回收失败！Error：仓库剩余库存不足！无法购买，您可以联系管理员添加库存！\n" + TextFormat.YELLOW + "剩余库存："
-								+ TextFormat.WHITE + String.valueOf(map.get("ExpCount")) + "\n" + TextFormat.YELLOW
-								+ "所需库存：" + TextFormat.WHITE + Count + "\n" + TextFormat.YELLOW + "欠缺库存："
-								+ (Count - Float.valueOf(String.valueOf(map.get("ExpCount"))).intValue()));
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemCount0"));
 				return;
 			} else {
 				map.put("Item_Count", Float.valueOf(String.valueOf(map.get("ExpCount"))).intValue() - Count);
@@ -212,8 +198,8 @@ public class ItemCallback {
 		}
 		EconomyAPI.getInstance().addMoney(player, Money);
 		player.setExperience(player.getExperience(), (player.getExperienceLevel() - Count));
-		player.sendMessage(TextFormat.GREEN + "你成功出售了" + TextFormat.WHITE + Count + TextFormat.GREEN + "级经验！获利："
-				+ TextFormat.WHITE + Money + TextFormat.GREEN + mis.config.getString("货币单位"));
+		player.sendMessage(mis.getMessage().getSon("Shop", "ExpPyOKNotSB", new String[] { "{Count}", "{Money}" },
+				new Object[] { Count, Money }));
 		this.remove();
 	}
 
@@ -222,7 +208,7 @@ public class ItemCallback {
 	 */
 	private void ShopExp() {
 		if (Float.valueOf(String.valueOf(data.getResponse(0))).intValue() < 1) {
-			MakeForm.makeTip(player, TextFormat.RED + "经验购买失败！Error：请输入一个大于零的购买数！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemItemCountSB"));
 			return;
 		}
 		int Count = Float.valueOf(String.valueOf(data.getResponse(0))).intValue();
@@ -233,24 +219,19 @@ public class ItemCallback {
 						: Count);
 		int Money = Count * Float.valueOf(String.valueOf(map.get("Money"))).intValue();
 		if (Money > EconomyAPI.getInstance().myMoney(player)) {
-			MakeForm.makeTip(player, TextFormat.RED + "经验购买失败！Error：你没有足够的" + mis.config.getString("货币单位")
-					+ "来购买这个项目！\n" + TextFormat.YELLOW + "需要：" + TextFormat.WHITE + Money + TextFormat.YELLOW
-					+ mis.config.getString("货币单位") + "\n" + TextFormat.YELLOW + "您有：" + TextFormat.WHITE
-					+ EconomyAPI.getInstance().myMoney(player) + TextFormat.YELLOW + mis.config.getString("货币单位") + "\n"
-					+ TextFormat.YELLOW + "还差：" + TextFormat.WHITE + (Money - EconomyAPI.getInstance().myMoney(player))
-					+ TextFormat.YELLOW + mis.config.getString("货币单位"));
+			MakeForm.makeTip(player,
+					mis.getMessage().getSon("Shop", "ItemToItemMoenySB",
+							new String[] { "{MoneyName}", "{reMoney}", "{Money}", "{MyMoney}", "{asMoney}" },
+							new Object[] { Money, Money, EconomyAPI.getInstance().myMoney(player),
+									(Money - EconomyAPI.getInstance().myMoney(player)), }));
 			return;
 		}
 		if (Boolean.valueOf(String.valueOf(map.get("Astrict")))) {
 			if (Float.valueOf(String.valueOf(map.get("ExpCount"))).intValue() < 1) {
-				MakeForm.makeTip(player, TextFormat.RED + "物品回收失败！Error：仓库已空！无法购买，您可以联系管理员添加库存！");
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemCount0"));
 				return;
 			} else if (Float.valueOf(String.valueOf(map.get("ExpCount"))).intValue() < Count) {
-				MakeForm.makeTip(player,
-						TextFormat.RED + "物品回收失败！Error：仓库剩余库存不足！无法购买，您可以联系管理员添加库存！\n" + TextFormat.YELLOW + "剩余库存："
-								+ TextFormat.WHITE + String.valueOf(map.get("ExpCount")) + "\n" + TextFormat.YELLOW
-								+ "所需库存：" + TextFormat.WHITE + Count + "\n" + TextFormat.YELLOW + "欠缺库存："
-								+ (Count - Float.valueOf(String.valueOf(map.get("ExpCount"))).intValue()));
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemCount0"));
 				return;
 			} else {
 				map.put("Item_Count", Float.valueOf(String.valueOf(map.get("ExpCount"))).intValue() - Count);
@@ -267,8 +248,8 @@ public class ItemCallback {
 		}
 		EconomyAPI.getInstance().reduceMoney(player, Money);
 		player.setExperience(player.getExperience(), (player.getExperienceLevel() + Count));
-		player.sendMessage(TextFormat.GREEN + "成功购买" + TextFormat.WHITE + Count + TextFormat.GREEN + "级经验，花费:"
-				+ TextFormat.WHITE + Money + TextFormat.GREEN + mis.config.getString("货币单位"));
+		player.sendMessage(mis.getMessage().getSon("Shop", "ExpPyOKNotSbShop", new String[] { "{Count}", "{Money}" },
+				new Object[] { Count, Money }));
 		this.remove();
 	}
 
@@ -277,7 +258,7 @@ public class ItemCallback {
 	 */
 	private void ShopItem() {
 		if (Float.valueOf(String.valueOf(data.getResponse(0))).intValue() < 1) {
-			MakeForm.makeTip(player, TextFormat.RED + "物品购买失败！Error：请输入一个大于零的回收数！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemItemCountSB"));
 			return;
 		}
 		int Count = Float.valueOf(String.valueOf(data.getResponse(0))).intValue();
@@ -288,24 +269,19 @@ public class ItemCallback {
 						: Count);
 		int Money = Count * Float.valueOf(String.valueOf(map.get("Money"))).intValue();
 		if (Money > EconomyAPI.getInstance().myMoney(player)) {
-			MakeForm.makeTip(player, TextFormat.RED + "物品购买失败！Error：你没有足够的" + mis.config.getString("货币单位")
-					+ "来购买这个物品！\n" + TextFormat.YELLOW + "需要：" + TextFormat.WHITE + Money + TextFormat.YELLOW
-					+ mis.config.getString("货币单位") + "\n" + TextFormat.YELLOW + "您有：" + TextFormat.WHITE
-					+ EconomyAPI.getInstance().myMoney(player) + TextFormat.YELLOW + mis.config.getString("货币单位") + "\n"
-					+ TextFormat.YELLOW + "还差：" + TextFormat.WHITE + (Money - EconomyAPI.getInstance().myMoney(player))
-					+ TextFormat.YELLOW + mis.config.getString("货币单位"));
+			MakeForm.makeTip(player,
+					mis.getMessage().getSon("Shop", "ItemToItemMoenySB",
+							new String[] { "{MoneyName}", "{reMoney}", "{Money}", "{MyMoney}", "{asMoney}" },
+							new Object[] { Money, Money, EconomyAPI.getInstance().myMoney(player),
+									(Money - EconomyAPI.getInstance().myMoney(player)), }));
 			return;
 		}
 		if (Boolean.valueOf(String.valueOf(map.get("Astrict")))) {
 			if (Float.valueOf(String.valueOf(map.get("Item_Count"))).intValue() < 1) {
-				MakeForm.makeTip(player, TextFormat.RED + "物品回收失败！Error：仓库已空！无法购买，您可以联系管理员添加库存！");
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemCount0"));
 				return;
 			} else if (Float.valueOf(String.valueOf(map.get("Item_Count"))).intValue() < Count) {
-				MakeForm.makeTip(player,
-						TextFormat.RED + "物品回收失败！Error：仓库剩余库存不足！无法购买，您可以联系管理员添加库存！\n" + TextFormat.YELLOW + "剩余库存："
-								+ TextFormat.WHITE + String.valueOf(map.get("Item_Count")) + "\n" + TextFormat.YELLOW
-								+ "所需库存：" + TextFormat.WHITE + Count + "\n" + TextFormat.YELLOW + "欠缺库存："
-								+ (Count - Float.valueOf(String.valueOf(map.get("Item_Count"))).intValue()));
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemCount0"));
 				return;
 			} else {
 				map.put("Item_Count", Float.valueOf(String.valueOf(map.get("Item_Count"))).intValue() - Count);
@@ -325,9 +301,8 @@ public class ItemCallback {
 		String[] IDs = IDi.split(":");
 		inventory.addItem(new Item(Integer.valueOf(IDs[0]), Integer.valueOf(IDs[1]), Count));
 		EconomyAPI.getInstance().reduceMoney(player, Money);
-		player.sendMessage(
-				TextFormat.GREEN + "您成功购买了" + TextFormat.WHITE + ItemIDSunName.getIDByName(IDi) + TextFormat.GREEN
-						+ "，花费：" + TextFormat.WHITE + Money + TextFormat.GREEN + " " + mis.config.getString("货币单位"));
+		player.sendMessage(mis.getMessage().getSon("Shop", "ShopItemOKNotSB", new String[] { "{ItemName}", "{Money}" },
+				new Object[] { ItemIDSunName.getIDByName(IDi), Money }));
 		this.remove();
 	}
 
@@ -336,7 +311,7 @@ public class ItemCallback {
 	 */
 	private void SellItem() {
 		if (Float.valueOf(String.valueOf(data.getResponse(0))).intValue() < 1) {
-			MakeForm.makeTip(player, TextFormat.RED + "物品回收失败！Error：请输入一个大于零的回收数！");
+			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemItemCountSB"));
 			return;
 		}
 		int Count = Float.valueOf(String.valueOf(data.getResponse(0))).intValue();
@@ -355,21 +330,17 @@ public class ItemCallback {
 		}
 		if (MyCount < Count) {
 			MakeForm.makeTip(player,
-					TextFormat.RED + "物品回收失败！Error：你没有足够的物品！\n" + TextFormat.YELLOW + "需要：" + TextFormat.WHITE + Count
-							+ "\n" + TextFormat.YELLOW + "您有：" + TextFormat.WHITE + MyCount + "\n" + TextFormat.YELLOW
-							+ "还差：" + TextFormat.WHITE + (Count - MyCount));
+					mis.getMessage().getSon("Shop", "SBPlayerNotItem",
+							new String[] { "{Count}", "{MyCount}", "{reMoney}" },
+							new Object[] { Count, MyCount, (Count - MyCount) }));
 			return;
 		}
 		if (Boolean.valueOf(String.valueOf(map.get("Astrict")))) {
 			if (Float.valueOf(String.valueOf(map.get("Item_Count"))).intValue() < 1) {
-				MakeForm.makeTip(player, TextFormat.RED + "物品回收失败！Error：仓库已空！无法购买，您可以联系管理员添加库存！");
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemCount0"));
 				return;
 			} else if (Float.valueOf(String.valueOf(map.get("Item_Count"))).intValue() < Count) {
-				MakeForm.makeTip(player,
-						TextFormat.RED + "物品回收失败！Error：仓库剩余库存不足！无法购买，您可以联系管理员添加库存！\n" + TextFormat.YELLOW + "剩余库存："
-								+ TextFormat.WHITE + String.valueOf(map.get("Item_Count")) + "\n" + TextFormat.YELLOW
-								+ "所需库存：" + TextFormat.WHITE + Count + "\n" + TextFormat.YELLOW + "欠缺库存："
-								+ (Count - Float.valueOf(String.valueOf(map.get("Item_Count"))).intValue()));
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemCount0"));
 				return;
 			} else {
 				map.put("Item_Count", Float.valueOf(String.valueOf(map.get("Item_Count"))).intValue() - Count);
@@ -388,12 +359,12 @@ public class ItemCallback {
 		String[] IDs = IDi.split(":");
 		inventory.removeItem(new Item(Integer.valueOf(IDs[0]), Integer.valueOf(IDs[1]), Count));
 		EconomyAPI.getInstance().addMoney(player, Count * Float.valueOf(String.valueOf(map.get("Money"))));
-		player.sendMessage(TextFormat.GREEN + "成功出售 " + TextFormat.WHITE + Count + TextFormat.GREEN + " 个"
-				+ TextFormat.AQUA + ItemIDSunName.getIDByName(IDi) + TextFormat.GREEN + "，获得" + TextFormat.WHITE
-				+ (Count * Float.valueOf(String.valueOf(map.get("Money")))) + TextFormat.GREEN
-				+ mis.config.getString("货币单位"));
+		player.sendMessage(mis.getMessage().getSon("Shop", "PYItemOKNotSB",
+				new String[] { "{Count}", "{ItemName}", "{Money}" }, new Object[] { Count,
+						ItemIDSunName.getIDByName(IDi), (Count * Float.valueOf(String.valueOf(map.get("Money")))) }));
 		this.remove();
 	}
+
 	private void remove() {
 		if (mis.PlayerShopInteract.get(player.getName()) != null)
 			mis.PlayerShopInteract.remove(player.getName());

@@ -9,7 +9,6 @@ import cn.nukkit.Player;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
-import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.myshop.CPlayer;
 import cn.xiaokai.mis.tool.ItemIDSunName;
@@ -34,17 +33,17 @@ public class Fuck {
 				: new ArrayList<>();
 		double Money = config.getDouble("Money");
 		if (list.size() > 0)
-			player.sendMessage(TextFormat.GREEN + "在您离开的这段时间里");
+			player.sendMessage(MiniatureS.mis.getMessage().getSurname("MyShop", "Join", "Join1"));
 		for (String msg : list)
 			player.sendMessage(msg);
 		if (Money > 0) {
-			player.sendMessage(TextFormat.GREEN + "个人商店出售物品获利" + TextFormat.WHITE + Money + TextFormat.GREEN
-					+ MiniatureS.mis.getMoneyName());
+			player.sendMessage(MiniatureS.mis.getMessage().getSurname("MyShop", "Join", "MoneyAdd",
+					new String[] { "{Money}" }, new String[] { Money + "" }));
 			EconomyAPI.getInstance().addMoney(player, Money);
 		}
 		PlayerInventory inventory = player.getInventory();
 		if (map.size() > 0) {
-			player.sendMessage(TextFormat.GREEN + "以下资源来至个人商店收购");
+			player.sendMessage(MiniatureS.mis.getMessage().getSurname("MyShop", "Join", "ItemAdd"));
 			for (String key : map.keySet()) {
 				HashMap<String, String> item = (HashMap<String, String>) map.get(key);
 				int ID = Float.valueOf(item.get("ID")).intValue();
@@ -52,8 +51,9 @@ public class Fuck {
 				int Count = Float.valueOf(item.get("Count")).intValue();
 				Item i = new Item(ID, Meta, Count);
 				inventory.addItem(i);
-				player.sendMessage(TextFormat.GREEN + "获得" + TextFormat.WHITE + Count + TextFormat.GREEN + "个"
-						+ TextFormat.WHITE + ItemIDSunName.getIDByName(ID, Meta));
+				player.sendMessage(MiniatureS.mis.getMessage().getSurname("MyShop", "Join", "ItemAdd",
+						new String[] { "{Count}", "{ItemName}" },
+						new String[] { Count + "", ItemIDSunName.getIDByName(ID, Meta) }));
 			}
 		}
 	}

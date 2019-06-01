@@ -7,7 +7,6 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
-import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.management.MakeManagFrom;
@@ -37,7 +36,7 @@ public class FormDispose {
 	 */
 	public void Main(Player player, FormResponseSimple formResponse) {
 		if (mis.PlayerMenu.getOrDefault(player.getName(), null) == null) {
-			MakeForm.makeTip(player, TextFormat.RED + "数据处理失败！\n\n无法获取玩家视图列表（Main）！");
+			MakeForm.makeTip(player, mis.getMessage().getSurname("UI", "Main", "DataError") + "(Main)");
 			return;
 		}
 		ArrayList<String> list = mis.PlayerMenu.get(player.getName());
@@ -59,10 +58,10 @@ public class FormDispose {
 			mis.PlayerMenu.remove(player.getName());
 			return;
 		} else if (list.get(formResponse.getClickedButtonId()) == null) {
-			MakeForm.makeTip(player, TextFormat.RED + "数据处理失败！\n\n无法获取玩家视图ID（Main 1）！");
+			MakeForm.makeTip(player, mis.getMessage().getSurname("UI", "Main", "DataError") + "(Main1)");
 			return;
 		} else if (map.getOrDefault(list.get(formResponse.getClickedButtonId()), null) == null) {
-			MakeForm.makeTip(player, TextFormat.RED + "数据处理失败！\n\n无法获取玩家视图数据（Main 2）！");
+			MakeForm.makeTip(player, mis.getMessage().getSurname("UI", "Main", "DataError") + "(Main2)");
 			return;
 		}
 		HashMap<String, Object> SB_FFF = mis.PlayerMenuData.get(player.getName());

@@ -5,11 +5,9 @@ import java.util.HashMap;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
-import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.management.WhatThing;
-import cn.xiaokai.mis.tool.Tool;
 /**
  * @author Winfxk
  */
@@ -43,7 +41,7 @@ public class DealWith {
 								.Switch();
 				return;
 			}
-			MakeForm.makeTip(player, TextFormat.RED + "错误！\n" + Tool.getColorFont("检测到您正在修改本业！当您的权限不足！"));
+			MakeForm.makeTip(player, mis.getMessage().getSurname("UI", "Click", "NotOp"));
 			return;
 		}
 		String PyName = mis.PlayerMenu.get(player.getName()).get(JJLength);

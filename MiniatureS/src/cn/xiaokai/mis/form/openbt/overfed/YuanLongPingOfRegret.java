@@ -12,6 +12,7 @@ import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.form.openbt.HandsomeXiaoKai;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
@@ -55,14 +56,15 @@ public class YuanLongPingOfRegret {
 		int SBCount = (YouSB.split("\\{msg\\}")).length - 1;
 		sb10086.SBCount = SBCount;
 		List<String> ZZ = new ArrayList<>();
-		ZZ.add("不知道是啥东西");
+		ZZ.add(MiniatureS.mis.getMessage().getSurname("UI", "Click", "NotCommandFileName"));
 		if (sb10086.Button.get("Msg") instanceof List)
 			ZZ = (List<String>) sb10086.Button.get("Msg");
-		String LaoCan = "不知道是啥东西";
+		String LaoCan = MiniatureS.mis.getMessage().getSurname("UI", "Click", "NotCommandFileName");
 		for (int i = 0; i < SBCount; i++) {
 			if ((ZZ.size() - 1) >= i)
 				LaoCan = ZZ.get(i);
-			FuckYou.add(new ElementInput(LaoCan, Tool.getColorFont("请输入参数" + (i + 1))));
+			FuckYou.add(new ElementInput(LaoCan, MiniatureS.mis.getMessage().getSurname("UI", "Click", "CommandHint",
+					new String[] { "{ID}" }, new Object[] { (i + 1) })));
 		}
 		mis.sb.put(player.getName(), sb10086);
 		player.showFormWindow(new FormWindowCustom(sb10086.Text, FuckYou), MakeID.HeadIntoTheWater.getID());

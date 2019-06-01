@@ -52,8 +52,8 @@ public class MyShopCommand {
 				player.sendMessage(mis.getMessage().getSon("MyShop", "NotPlayer"));
 				return true;
 			}
-			player.sendMessage(Tool.getRandColor() + "您的商城贡献为：" + Tool.getRandColor()
-					+ mis.MyShopPlayerMoneyConfig.getInt(player.getName()));
+			player.sendMessage(mis.getMessage().getSon("MyShop", "cmd_getIC", new String[] { "{IC}" },
+					new Object[] { mis.MyShopPlayerMoneyConfig.getInt(player.getName()) }));
 			return true;
 		case "top":
 		case "t":
