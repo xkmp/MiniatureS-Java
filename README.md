@@ -26,8 +26,9 @@
 | 命令 | 描述 | 用法 | 别名 | 权限 | 适用对象 |
 | ---- | :--: | :--: | :--: | :--: | :--: |
 | /admis | MiniatureS管理员命令 | /admis help | adminmis | MiniatureS.Command.Admin | 服务器管理员及控制台 |
-| /shop | 超级商店主命令 | /shop help | 商店 | MiniatureS.Command.Shop | 所有玩家 |
+| /mshop | 超级商店主命令 | /shop help | 商店 | MiniatureS.Command.Shop | 所有玩家 |
 | /mis | 菜单工具主命令 | /mis help | 菜单 | MiniatureS.Command.main | 所有玩家 |
+| /myshop | 个人商店主命令 | /myshop help | mys | MiniatureS.Command.MyShop | 所有玩家 |
 
 
 #### 依赖：
