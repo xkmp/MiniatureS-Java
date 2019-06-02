@@ -13,7 +13,7 @@ public class FormStatic {
 	/**
 	 * 按钮有的功能
 	 */
-	public static final String[] ButtonOpenTypeList = { "提示一个窗口", "打开一个新的界面", "执行命令", "传送玩家", "打开商店" };
+	public static final String[] ButtonOpenTypeList = { "提示一个窗口", "打开一个新的界面", "执行命令", "传送玩家", "打开商店", "自定义命令"};
 	/**
 	 * 创建UI时贴图的类型
 	 */

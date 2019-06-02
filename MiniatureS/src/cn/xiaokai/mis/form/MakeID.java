@@ -10,6 +10,14 @@ import cn.xiaokai.mis.tool.Tool;
  */
 public enum MakeID {
 	/**
+	 * 自定义表单类型为简单型时的ID
+	 */
+	SimpleTypeForm(8941564),
+	/**
+	 * 创建自定义界面的UI的ID
+	 */
+	MakeCustom(498616),
+	/**
 	 * 开始在个人商店项目购买东西确认窗口的ID
 	 */
 	startMyShopItem(9455498),

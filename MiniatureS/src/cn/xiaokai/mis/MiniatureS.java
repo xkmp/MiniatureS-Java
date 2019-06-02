@@ -51,6 +51,7 @@ import cn.xiaokai.mis.cmd.ShopCommand;
 import cn.xiaokai.mis.event.FormCallback;
 import cn.xiaokai.mis.event.PlayerEvent;
 import cn.xiaokai.mis.form.MakeForm;
+import cn.xiaokai.mis.form.custom.CustomData;
 import cn.xiaokai.mis.form.openbt.HandsomeXiaoKai;
 import cn.xiaokai.mis.msg.Message;
 import cn.xiaokai.mis.msg.ReloadConfig;
@@ -106,6 +107,7 @@ public class MiniatureS extends PluginBase {
 	public static final String ShopConfigPath = "/Shops/";
 	public static final String MyShopConfigPath = "/MyShops/";
 	public static final String PlayerConfigPath = "/Players/";
+	public static final String CustomConfigPath = "/Custom/";
 	/**
 	 * 插件主配置文件
 	 */
@@ -179,6 +181,10 @@ public class MiniatureS extends PluginBase {
 	 * 处理管理命令
 	 */
 	public AdminCommand AdminCommand;
+	/**
+	 * 存储自定义界面的数据
+	 */
+	public LinkedHashMap<String, CustomData> Custom;
 
 	/**
 	 * 明人不说暗话！这就是插件启动事件
@@ -274,6 +280,7 @@ public class MiniatureS extends PluginBase {
 		MainCommand = new MainCommand(this);
 		msc = new MyShopCommand(this);
 		AdminCommand = new AdminCommand(this);
+		Custom = new LinkedHashMap<>();
 		super.onLoad();
 	}
 
@@ -284,8 +291,8 @@ public class MiniatureS extends PluginBase {
 	public void onDisable() {
 		this.getServer().getLogger()
 				.info(Tool.getColorFont(this.getName() + "关闭！") + TextFormat.GREEN + "本次运行时长" + TextFormat.BLUE
-						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000) + TextFormat.GREEN
-						+ "s");
+						+ Tool.getTimeBy(((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000))
+						+ TextFormat.GREEN + "s");
 		super.onDisable();
 	}
 

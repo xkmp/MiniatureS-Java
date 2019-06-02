@@ -10,6 +10,7 @@ import cn.nukkit.form.response.FormResponseSimple;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.management.MakeManagFrom;
+import cn.xiaokai.mis.form.management.form.NewButton;
 import cn.xiaokai.mis.form.openbt.OpenButton;
 
 /**
@@ -45,7 +46,7 @@ public class FormDispose {
 				&& formResponse.getClickedButtonId() < (list.size() + 3)) {
 			switch (formResponse.getClickedButtonId() - (list.size() - 1)) {
 			case 1:
-				(new MakeManagFrom(mis)).MakeGetMainButtonType(player);
+				(new NewButton(player, new File(mis.getDataFolder(),"Main.yml"))).Make();
 				break;
 			case 2:
 				(new MakeManagFrom(mis)).MakeRemoveButton(player, new File(mis.getDataFolder(), "/Main.yml"));

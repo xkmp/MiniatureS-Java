@@ -1,5 +1,6 @@
 package cn.xiaokai.mis.tool;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
@@ -44,9 +45,9 @@ public class Tool {
 		int h = (int) (time / 3600);
 		time = time % 3600;
 		int i = (int) (time / 60);
-		time = time % 60;
+		double s = (double) (time % 60);
 		return (y > 0 ? y + "年" : "") + (d > 0 ? d + "天" : "") + (h > 0 ? h + "小时" : "") + (i > 0 ? i + "分钟" : "")
-				+ (time > 0 ? time + "秒" : "");
+				+ (s > 0 ? Double2(s, 3) + "秒" : "");
 	}
 
 	/**
@@ -268,5 +269,31 @@ public class Tool {
 			result.put(entry.getKey(), entry.getValue());
 		}
 		return result;
+	}
+
+	/**
+	 * 设置小数长度</br>
+	 * 默认保留两位小数</br>
+	 * 
+	 * @param d 要设置的数值
+	 * @return
+	 */
+	public static double Double2(double d) {
+		return Double2(d, 2);
+	}
+
+	/**
+	 * 设置小数长度</br>
+	 * 
+	 * @param d      要设置的数
+	 * @param length 要保留的小数的长度
+	 * @return
+	 */
+	public static double Double2(double d, int length) {
+		String s = "#.0";
+		for (int i = 1; i < length; i++)
+			s += "0";
+		DecimalFormat df = new DecimalFormat(s);
+		return Double.valueOf(df.format(d));
 	}
 }

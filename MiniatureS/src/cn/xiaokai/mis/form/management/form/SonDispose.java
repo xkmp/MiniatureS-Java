@@ -1,10 +1,13 @@
-package cn.xiaokai.mis.form.management.son;
+package cn.xiaokai.mis.form.management.form;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.TextFormat;
+import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeForm;
+import cn.xiaokai.mis.form.custom.MakeCustom;
+
 /**
  * @author Winfxk
  */
@@ -18,6 +21,9 @@ public class SonDispose {
 	public void Switch(Player player, FormResponseSimple data) {
 		SonMakeWindow make = new SonMakeWindow(player);
 		switch (FormStatic.getButtonOpenTypeArrayList().get(data.getClickedButtonId())) {
+		case "自定义命令":
+			(new MakeCustom()).startPY(player, MiniatureS.mis.sb.get(player.getName()).file);
+			break;
 		case "打开一个新的界面":
 			make.addOpenWindows();
 			break;

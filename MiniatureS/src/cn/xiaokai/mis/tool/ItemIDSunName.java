@@ -1,5 +1,6 @@
 package cn.xiaokai.mis.tool;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -1946,16 +1947,19 @@ public enum ItemIDSunName {
 	BIRCH_BOAT("潜匿之壳", 445, 0, "textures/items/shulker_shell.png");
 	private int ID, Damage;
 	private String Name, Path;
-	private static final Map<String, Map<String, Object>> NAME_MAP = new HashMap<>();
-	private static final Map<String, Map<String, Object>> ID_MAP = new HashMap<>();
-	private static final Map<String, ItemIDSunName> ItemIDSunName_MAP = new HashMap<>();
+	private static final HashMap<String, Map<String, Object>> NAME_MAP = new HashMap<>();
+	private static final HashMap<String, Map<String, Object>> ID_MAP = new HashMap<>();
+	private static final HashMap<String, ItemIDSunName> ItemIDSunName_MAP = new HashMap<>();
+	private static final ArrayList<HashMap<String, Object>> All = new ArrayList<>();
 	static {
 		for (ItemIDSunName item : ItemIDSunName.values()) {
-			Map<String, Object> map = new HashMap<String, Object>();
+			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("ID", item.ID);
 			map.put("Damage", item.Damage);
 			map.put("Path", item.Path);
 			map.put("Name", item.Name);
+			map.put("item", item);
+			All.add(map);
 			NAME_MAP.put(item.Name, map);
 			ID_MAP.put(item.ID + ":" + item.Damage, map);
 			ItemIDSunName_MAP.put(item.ID + ":" + item.Damage, item);
@@ -2151,11 +2155,51 @@ public enum ItemIDSunName {
 	}
 
 	/**
+	 * 随机获取一个贴图路径
+	 * 
+	 * @return 贴图路径
+	 */
+	public static String getRandPath() {
+		HashMap<String, Object> map = All.get(Tool.getRand(0, All.size() - 1));
+		return (String) map.get("Path");
+	}
+
+	/**
+	 * 随机获取一个物品ID
+	 * 
+	 * @return 物品ID[ID:Damage]
+	 */
+	public static String getRandID() {
+		HashMap<String, Object> map = All.get(Tool.getRand(0, All.size() - 1));
+		return map.get("ID") + ":" + map.get("Damage");
+	}
+
+	/**
+	 * 随机获取一个物品名称
+	 * 
+	 * @return 物品名称
+	 */
+	public static String getRandName() {
+		HashMap<String, Object> map = All.get(Tool.getRand(0, All.size() - 1));
+		return (String) map.get("Name");
+	}
+
+	/**
+	 * 随机获取一个项目
+	 * 
+	 * @return 项目
+	 */
+	public static ItemIDSunName getRandItem() {
+		HashMap<String, Object> map = All.get(Tool.getRand(0, All.size() - 1));
+		return (ItemIDSunName) map.get("item");
+	}
+
+	/**
 	 * 获取所有项目
 	 * 
 	 * @return
 	 */
-	public static Map<String, Map<String, Object>> getMap() {
-		return ID_MAP;
+	public static ArrayList<HashMap<String, Object>> getAll() {
+		return All;
 	}
 }

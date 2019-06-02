@@ -5,7 +5,7 @@ import java.io.File;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.xiaokai.mis.MiniatureS;
-import cn.xiaokai.mis.form.management.son.NewButton;
+import cn.xiaokai.mis.form.management.form.NewButton;
 
 /**
  * @author Winfxk

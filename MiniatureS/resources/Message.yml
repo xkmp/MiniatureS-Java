@@ -23,7 +23,7 @@ Shop:
       sellExp: §1出售每级经验可得§f{Money}§f{MoneyName}{ItemCount}
       shopExp: §2购买每级经验需要§f{Money}§2{MoneyName}{ItemCount}
       shopItem: §9出售每个§e{ItemName}§9可得§4{Money}§9{MoneyName}{ItemCount}
-      sellItem: '§6每个§f{ItemName}§6购买需花费§f{Money}§9{MoneyName}{ItemCount}'
+      sellItem: §6每个§f{ItemName}§6购买需花费§f{Money}§9{MoneyName}{ItemCount}
    ItemToItemMoenySB: §4物品兑换失败！{n}Error：你没有足够的{MoneyName}来完成兑换！{n}§e兑换需消耗§4{reMoney}§e§{MoneyName}{n}§e本次兑换需要§c{Money}§e{MoneyName}{n}§e您当前有§4{MyMoney}§e{MoneyName}{n}§e还需§4{asMoney}§e{MoneyName}
    ItemItemCountSB: §4Error：请输入一个大于零的回收数！
    NetExpSB: §4经验出售失败！{n}§4Error：你没有足够的经验来出售！{n}§4需要：{Count}{n}§6您有：{Exp}{n}§e还差：§f{getExp}
@@ -107,6 +107,7 @@ UI:
       DataError: §4数据处理失败！{n}{n}无法获取玩家视图数据
    Click:
       NotOp: §4错误！您的权限不足！
+      NotEnabled: §4警告！该页面无法打开！可能是未启用或未配置！
       NotList: '{n} §e还没有任何项目哦！快去{OP?}添加一个吧~'
       NotMoney: §4噢！{n}{n} §4很抱歉！该按钮禁止穷逼使用！{n}{n}§4若想使用，请在准备§6{Money}§d{MoneyName}
       reClickButtonMoney: §e已扣除使用该按钮的费用:§4{Money}
@@ -116,3 +117,5 @@ UI:
       DataSB: §4亲！{n}您可能点击了一个数据已经损坏了的按钮！{n}{n}我们无法判断这个按钮的类型！请联系管理员处理！{n}{n}
       NotCommandFileName: 不知道是啥东西
       CommandHint: '{Rand_Color}请输入参数{ID}'
+Custom:
+   SBPlayerNotOP: §4你木有权限创建这个玩意§f(§6我也不知道是啥§c[§z雾§c]§6)

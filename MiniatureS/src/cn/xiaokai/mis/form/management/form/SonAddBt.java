@@ -1,4 +1,4 @@
-package cn.xiaokai.mis.form.management.son;
+package cn.xiaokai.mis.form.management.form;
 
 import java.io.File;
 import java.util.HashMap;
@@ -12,6 +12,7 @@ import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.msg.Message;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
@@ -49,6 +50,7 @@ public class SonAddBt {
 		LinkedHashMap<String, Object> map = new LinkedHashMap<>();
 		map.put("Text", Button);
 		map.put("Type", "OpenWindows");
+		map.put("您可有什么疑惑？", "别看了，这个单词就是多一个s，谁叫我打“Windows”多了呢？要知道我们大家大部分人都经常用的是这个玩意啊~强迫症就不要喷了");
 		map.put("Command", Command);
 		map.put("FileName", FileName);
 		map.put("ImageType", ImageType);
@@ -65,6 +67,7 @@ public class SonAddBt {
 			Config config = new Config(file, Config.YAML);
 			map = new LinkedHashMap<String, Object>();
 			map.put("Title", Button);
+			map.put("您可有什么疑惑？", "别看了，这个单词就是多一个s，谁叫我打“Windows”多了呢？要知道我们大家大部分人都经常用的是这个玩意啊~强迫症就不要喷了");
 			map.put("Content", Button);
 			map.put("Player", player.getName());
 			map.put("Time", Tool.getDate() + " " + Tool.getTime());
@@ -72,7 +75,7 @@ public class SonAddBt {
 			config.setAll(map);
 			config.save();
 		}
-		player.sendMessage(TextFormat.GREEN + "您成功创建一个点击后打开新界面的按钮！Key：" + Key);
+		player.sendMessage(TextFormat.GREEN + "您成功创建一个点击后打开新界面的按钮！\nKey：" + Key);
 	}
 
 	/**
@@ -105,7 +108,7 @@ public class SonAddBt {
 		Buttons.put(Key, map);
 		ccbs.set("Buttons", Buttons);
 		ccbs.save();
-		player.sendMessage(TextFormat.GREEN + "您成功创建一个点击后传送万家的按钮！Key：" + Key);
+		player.sendMessage(TextFormat.GREEN + "您成功创建一个点击后传送万家的按钮！\nKey：" + Key);
 	}
 
 	/**
@@ -144,7 +147,7 @@ public class SonAddBt {
 		Buttons.put(Key, map);
 		ccbs.set("Buttons", Buttons);
 		ccbs.save();
-		player.sendMessage(TextFormat.GREEN + "您成功创建一个点击后传送万家的按钮！Key：" + Key);
+		player.sendMessage(TextFormat.GREEN + "您成功创建一个点击后传送万家的按钮！\nKey：" + Key);
 	}
 
 	/**
@@ -179,7 +182,7 @@ public class SonAddBt {
 		Buttons.put(Key, map);
 		ccbs.set("Buttons", Buttons);
 		ccbs.save();
-		player.sendMessage(TextFormat.GREEN + "您成功创建一个点击后执行命令的按钮！Key：" + Key);
+		player.sendMessage(TextFormat.GREEN + "您成功创建一个点击后执行命令的按钮！\nKey：" + Key);
 	}
 
 	/**
@@ -216,7 +219,7 @@ public class SonAddBt {
 		Buttons.put(Key, map);
 		ccbs.set("Buttons", Buttons);
 		ccbs.save();
-		player.sendMessage(TextFormat.GREEN + "您成功创建一个提示框类型的按钮！Key：" + Key);
+		player.sendMessage(TextFormat.GREEN + "您成功创建一个提示框类型的按钮！\nKey：" + Key);
 	}
 
 	/**
@@ -225,12 +228,22 @@ public class SonAddBt {
 	 * @return 按钮的key
 	 */
 	public String getButtonKey() {
+		return getButtonKey(1);
+	}
+
+	/**
+	 * 随机获取一个不会重复的按钮key
+	 * 
+	 * @param lengtjh 按钮Key的长度
+	 * @return 按钮的key
+	 */
+	public String getButtonKey(int lengtjh) {
 		String Key = "";
-		int lengtjh = Tool.getRand(5, 20);
+		lengtjh = lengtjh < 1 ? 1 : lengtjh;
 		for (int i = 0; i < lengtjh; i++)
 			Key += Tool.getRandString();
 		if ((ccbs.get("Buttons") instanceof Map) && ((HashMap<String, Object>) ccbs.get("Buttons")).containsKey(Key))
-			return getButtonKey();
+			return getButtonKey(lengtjh++);
 		return Key;
 	}
 }

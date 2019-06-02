@@ -1,4 +1,4 @@
-package cn.xiaokai.mis.form.management.main;
+package cn.xiaokai.mis.form.management.form;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,29 +9,30 @@ import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeForm;
+import cn.xiaokai.mis.form.management.Smil;
 import cn.xiaokai.mis.tool.Tool;
 /**
  * @author Winfxk
  */
-public class MainDispose {
+public class SonDisposeSwitch {
 	private MiniatureS mis;
 	private Player player;
-	private MainAddBt mainAddBt;
+	private SonAddBt mainAddBt;
 
 	/**
-	 * 处理在主页创建按钮UI的返回数据
+	 * 处理在非主页创建按钮UI的返回数据
 	 * 
 	 * @param mis    插件主累对象
 	 * @param player 触发这个事件的玩家对象
 	 */
-	public MainDispose(MiniatureS mis, Player player) {
+	public SonDisposeSwitch(MiniatureS mis, Player player) {
 		this.mis = mis;
 		this.player = player;
-		mainAddBt = new MainAddBt();
+		mainAddBt = new SonAddBt(player);
 	}
 
 	/**
-	 * 处理在主页新建一个点击后可以打开一个新界面的按钮而创建的界面发回的数据
+	 * 处理在非主页新建一个点击后可以打开一个新界面的按钮而创建的界面发回的数据
 	 * 
 	 * @param data 发挥的数据
 	 */
@@ -55,13 +56,13 @@ public class MainDispose {
 		Smil smil = new Smil(data, 5, 6);
 		boolean ImageType = smil.getImageType();
 		String ImagePath = smil.getPath();
-		mainAddBt.addOpenWindow(player, buttonString,
+		mainAddBt.addOpenWindow(buttonString,
 				(FileName.lastIndexOf("yml") == FileName.length() - 3) ? FileName : FileName + ".yml", Money, Command,
 				ImageType, ImagePath);
 	}
 
 	/**
-	 * 处理在主页创建一个点击后打开商店分页的阿按钮UI返回的数据
+	 * 处理在非主页创建一个点击后打开商店分页的阿按钮UI返回的数据
 	 * 
 	 * @param data 发回的数据
 	 */
@@ -83,11 +84,11 @@ public class MainDispose {
 		boolean ImageType = smil.getImageType();
 		String ImagePath = smil.getPath();
 		Shop = mis.PlayerAddButtonByOpenShop.get(player.getName()).get(Shop);
-		mainAddBt.addOpenShop(player, buttonString, Shop, Money, Command, ImageType, ImagePath);
+		mainAddBt.addOpenShop(buttonString, Shop, Money, Command, ImageType, ImagePath);
 	}
 
 	/**
-	 * 在主页创建一个点击后传送万家的按钮
+	 * 在非主页创建一个点击后传送万家的按钮
 	 * 
 	 * @param data 创建这个按钮发回的数据
 	 */
@@ -139,11 +140,11 @@ public class MainDispose {
 		Smil smil = new Smil(data, 6, 7);
 		boolean ImageType = smil.getImageType();
 		String ImagePath = smil.getPath();
-		mainAddBt.addTransfer(player, buttonString, x, y, z, Money, Level, Command, ImageType, ImagePath);
+		mainAddBt.addTransfer(buttonString, x, y, z, Money, Level, Command, ImageType, ImagePath);
 	}
 
 	/**
-	 * 处理在主页创建一个执行命令按钮的UI发回的数据
+	 * 处理在非主页创建一个执行命令按钮的UI发回的数据
 	 * 
 	 * @param data 发回的数据
 	 */
@@ -180,13 +181,13 @@ public class MainDispose {
 			if (!strings[i].isEmpty())
 				list.add(strings[i]);
 		String Commander = String.valueOf(data.getResponse(6));
-		mainAddBt.addCommand(player, buttonString, Command, list, Money, ImageType, ImagePath,
+		mainAddBt.addCommand(buttonString, Command, list, Money, ImageType, ImagePath,
 				(Commander == FormStatic.AddCommandPlayer[0] ? "Player"
 						: (Commander == FormStatic.AddCommandPlayer[1] ? "Console" : "Player")));
 	}
 
 	/**
-	 * 处理在主页创建一个提示窗按钮的UI发回的数据
+	 * 处理在非主页创建一个提示窗按钮的UI发回的数据
 	 * 
 	 * @param data 发回的数据
 	 */
@@ -217,6 +218,6 @@ public class MainDispose {
 		Smil smil = new Smil(data, 6, 7);
 		boolean ImageType = smil.getImageType();
 		String ImagePath = smil.getPath();
-		mainAddBt.addTip(player, buttonString, Contxt, bt1, bt2, Money, ImageType, ImagePath, Command);
+		mainAddBt.addTip(buttonString, Contxt, bt1, bt2, Money, ImageType, ImagePath, Command);
 	}
 }

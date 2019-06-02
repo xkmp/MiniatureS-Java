@@ -1,4 +1,4 @@
-package cn.xiaokai.mis.form.management.main;
+package cn.xiaokai.mis.form.management;
 
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.xiaokai.mis.form.FormStatic;

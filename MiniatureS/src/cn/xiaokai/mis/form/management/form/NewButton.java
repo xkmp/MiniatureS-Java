@@ -1,4 +1,4 @@
-package cn.xiaokai.mis.form.management.son;
+package cn.xiaokai.mis.form.management.form;
 
 import java.io.File;
 import cn.nukkit.Player;
@@ -9,6 +9,7 @@ import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.form.openbt.HandsomeXiaoKai;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
@@ -38,7 +39,7 @@ public class NewButton {
 		key.file = file;
 		mis.sb.put(player.getName(), key);
 		player.showFormWindow(
-				new FormWindowSimple(Tool.getColorFont(mis.getName() + "-" + config.getString("Title")),
+				new FormWindowSimple(mis.getName() + "-" + mis.getMessage().getText(config.getString("Title")),
 						Tool.getColorFont("请选择您需要创建的按钮类型！"), FormStatic.getButtonOpenTypeList()),
 				MakeID.SonAddButtonByType.getID());
 	}

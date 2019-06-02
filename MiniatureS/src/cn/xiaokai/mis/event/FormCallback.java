@@ -12,12 +12,11 @@ import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeID;
-import cn.xiaokai.mis.form.management.EventClassification;
+import cn.xiaokai.mis.form.custom.TheForce;
 import cn.xiaokai.mis.form.management.MakeManagFrom;
 import cn.xiaokai.mis.form.management.ManagerProcessing;
-import cn.xiaokai.mis.form.management.main.MainDispose;
-import cn.xiaokai.mis.form.management.son.SonDispose;
-import cn.xiaokai.mis.form.management.son.SonDisposeSwitch;
+import cn.xiaokai.mis.form.management.form.SonDispose;
+import cn.xiaokai.mis.form.management.form.SonDisposeSwitch;
 import cn.xiaokai.mis.form.openbt.DealWith;
 import cn.xiaokai.mis.form.openbt.overfed.DonFiddle;
 import cn.xiaokai.mis.myshop.MyShop;
@@ -61,6 +60,9 @@ public class FormCallback implements Listener {
 		Player player = e.getPlayer();
 		FormResponse data = e.getResponse();
 		switch (MakeID.getByID(e.getFormID())) {
+		case MakeCustom:
+			(new TheForce(player)).startPY((FormResponseCustom) data);
+			break;
 		case SettingConfig:
 			(new ManagerProcessing(mis)).SettingConfig(player, (FormResponseCustom) data);
 			break;
@@ -112,21 +114,6 @@ public class FormCallback implements Listener {
 		case MakeIsRemoveButton:
 			(new ManagerProcessing(mis)).RemoveButton(player, (FormResponseModal) data);
 			break;
-		case MainAddOpenWindow:
-			(new MainDispose(mis, player)).addOpenWindow((FormResponseCustom) data);
-			break;
-		case MainAddOpenShow:
-			(new MainDispose(mis, player)).addOpenShop((FormResponseCustom) data);
-			break;
-		case MainAddTransferForm:
-			(new MainDispose(mis, player)).addTransfer((FormResponseCustom) data);
-			break;
-		case MainAddCommadnForm:
-			(new MainDispose(mis, player)).addCommand((FormResponseCustom) data);
-			break;
-		case MainAddTipForm:
-			(new MainDispose(mis, player)).addTip((FormResponseCustom) data);
-			break;
 		case PlayerShopInteract:
 			(new ItemCallback(mis, player, (FormResponseCustom) data)).start();
 			break;
@@ -156,9 +143,6 @@ public class FormCallback implements Listener {
 			break;
 		case ShopMain:
 			shopDispose.Main(player, (FormResponseSimple) data);
-			break;
-		case MainAddButtonType:
-			(new EventClassification(mis, player)).MainAddButtonTypeDispose((FormResponseSimple) data);
 			break;
 		case MainFormID:
 			dispose.Main(player, (FormResponseSimple) data);

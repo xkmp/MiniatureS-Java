@@ -42,8 +42,12 @@ public class MakeForm {
 				? (HashMap<String, Object>) (Menus.get("Buttons"))
 				: (new HashMap<>());
 		List<ElementButton> elements = new ArrayList<>();
-		FormWindowSimple form = new FormWindowSimple(mis.getMessage().getText(Menus.getString("Title", "")),
-				mis.getMessage().getText(Menus.getString("Content", ""))
+		FormWindowSimple form = new FormWindowSimple(mis.getMessage()
+				.getText((Menus.getString("Title") == null || Menus.getString("Title").isEmpty()) ? mis.getName()
+						: Menus.getString("Title")),
+				mis.getMessage()
+						.getText((Menus.getString("Content") == null || Menus.getString("Content").isEmpty()) ? ""
+								: Menus.getString("Content"))
 						+ (AllMap.size() > 0 ? "" : mis.getMessage().getSurname("UI", "Main", "NotButton")),
 				elements);
 		ElementButton button;

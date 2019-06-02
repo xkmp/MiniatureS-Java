@@ -98,8 +98,18 @@ public class MakeMyShop {
 	 * @return
 	 */
 	private String getKey() {
+		return getKey(1);
+	}
+
+	/**
+	 * 获取一个不重复的项目Key
+	 * 
+	 * @param Key长度
+	 * @return
+	 */
+	private String getKey(int JJleng) {
 		String Key = "";
-		int JJleng = Tool.getRand(5, 25);
+		JJleng = JJleng < 1 ? 1 : JJleng;
 		for (int i = 0; i < JJleng; i++)
 			Key += Tool.getRandString();
 		HashMap<String, Object> map = (config.get("Items") instanceof Map)

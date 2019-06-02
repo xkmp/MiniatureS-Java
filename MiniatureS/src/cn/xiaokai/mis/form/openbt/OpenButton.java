@@ -11,8 +11,10 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.plugin.Plugin;
+import cn.nukkit.utils.Config;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeForm;
+import cn.xiaokai.mis.form.custom.open.ILikeLittleSisters;
 import cn.xiaokai.mis.form.openbt.overfed.YuanLongPingOfRegret;
 import cn.xiaokai.mis.msg.Message;
 import cn.xiaokai.mis.shop.ShopMakeForm;
@@ -46,6 +48,10 @@ public class OpenButton {
 	 */
 	public void Switch() {
 		switch (String.valueOf(Button.get("Type")).toLowerCase()) {
+		case "custom":
+		case "cu":
+			PlayerClickCustomType();
+			break;
 		case "command":
 		case "cmd":
 			PlayerClickCommandType();
@@ -69,6 +75,40 @@ public class OpenButton {
 			ServerStupid();
 			break;
 		}
+	}
+
+	/**
+	 * 当玩家电机的橡木是自定义表单的按钮时要干的事情
+	 */
+	private void PlayerClickCustomType() {
+		File file = new File(mis.getDataFolder() + MiniatureS.CustomConfigPath, String.valueOf(Button.get("FileName")));
+		if (!file.exists()) {
+			mis.getLogger().info("§4错误：§6" + file.getName() + "§4文件不存在！请检查您的配置！");
+			MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotData"));
+			return;
+		}
+		Config config = new Config(file, Config.YAML);
+		if (!config.getBoolean("Enabled")) {
+			MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotEnabled"));
+			return;
+		}
+		int Money = Button.get("Money") == null ? 0
+				: Float.valueOf(
+						String.valueOf(Button.get("Money")).isEmpty() ? "0" : String.valueOf(Button.get("Money")))
+						.intValue();
+		Plugin ePlugin = mis.getServer().getPluginManager().getPlugin("EconomyAPI");
+		if (Money > 0 && ePlugin != null && ePlugin.isEnabled()) {
+			if (EconomyAPI.getInstance().myMoney(player) < Money) {
+				MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotMoney", new String[] { "{Money}" },
+						new Object[] { (EconomyAPI.getInstance().myMoney(player) - Money) }));
+				return;
+			}
+			EconomyAPI.getInstance().reduceMoney(player, Money);
+			player.sendMessage(msg.getSurname("UI", "Click", "reClickButtonMoney", new String[] { "{Money}" },
+					new Object[] { Money }));
+		} else if (ePlugin == null || !ePlugin.isEnabled())
+			mis.getLogger().info("§4警告：§6EconomyAPI§4未安装或未启用！本次忽略§9" + player.getName() + "§4的扣费！");
+		(new ILikeLittleSisters(player, file)).startPY();
 	}
 
 	/**
@@ -102,7 +142,8 @@ public class OpenButton {
 			EconomyAPI.getInstance().reduceMoney(player, Money);
 			player.sendMessage(msg.getSurname("UI", "Click", "reClickButtonMoney", new String[] { "{Money}" },
 					new Object[] { Money }));
-		}
+		} else if (ePlugin == null || !ePlugin.isEnabled())
+			mis.getLogger().info("§4警告：§6EconomyAPI§4未安装或未启用！本次忽略§9" + player.getName() + "§4的扣费！");
 		if (Command != null && !Command.isEmpty())
 			if (!String.valueOf(Button.get("Commander")).toLowerCase().equals("player"))
 				Server.getInstance().dispatchCommand(new ConsoleCommandSender(), Command);
@@ -136,7 +177,8 @@ public class OpenButton {
 			EconomyAPI.getInstance().reduceMoney(player, Money);
 			player.sendMessage(msg.getSurname("UI", "Click", "reClickButtonMoney", new String[] { "{Money}" },
 					new Object[] { Money }));
-		}
+		} else if (ePlugin == null || !ePlugin.isEnabled())
+			mis.getLogger().info("§4警告：§6EconomyAPI§4未安装或未启用！本次忽略§9" + player.getName() + "§4的扣费！");
 		String Command = Button.get("Command") == null ? null : String.valueOf(Button.get("Command"));
 		if (Command != null && !Command.isEmpty())
 			Server.getInstance().dispatchCommand(player, Command);
@@ -153,6 +195,25 @@ public class OpenButton {
 	 * 当玩家点击的项目是一个点击后打开一个商店的按钮时要干的事情
 	 */
 	private void PlayerClickOpenShopType() {
+		int Money = Button.get("Money") == null ? 0
+				: Float.valueOf(
+						String.valueOf(Button.get("Money")).isEmpty() ? "0" : String.valueOf(Button.get("Money")))
+						.intValue();
+		Plugin ePlugin = mis.getServer().getPluginManager().getPlugin("EconomyAPI");
+		if (Money > 0 && ePlugin != null && ePlugin.isEnabled()) {
+			if (EconomyAPI.getInstance().myMoney(player) < Money) {
+				MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotMoney", new String[] { "{Money}" },
+						new Object[] { (EconomyAPI.getInstance().myMoney(player) - Money) }));
+				return;
+			}
+			EconomyAPI.getInstance().reduceMoney(player, Money);
+			player.sendMessage(msg.getSurname("UI", "Click", "reClickButtonMoney", new String[] { "{Money}" },
+					new Object[] { Money }));
+		} else if (ePlugin == null || !ePlugin.isEnabled())
+			mis.getLogger().info("§4警告：§6EconomyAPI§4未安装或未启用！本次忽略§9" + player.getName() + "§4的扣费！");
+		String Command = Button.get("Command") == null ? null : String.valueOf(Button.get("Command"));
+		if (Command != null && !Command.isEmpty())
+			Server.getInstance().dispatchCommand(player, Command);
 		String ShopKey = String.valueOf(Button.get("Shop"));
 		(new ShopMakeForm(mis)).MakeShowShopShow(player, ShopKey);
 	}
@@ -173,6 +234,7 @@ public class OpenButton {
 		File file = new File(mis.getDataFolder() + MiniatureS.MenuConfigPath, fileName);
 		if (!file.exists()) {
 			MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotData"));
+			mis.getLogger().info("§4错误：§6" + file.getName() + "§4文件不存在！请检查您的配置！");
 			return;
 		}
 		int Money = Button.get("Money") == null ? 0
@@ -189,7 +251,8 @@ public class OpenButton {
 			EconomyAPI.getInstance().reduceMoney(player, Money);
 			player.sendMessage(msg.getSurname("UI", "Click", "reClickButtonMoney", new String[] { "{Money}" },
 					new Object[] { Money }));
-		}
+		} else if (ePlugin == null || !ePlugin.isEnabled())
+			mis.getLogger().info("§4警告：§6EconomyAPI§4未安装或未启用！本次忽略§9" + player.getName() + "§4的扣费！");
 		String Command = Button.get("Command") == null ? null : String.valueOf(Button.get("Command"));
 		if (Command != null && !Command.isEmpty())
 			Server.getInstance().dispatchCommand(player, Command);
@@ -214,7 +277,8 @@ public class OpenButton {
 			EconomyAPI.getInstance().reduceMoney(player, Money);
 			player.sendMessage(msg.getSurname("UI", "Click", "reClickButtonMoney", new String[] { "{Money}" },
 					new Object[] { Money }));
-		}
+		} else if (ePlugin == null || !ePlugin.isEnabled())
+			mis.getLogger().info("§4警告：§6EconomyAPI§4未安装或未启用！本次忽略§9" + player.getName() + "§4的扣费！");
 		String Command = Button.get("Command") == null ? null : String.valueOf(Button.get("Command"));
 		if (Command != null && !Command.isEmpty())
 			Server.getInstance().dispatchCommand(player, Command);

@@ -149,8 +149,8 @@ public class Message {
 	 * @return
 	 */
 	public String getText(String msg, String[] MsgKey, Object[] MsgData) {
-		if (msg == null || msg.isEmpty()) {
-			mis.getServer().getLogger().info(TextFormat.RED+"数据错误！");
+		if (msg == null) {
+			mis.getServer().getLogger().info(TextFormat.RED + "数据解析错误！建议检查消息文件或删除消息文件！");
 			return msg;
 		}
 		update();
