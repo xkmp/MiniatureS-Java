@@ -10,6 +10,14 @@ import cn.xiaokai.mis.tool.Tool;
  */
 public enum MakeID {
 	/**
+	 * 自定义界面为多样型时
+	 */
+	CustomTypeForm(781315351),
+	/**
+	 * 自定义界面类型为选择性按钮的时候的ID
+	 */
+	ModalTypeForm(89151534),
+	/**
 	 * 自定义表单类型为简单型时的ID
 	 */
 	SimpleTypeForm(8941564),

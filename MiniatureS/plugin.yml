@@ -24,7 +24,7 @@ commands:
       - adminmis
    mshop:
       description: §9打开菜单
-      usage: §b/§6shop §chelp
+      usage: §b/§6mshop §chelp
       permission: MiniatureS.Command.Shop
       aliases:
       - 商店

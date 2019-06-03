@@ -108,6 +108,7 @@ public class MiniatureS extends PluginBase {
 	public static final String MyShopConfigPath = "/MyShops/";
 	public static final String PlayerConfigPath = "/Players/";
 	public static final String CustomConfigPath = "/Custom/";
+	public static File[] DIRS_STRINGS;
 	/**
 	 * 插件主配置文件
 	 */
@@ -232,18 +233,13 @@ public class MiniatureS extends PluginBase {
 	public void onLoad() {
 		this.getServer().getLogger().info(Tool.getColorFont(this.getName() + "正在加载..."));
 		mis = this;
-		File file = new File(mis.getDataFolder() + ShopConfigPath);
-		if (!file.exists())
-			file.mkdirs();
-		new File(mis.getDataFolder() + MyShopConfigPath);
-		if (!file.exists())
-			file.mkdirs();
-		file = new File(this.getDataFolder() + MenuConfigPath);
-		if (!file.exists())
-			file.mkdirs();
-		file = new File(this.getDataFolder() + PlayerConfigPath);
-		if (!file.exists())
-			file.mkdirs();
+		DIRS_STRINGS = new File[] { mis.getDataFolder(), new File(mis.getDataFolder(), ShopConfigPath),
+				new File(mis.getDataFolder(), MyShopConfigPath), new File(this.getDataFolder(), MenuConfigPath),
+				new File(this.getDataFolder(), PlayerConfigPath), new File(mis.getDataFolder(), CustomConfigPath) };
+		File file;
+		for (File filex : DIRS_STRINGS)
+			if (!filex.exists())
+				filex.mkdirs();
 		for (int i = 0; i < ConfigNameList.length; i++)
 			try {
 				file = new File(this.getDataFolder(), ConfigNameList[i]);

@@ -49,7 +49,6 @@ public class SimpleType extends SB10000 {
 						new String[] { (player.isOp() ? "" : "找管理员") })));
 		List<ElementButton> list = new ArrayList<ElementButton>();
 		HashMap<String, Object> item;
-		ArrayList<HashMap<String, Object>> itemList = new ArrayList<>();
 		ArrayList<String> keyList = new ArrayList<>();
 		for (String ike : Items.keySet()) {
 			item = (HashMap<String, Object>) Items.get(ike);
@@ -63,14 +62,13 @@ public class SimpleType extends SB10000 {
 								String.valueOf(item.get("Image")))));
 			} else
 				list.add(new ElementButton(String.valueOf(item.get("Text"))));
-			keyList.add(String.valueOf(item.get("ID")));
-			itemList.add(item);
+			keyList.add(ike);
 		}
 		CustomData data = new CustomData();
 		data.file = file;
 		data.AllData = Items;
-		data.Items = itemList;
 		data.Keys = keyList;
+		data.FormType = "SimpleType";
 		mis.Custom.put(player.getName(), data);
 		player.showFormWindow(new FormWindowSimple(Title, Content, list), MakeID.SimpleTypeForm.getID());
 	}
