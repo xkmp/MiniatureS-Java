@@ -65,8 +65,8 @@ public class RollYourSister {
 			SB_FFF.put("FormType", "Simple|Modal|Custom");
 			SB_FFF.put("Content",
 					"本项只有当表单类型(FormType)为[Simple|Modal]时生效，当您配置完毕，请把下面的启用(Enabled)改为真(true)并将表单类型(FormType)设为您想设置的单一选项！");
-			SB_FFF.put("Title", "{RandColor}" + mis.getName() + "§f-{RandColor}" + config.getString("Title")
-					+ "§f-{RandColor}" + button);
+			SB_FFF.put("Title", "{Rand_Color}" + mis.getName() + "§f-{Rand_Color}" + config.getString("Title")
+					+ "§f-{Rand_Color}" + button);
 			SB_FFF.put("Items", new HashMap<String, Object>());
 			SB_FFF.put("Player", player.getName());
 			SB_FFF.put("Time", Tool.getDate() + " " + Tool.getTime());

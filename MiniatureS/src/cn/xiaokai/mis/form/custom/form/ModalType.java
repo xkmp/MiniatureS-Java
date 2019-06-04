@@ -46,6 +46,11 @@ public class ModalType extends SB10000 {
 		data.file = file;
 		data.AllData = Items;
 		data.FormType = "ModalType";
+		data.OverallCommander = (config.getString("Commander") == null || config.getString("Commander").isEmpty())
+				? null
+				: config.getString("Commander");
+		data.OverallCommadn = (config.getString("Command") == null || config.getString("Command").isEmpty()) ? null
+				: config.getString("Command");
 		mis.Custom.put(player.getName(), data);
 		player.showFormWindow(new FormWindowModal(Title, Content, Button1, Button2), MakeID.ModalTypeForm.getID());
 	}

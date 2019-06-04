@@ -23,6 +23,11 @@ public abstract class SB10000 {
 		mis = MiniatureS.mis;
 	}
 
+	/**
+	 * 获取一个方便PY的玩意
+	 * 
+	 * @return
+	 */
 	public Message getMessage() {
 		return mis.getMessage();
 	}

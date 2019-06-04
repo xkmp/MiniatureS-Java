@@ -70,6 +70,10 @@ public class CustomType extends SB10000 {
 		data.AllData = Items;
 		data.Items = itemList;
 		data.file = file;
+		data.OverallCommadn = (config.getString("Command") == null || config.getString("Command").isEmpty()) ? null
+				: config.getString("Command");
+		data.OverallCommander=(config.getString("Commander") == null || config.getString("Commander").isEmpty()) ? null
+				: config.getString("Commander");
 		mis.Custom.put(player.getName(), data);
 		ElementButtonImageData iconData;
 		if (Icon != null && !Icon.isEmpty()) {

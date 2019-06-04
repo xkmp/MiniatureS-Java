@@ -16,7 +16,12 @@ public class SBForm {
 	 */
 	public static Element Switch(HashMap<String, Object> map) {
 		MakeElement make = new MakeElement(map);
-		switch (String.valueOf(map.get("Key")).toLowerCase()) {
+		switch (String.valueOf(map.get("Type")).toLowerCase()) {
+		case "dropdown":
+		case "d":
+		case "下拉":
+		case "下拉框":
+			return make.getDropdown();
 		case "stepslider":
 		case "steps":
 		case "ss":

@@ -39,16 +39,15 @@ public class TheForce {
 		String FileName = (data.getResponse(1) == null || String.valueOf(data.getResponse(1)).isEmpty())
 				? MakeCustom.getConfigName(1)
 				: String.valueOf(data.getResponse(1));
-		if (data.getResponse(2) == null || String.valueOf(data.getResponse(2)).isEmpty()) {
-			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的按钮费用！");
-			return;
+		int Money = 0;
+		if (data.getResponse(2) == null && String.valueOf(data.getResponse(2)).isEmpty()) {
+			String moneyString = String.valueOf(data.getResponse(2));
+			if (!Tool.isInteger(moneyString) || Float.valueOf(moneyString).intValue() < 1) {
+				MakeForm.makeTip(player, TextFormat.RED + "请输入有效的按钮费用(大于零的纯整数)！");
+				return;
+			}
+			Money = Float.valueOf(moneyString).intValue();
 		}
-		String moneyString = String.valueOf(data.getResponse(2));
-		if (!Tool.isInteger(moneyString) || Float.valueOf(moneyString).intValue() < 1) {
-			MakeForm.makeTip(player, TextFormat.RED + "请输入有效的按钮费用(大于零的纯整数)！");
-			return;
-		}
-		int Money = Float.valueOf(moneyString).intValue();
 		Smil smil = new Smil(data, 3, 3);
 		boolean ImageType = smil.getImageType();
 		String ImagePath = smil.getPath();

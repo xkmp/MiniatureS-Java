@@ -10,6 +10,8 @@ import java.util.HashMap;
 public class CustomData {
 	public File file;
 	public String FormType;
+	public String OverallCommadn;
+	public String OverallCommander;
 	public ArrayList<HashMap<String, Object>> Items;
 	public ArrayList<String> Keys;
 	public HashMap<String, Object> AllData;

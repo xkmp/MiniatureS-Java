@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.nukkit.form.element.ElementDropdown;
 import cn.nukkit.form.element.ElementInput;
 import cn.nukkit.form.element.ElementLabel;
 import cn.nukkit.form.element.ElementSlider;
@@ -28,6 +29,29 @@ public class MakeElement {
 	}
 
 	/**
+	 * 假如是下拉框
+	 * 
+	 * @return
+	 */
+	public ElementDropdown getDropdown() {
+		List<String> options = new ArrayList<>();
+		int defaultOption = Tool.isInteger(String.valueOf(map.get("默认值")))
+				? Float.valueOf(map.get("默认值").toString()).intValue()
+				: 0;
+		if (map.get("Texts") instanceof List) {
+			options = (List<String>) map.get("Texts");
+		} else if (map.get("Texts") instanceof Map) {
+			HashMap<String, String> map = (HashMap<String, String>) this.map.get("Texts");
+			for (String ike : map.keySet())
+				if (map.get(ike) == null && (map.get(ike).toString().isEmpty() && ike != null && !ike.isEmpty()))
+					options.add(ike);
+				else
+					options.add(map.get(ike));
+		}
+		return new ElementDropdown(getString("Text"), options, defaultOption);
+	}
+
+	/**
 	 * 如果是滑动选择条
 	 * 
 	 * @return
@@ -38,14 +62,14 @@ public class MakeElement {
 		if (object instanceof List)
 			steps = (List<String>) object;
 		else if (object instanceof Map) {
-			HashMap<String, String> map = new HashMap<>();
+			HashMap<String, String> map = (HashMap<String, String>) object;
 			for (String ike : map.keySet())
 				if (map.get(ike) == null && (map.get(ike).toString().isEmpty() && ike != null && !ike.isEmpty()))
 					steps.add(ike);
 				else
 					steps.add(map.get(ike));
 		}
-		int d = Tool.isInteger(map.get("默认值").toString()) ? Float.valueOf(map.get("默认值").toString()).intValue() : 0;
+		int d = Tool.isInteger(map.get("默认").toString()) ? Float.valueOf(map.get("默认").toString()).intValue() : 0;
 		return new ElementStepSlider(getString("Text"), steps, d);
 	}
 

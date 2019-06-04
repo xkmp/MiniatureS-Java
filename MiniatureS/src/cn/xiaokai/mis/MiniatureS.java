@@ -109,6 +109,7 @@ public class MiniatureS extends PluginBase {
 	public static final String PlayerConfigPath = "/Players/";
 	public static final String CustomConfigPath = "/Custom/";
 	public static File[] DIRS_STRINGS;
+	public static String Title;
 	/**
 	 * 插件主配置文件
 	 */
@@ -233,6 +234,7 @@ public class MiniatureS extends PluginBase {
 	public void onLoad() {
 		this.getServer().getLogger().info(Tool.getColorFont(this.getName() + "正在加载..."));
 		mis = this;
+		Title = "§f[§9" + getName() + "§f]" + Tool.getRandColor();
 		DIRS_STRINGS = new File[] { mis.getDataFolder(), new File(mis.getDataFolder(), ShopConfigPath),
 				new File(mis.getDataFolder(), MyShopConfigPath), new File(this.getDataFolder(), MenuConfigPath),
 				new File(this.getDataFolder(), PlayerConfigPath), new File(mis.getDataFolder(), CustomConfigPath) };

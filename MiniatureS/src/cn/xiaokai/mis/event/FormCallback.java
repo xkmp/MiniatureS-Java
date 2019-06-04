@@ -13,6 +13,9 @@ import cn.nukkit.utils.Config;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.MakeID;
 import cn.xiaokai.mis.form.custom.TheForce;
+import cn.xiaokai.mis.form.custom.sc.CustomReceive;
+import cn.xiaokai.mis.form.custom.sc.ModalReceive;
+import cn.xiaokai.mis.form.custom.sc.SimpleReceive;
 import cn.xiaokai.mis.form.management.MakeManagFrom;
 import cn.xiaokai.mis.form.management.ManagerProcessing;
 import cn.xiaokai.mis.form.management.form.SonDispose;
@@ -60,6 +63,15 @@ public class FormCallback implements Listener {
 		Player player = e.getPlayer();
 		FormResponse data = e.getResponse();
 		switch (MakeID.getByID(e.getFormID())) {
+		case CustomTypeForm:
+			(new CustomReceive(player, (FormResponseCustom) data)).startPY();
+			break;
+		case ModalTypeForm:
+			(new ModalReceive(player, (FormResponseModal) data)).startPY();
+			break;
+		case SimpleTypeForm:
+			(new SimpleReceive(player, (FormResponseSimple) data)).startPY();
+			break;
 		case MakeCustom:
 			(new TheForce(player)).startPY((FormResponseCustom) data);
 			break;

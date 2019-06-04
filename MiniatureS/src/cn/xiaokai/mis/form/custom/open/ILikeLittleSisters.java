@@ -1,9 +1,9 @@
 package cn.xiaokai.mis.form.custom.open;
 
 import java.io.File;
-
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
+import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.form.custom.form.CustomType;
 import cn.xiaokai.mis.form.custom.form.ModalType;
 import cn.xiaokai.mis.form.custom.form.SimpleType;
@@ -24,7 +24,6 @@ public class ILikeLittleSisters {
 	 */
 	public ILikeLittleSisters(Player player, File file) {
 		this.file = file;
-		this.config = new Config(file, Config.YAML);
 		this.player = player;
 	}
 
@@ -32,6 +31,13 @@ public class ILikeLittleSisters {
 	 * 开始PY
 	 */
 	public void startPY() {
+		try {
+			this.config = new Config(file, Config.YAML);
+		} catch (Exception e) {
+			MiniatureS.mis.getLogger().info("\n§e" + MiniatureS.Title + e.getMessage() + MiniatureS.Title
+					+ file.getName() + "§4表单文件格式配置错误！请检查");
+			return;
+		}
 		switch (config.getString("FormType").toLowerCase()) {
 		case "modal":
 		case "modaltype":

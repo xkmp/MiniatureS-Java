@@ -2,7 +2,6 @@ package cn.xiaokai.mis.form.openbt;
 
 import java.io.File;
 import java.util.HashMap;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.ConsoleCommandSender;
@@ -87,7 +86,14 @@ public class OpenButton {
 			MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotData"));
 			return;
 		}
-		Config config = new Config(file, Config.YAML);
+		Config config;
+		try {
+			config = new Config(file, Config.YAML);
+		} catch (Exception e) {
+			MiniatureS.mis.getLogger().info("\n§e" + MiniatureS.Title + e.getMessage() + MiniatureS.Title
+					+ file.getName() + "§4表单文件格式配置错误！请检查");
+			return;
+		}
 		if (!config.getBoolean("Enabled")) {
 			MakeForm.makeTip(player, msg.getSurname("UI", "Click", "NotEnabled"));
 			return;

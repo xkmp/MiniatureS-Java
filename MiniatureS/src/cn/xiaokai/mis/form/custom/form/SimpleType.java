@@ -69,6 +69,11 @@ public class SimpleType extends SB10000 {
 		data.AllData = Items;
 		data.Keys = keyList;
 		data.FormType = "SimpleType";
+		data.OverallCommander = (config.getString("Commander") == null || config.getString("Commander").isEmpty())
+				? null
+				: config.getString("Commander");
+		data.OverallCommadn = (config.getString("Command") == null || config.getString("Command").isEmpty()) ? null
+				: config.getString("Command");
 		mis.Custom.put(player.getName(), data);
 		player.showFormWindow(new FormWindowSimple(Title, Content, list), MakeID.SimpleTypeForm.getID());
 	}
