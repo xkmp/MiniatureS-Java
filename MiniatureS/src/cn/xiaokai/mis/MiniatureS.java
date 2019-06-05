@@ -279,6 +279,14 @@ public class MiniatureS extends PluginBase {
 		msc = new MyShopCommand(this);
 		AdminCommand = new AdminCommand(this);
 		Custom = new LinkedHashMap<>();
+		EfficacyConfig.startPY();
+		file = new File(mis.getDataFolder(), "MiniatureS自定义控件介绍.docx");
+		try {
+			Utils.writeFile(file, this.getClass().getResourceAsStream("/resources/MiniatureS自定义控件介绍.docx"));
+			getLogger().info("§6已导出帮助文件至§9" + file.getAbsolutePath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		super.onLoad();
 	}
 

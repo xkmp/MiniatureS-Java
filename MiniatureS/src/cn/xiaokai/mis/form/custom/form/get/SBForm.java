@@ -20,6 +20,7 @@ public class SBForm {
 		case "dropdown":
 		case "d":
 		case "下拉":
+		case "下拉选择":
 		case "下拉框":
 			return make.getDropdown();
 		case "stepslider":

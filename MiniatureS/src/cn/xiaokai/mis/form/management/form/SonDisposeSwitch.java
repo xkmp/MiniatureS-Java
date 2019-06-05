@@ -11,6 +11,7 @@ import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.management.Smil;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
@@ -57,8 +58,10 @@ public class SonDisposeSwitch {
 		boolean ImageType = smil.getImageType();
 		String ImagePath = smil.getPath();
 		mainAddBt.addOpenWindow(buttonString,
-				(FileName.lastIndexOf("yml") == FileName.length() - 3) ? FileName : FileName + ".yml", Money, Command,
-				ImageType, ImagePath);
+				FileName.length() > 3
+						? (FileName.lastIndexOf("yml") == FileName.length() - 3) ? FileName : FileName + ".yml"
+						: FileName + ".yml",
+				Money, Command, ImageType, ImagePath);
 	}
 
 	/**

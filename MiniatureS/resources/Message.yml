@@ -1,5 +1,5 @@
 #请不要修改这个数据！
-文件版本: 2
+文件版本: 2019-6-5
 #各种可以自定义的内容
 #注：若是可以使用变量，变量一律用{}包围，如{Server_Name}
 #注：变量对大小写敏感！
@@ -17,6 +17,13 @@
 #这个是快捷工具的Lore，我也不知道改怎么翻译
 快捷工具名称2: §e据说长得帅的人用这个点击都可以打开一个菜单哦~{n}§9赶快试试吧!
 玩家加入提示1: §e欢迎来到{Server_Name}, 本服务器支持高级个人商店，为了您能正常的接收个人商店的物品，建议每次退出前清空背包哦！
+Main:
+   NotPlayer: §4请在游戏内自行此命令
+   SBPlayerNotData: §4请提供必备的参数
+   SBPlayerFileNot: §4文件不存在！请检查
+   SBOPFileError: §4打开失败！可能是文件数据已损坏！请联系服务器管理员
+   NotButtons: §4打开失败！可能是该文件暂时无任何按钮
+   NotIsButtons: §4打开失败！可能是该文件不存在这个按钮
 Shop:
    Items:
       itemtoitem: §f{MoneyItem}§6个§f{MoneyItemName}§6可兑换一个§4{ItemName}{IsReMoney}{ItemCount}
@@ -119,3 +126,5 @@ UI:
       CommandHint: '{Rand_Color}请输入参数{ID}'
 Custom:
    SBPlayerNotOP: §4你木有权限创建这个玩意§f(§6我也不知道是啥§c[§z雾§c]§6)
+   SBPlayerInputNull: §4选项框§6{InputTitle}§4不能为空！
+   SBPlayerInputNotNum: §4选项框§6{InputTitle}§4只能为纯数字！！

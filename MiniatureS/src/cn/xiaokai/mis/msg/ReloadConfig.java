@@ -16,7 +16,7 @@ import cn.xiaokai.mis.MiniatureS;
  */
 @SuppressWarnings("unchecked")
 public class ReloadConfig {
-	public static final int V = 2;
+	public static final String V = "2019-6-5";
 	public static final String[] Files = { "Config.yml", "Message.yml" };
 	public static final String V_Key = "文件版本";
 
@@ -31,7 +31,7 @@ public class ReloadConfig {
 			Config config = new Config(file, Config.YAML);
 			HashMap<String, Object> map = (config.getAll() instanceof Map) ? (HashMap<String, Object>) config.getAll()
 					: new HashMap<>();
-			if (config.getInt(V_Key) != V) {
+			if (config.getString(V_Key) != V) {
 				file.delete();
 				try {
 					if (!file.exists()) {
@@ -39,6 +39,8 @@ public class ReloadConfig {
 						Utils.writeFile(file, mis.getClass().getResourceAsStream("/resources/" + name));
 						file = new File(mis.getDataFolder(), name);
 						config = new Config(file, Config.YAML);
+						config.set(V_Key, V);
+						config.save();
 						for (String key : map.keySet()) {
 							if (!key.equals(V_Key) && !(map.get(key) instanceof Map) && !(map.get(key) instanceof List)
 									&& config.get(key) != null
@@ -77,7 +79,7 @@ public class ReloadConfig {
 				if (config_map.get(key) != null && config_map.get(key).getClass().equals(l_map.get(key).getClass())
 						&& !l_map.get(key).equals(config_map.get(key))) {
 					config_map.put(key, l_map.get(key));
-					MiniatureS.mis.getServer().getLogger().info(TextFormat.RED + "正在还原数据：" + key );
+					MiniatureS.mis.getServer().getLogger().info(TextFormat.RED + "正在还原数据：" + key);
 				}
 			} else if ((l_map.get(key) instanceof Map) && !l_map.get(key).equals(config_map.get(key))) {
 				MiniatureS.mis.getServer().getLogger().info(TextFormat.RED + "正在还原数据列：" + key);

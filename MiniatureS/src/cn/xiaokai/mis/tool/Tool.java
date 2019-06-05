@@ -47,7 +47,7 @@ public class Tool {
 		int i = (int) (time / 60);
 		double s = (double) (time % 60);
 		return (y > 0 ? y + "年" : "") + (d > 0 ? d + "天" : "") + (h > 0 ? h + "小时" : "") + (i > 0 ? i + "分钟" : "")
-				+ (s > 0 ? Double2(s, 3) + "秒" : "");
+				+ (s > 0 ? Double2(s, 1) + "秒" : "");
 	}
 
 	/**

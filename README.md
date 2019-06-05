@@ -30,6 +30,7 @@
 | /mis | 菜单工具主命令 | /mis help | 菜单 | MiniatureS.Command.main | 所有玩家 |
 | /mys | 个人商店主命令 | /mys help | myshop | MiniatureS.Command.MyShop | 所有玩家 |
 
+> - [x] [或许您需要查看帮助文档？](http://doc.epicfx.cn/Docs/MiniatureS/MiniatureS自定义控件介绍.docx)
 
 #### 依赖：
 > - 本插件当前需要[EconomyAPI](https://nukkitx.com/resources/economyapi.14/)的支持才能正常使用所有功能
@@ -49,8 +50,10 @@
 >		- [ ] `Message.java`
 > - [x] 配置文件自动更新
 >	- [ ] `ReloadConfig.java` 部分功能有待完善
-> - [ ] 实现完全的自定义界面！如滑动条，开关，下拉选项如数框等！完全的自主配置！
-> - [ ] 模拟实现玩家点击某界面内部的按钮，以方便完全自定义界面的使用
+> - [x] 实现完全的自定义界面！如滑动条，开关，下拉选项如数框等！完全的自主配置！
+> - [x] 模拟实现玩家点击某界面内部的按钮，以方便完全自定义界面的使用
+> - [x] 自带帮助文档
+> - [x] 使用命令模拟玩家点击按钮 命令：/mis open <FileName> <ButtonKey>
 ## 问题反馈
 #### 在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
 

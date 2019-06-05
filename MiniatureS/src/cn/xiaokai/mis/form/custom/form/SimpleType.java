@@ -69,6 +69,8 @@ public class SimpleType extends SB10000 {
 		data.AllData = Items;
 		data.Keys = keyList;
 		data.FormType = "SimpleType";
+		data.Title = Title;
+		data.IWantAGirl = Content;
 		data.OverallCommander = (config.getString("Commander") == null || config.getString("Commander").isEmpty())
 				? null
 				: config.getString("Commander");

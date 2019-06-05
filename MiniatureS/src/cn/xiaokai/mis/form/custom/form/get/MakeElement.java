@@ -35,9 +35,8 @@ public class MakeElement {
 	 */
 	public ElementDropdown getDropdown() {
 		List<String> options = new ArrayList<>();
-		int defaultOption = Tool.isInteger(String.valueOf(map.get("默认值")))
-				? Float.valueOf(map.get("默认值").toString()).intValue()
-				: 0;
+		String dd = map.get("默认") != null ? map.get("默认").toString() : "0";
+		int d = Tool.isInteger(dd) ? Float.valueOf(dd).intValue() : 0;
 		if (map.get("Texts") instanceof List) {
 			options = (List<String>) map.get("Texts");
 		} else if (map.get("Texts") instanceof Map) {
@@ -48,7 +47,7 @@ public class MakeElement {
 				else
 					options.add(map.get(ike));
 		}
-		return new ElementDropdown(getString("Text"), options, defaultOption);
+		return new ElementDropdown(getString("Text"), options, d);
 	}
 
 	/**
@@ -69,7 +68,8 @@ public class MakeElement {
 				else
 					steps.add(map.get(ike));
 		}
-		int d = Tool.isInteger(map.get("默认").toString()) ? Float.valueOf(map.get("默认").toString()).intValue() : 0;
+		String dd = map.get("默认") != null ? map.get("默认").toString() : "0";
+		int d = Tool.isInteger(dd) ? Float.valueOf(dd).intValue() : 0;
 		return new ElementStepSlider(getString("Text"), steps, d);
 	}
 

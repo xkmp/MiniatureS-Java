@@ -44,7 +44,9 @@ public class RollYourSister {
 	 * @param file
 	 */
 	public void startPY(String button, String FileName, int money, String imagePath, boolean imageType) {
-		FileName = (FileName.lastIndexOf("yml") == FileName.length() - 3) ? FileName : FileName + ".yml";
+		FileName = FileName.length() > 3
+				? (FileName.lastIndexOf("yml") == FileName.length() - 3) ? FileName : FileName + ".yml"
+				: FileName + ".yml";
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("Type", "Custom");
 		map.put("Player", player.getName());

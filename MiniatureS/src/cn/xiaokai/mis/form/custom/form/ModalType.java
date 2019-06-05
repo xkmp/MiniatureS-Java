@@ -40,12 +40,25 @@ public class ModalType extends SB10000 {
 		HashMap<String, Object> Items = (config.get("Items") instanceof Map)
 				? (HashMap<String, Object>) config.get("Items")
 				: new HashMap<>();
-		String Button1 = getMessage().getText(Items.get("Button1") == null ? "确定" : (String) Items.get("Button1"));
-		String Button2 = getMessage().getText(Items.get("Button2") == null ? "确定" : (String) Items.get("Button2"));
+		String Button1 = "确定";
+		String Button2 = "取消";
+		HashMap<String, Object> xxxxx;
+		if (Items.get("Button1") != null && (Items.get("Button1") instanceof Map)) {
+			xxxxx = (HashMap<String, Object>) Items.get("Button1");
+			Button1 = getMessage().getText(xxxxx.get("Text") == null ? "确定" : (String) xxxxx.get("Text"));
+		}
+		if (Items.get("Button2") != null && (Items.get("Button2") instanceof Map)) {
+			xxxxx = (HashMap<String, Object>) Items.get("Button2");
+			Button2 = getMessage().getText(xxxxx.get("Text") == null ? "取消" : (String) xxxxx.get("Text"));
+		}
 		CustomData data = new CustomData();
 		data.file = file;
 		data.AllData = Items;
 		data.FormType = "ModalType";
+		data.Button1 = Button1;
+		data.Button2 = Button2;
+		data.IWantAGirl = Content;
+		data.Title = Title;
 		data.OverallCommander = (config.getString("Commander") == null || config.getString("Commander").isEmpty())
 				? null
 				: config.getString("Commander");

@@ -44,6 +44,7 @@ public class SonAddBt {
 	 */
 	public void addOpenWindow(String Button, String FileName, int Money, String Command, boolean ImageType,
 			String ImagePath) {
+		FileName = (FileName.lastIndexOf("yml") == FileName.length() - 3) ? FileName : FileName + ".yml";
 		HashMap<String, Object> Buttons = (ccbs.get("Buttons") instanceof Map)
 				? (HashMap<String, Object>) (ccbs.get("Buttons"))
 				: (new HashMap<>());

@@ -46,18 +46,23 @@ public class SimpleReceive {
 	public void startPY() {
 		if (fx.OverallCommadn != null || (Item.get("Command") != null && !Item.get("Command").toString().isEmpty())) {
 			String FxCommand = "";
-			String Command = "";
-			Command = Item.get("Command").toString();
+			String Command = null;
+			if (Item.get("Command") != null && !Item.get("Command").toString().isEmpty())
+				Command = Item.get("Command").toString();
 			for (String ike : Items.keySet()) {
 				HashMap<String, Object> map = (HashMap<String, Object>) Items.get(ike);
 				if (fx.OverallCommadn != null && fx.OverallCommadn.contains(ike))
 					FxCommand = mis.getMessage().getText(fx.OverallCommadn,
-							new String[] { "{" + ike + "}", "{" + ike + "-ID}", "{Player}", "{file}" },
-							new Object[] { map.get("Text"), Keys.indexOf(ike), player.getName(), fx.file.getName() });
+							new String[] { "{" + ike + "}", "{" + ike + "-ID}", "{Player}", "{file}", "{Content}",
+									"{Title}" },
+							new Object[] { map.get("Text"), Keys.indexOf(ike), player.getName(), fx.file.getName(),
+									fx.IWantAGirl, fx.Title });
 				if (Item.get("Command") != null && !Item.get("Command").toString().isEmpty())
 					Command = mis.getMessage().getText(Command,
-							new String[] { "{" + ike + "}", "{" + ike + "-ID}", "{Player}", "{file}" },
-							new Object[] { map.get("Text"), Keys.indexOf(ike), player.getName(), fx.file.getName() });
+							new String[] { "{" + ike + "}", "{" + ike + "-ID}", "{Player}", "{file}", "{Content}",
+									"{Title}" },
+							new Object[] { map.get("Text"), Keys.indexOf(ike), player.getName(), fx.file.getName(),
+									fx.IWantAGirl, fx.Title });
 			}
 			if (fx.OverallCommadn != null && !FxCommand.isEmpty())
 				SendCommand.toCommand(player, FxCommand, fx.OverallCommander);
