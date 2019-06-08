@@ -1,4 +1,4 @@
-<h1>MiniatureS - 附加功能<img src="https://raw.githubusercontent.com/xkmp/Test/master/MiniatureS-Logo.png" height="64" width="64" align="left"></img></h1>
+<h1>MiniatureS - 超级菜单 <img src="https://raw.githubusercontent.com/xkmp/Test/master/MiniatureS-Logo.png" height="64" width="64" align="left"></img></h1>
 <br>
 
 ## MiniatureS 是什么?
