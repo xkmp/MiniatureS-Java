@@ -8,6 +8,7 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.element.Element;
+import cn.nukkit.form.element.ElementButtonImageData;
 import cn.nukkit.form.element.ElementSlider;
 import cn.nukkit.form.window.FormWindowCustom;
 import cn.nukkit.inventory.PlayerInventory;
@@ -118,21 +119,15 @@ public class ItemProcess {
 	public void ClickSellItem(Player player, HashMap<String, Object> data, String Shop, String Key) {
 		List<Element> list = new ArrayList<>();
 		list.add(new ElementSlider(
-				TextFormat.WHITE + "您打算购买多少个" + TextFormat.YELLOW
-						+ ItemIDSunName.getIDByName(String.valueOf(data.get("ID"))) + TextFormat.WHITE + "?\n"
-						+ TextFormat.WHITE + "您当前共有" + TextFormat.YELLOW + EconomyAPI.getInstance().myMoney(player)
-						+ TextFormat.WHITE + mis.config.getString("货币单位") + "\n购买" + TextFormat.AQUA,
+				"§f您打算购买多少个§f" + ItemIDSunName.getIDByName(String.valueOf(data.get("ID"))) + TextFormat.WHITE + "?\n"
+						+ "§f您当前共有§e" + EconomyAPI.getInstance().myMoney(player) + "§f" + mis.config.getString("货币单位")
+						+ "\n购买§e",
 				Float.valueOf(String.valueOf(data.get("Min_Count"))).intValue(),
 				Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue(), 1,
 				Float.valueOf(String.valueOf(data.get("Min_Count"))).intValue()));
-		player.showFormWindow(
-				new FormWindowCustom(
-						TextFormat.WHITE + "[" + TextFormat.YELLOW + Shop + TextFormat.WHITE + "]"
-								+ TextFormat.DARK_AQUA + "-" + TextFormat.WHITE + "[" + TextFormat.AQUA
-								+ ItemIDSunName.getIDByName(String.valueOf(data.get("ID"))) + TextFormat.WHITE + "]"
-								+ TextFormat.BLUE + "物品出售",
-						list, ItemIDSunName.getIDByPath(String.valueOf(data.get("ID")))),
-				MakeID.PlayerShopInteract.getID());
+		player.showFormWindow(new FormWindowCustom("§f[§e" + Shop + "§f]§a-§f[§c"
+				+ ItemIDSunName.getIDByName(String.valueOf(data.get("ID"))) + "§f]§9物品出售", list,
+				ItemIDSunName.getIDByPath(String.valueOf(data.get("ID")))), MakeID.PlayerShopInteract.getID());
 		mis.PlayerShopInteract.put(player.getName(), data);
 		ShopData value = new ShopData();
 		value.itemKey = Key;
@@ -158,32 +153,38 @@ public class ItemProcess {
 			if (Tool.isMateID(item.getId() + ":" + item.getDamage(), String.valueOf(data.get("ID"))))
 				Count += item.getCount();
 		}
-		list.add(new ElementSlider(
-				TextFormat.WHITE + "您想要出售多少个" + TextFormat.YELLOW
-						+ ItemIDSunName.getIDByName(String.valueOf(data.get("ID"))) + TextFormat.WHITE + "?\n"
-						+ TextFormat.WHITE + "您当前"
-						+ (Count > 0 ? ("共有" + TextFormat.YELLOW + Count + TextFormat.WHITE + "个") : "还没有")
-						+ TextFormat.YELLOW + ItemIDSunName.getIDByName(String.valueOf(data.get("ID")))
-						+ TextFormat.WHITE
-						+ (Count > 0 ? ("\n全部出售约能获利" + TextFormat.YELLOW
-								+ ((int) (Count * Float.valueOf(String.valueOf(data.get("Money"))))) + TextFormat.WHITE
-								+ mis.config.getString("货币单位"))
-								+ (Count > Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue()
-										? ("\n" + TextFormat.WHITE + "但由于物品出售上限\n本次您最多越能获利" + TextFormat.YELLOW
-												+ ((int) Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue()
-														* Float.valueOf(String.valueOf(data.get("Money"))))
-												+ TextFormat.WHITE + mis.config.getString("货币单位"))
+		list.add(
+				new ElementSlider(
+						"§f您想要出售多少个§e" + ItemIDSunName.getIDByName(String.valueOf(data.get("ID"))) + "§f?\n§f您当前"
+								+ (Count > 0 ? ("共有§e" + Count + "§f个") : "还没有") + "§e"
+								+ ItemIDSunName.getIDByName(String.valueOf(data
+										.get("ID")))
+								+ "§f"
+								+ (Count > 0
+										? ("\n全部出售约能获利§e"
+												+ ((int) (Count * Float.valueOf(String.valueOf(data.get("Money")))))
+												+ "§f" + mis.config.getString("货币单位"))
+												+ (Count > Float.valueOf(String.valueOf(data.get("Max_Count")))
+														.intValue()
+																? ("\n§f但由于物品出售上限\n本次您最多越能获利§e"
+																		+ ((int) Float
+																				.valueOf(String
+																						.valueOf(data.get("Max_Count")))
+																				.intValue()
+																				* Float.valueOf(String
+																						.valueOf(data.get("Money"))))
+																		+ "§f" + mis.config.getString("货币单位"))
+																: "")
 										: "")
-								: "")
-						+ (Boolean.valueOf(String.valueOf(data.get("Astrict")))
-								? ("\n" + TextFormat.WHITE + "剩余库存：" + String.valueOf(data.get("ExpCount")))
-								: "")
-						+ "\n出售" + TextFormat.AQUA,
-				Float.valueOf(String.valueOf(data.get("Min_Count"))).intValue(),
-				Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue(), 1,
-				Count > Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue()
-						? Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue()
-						: Count));
+								+ (Boolean.valueOf(String.valueOf(data.get("Astrict")))
+										? ("\n§f剩余库存：" + String.valueOf(data.get("ExpCount")))
+										: "")
+								+ "\n出售" + TextFormat.AQUA,
+						Float.valueOf(String.valueOf(data.get("Min_Count"))).intValue(),
+						Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue(), 1,
+						Count > Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue()
+								? Float.valueOf(String.valueOf(data.get("Max_Count"))).intValue()
+								: Count));
 		player.showFormWindow(
 				new FormWindowCustom(
 						TextFormat.WHITE + "[" + TextFormat.YELLOW + Shop + TextFormat.WHITE + "]"
@@ -282,49 +283,61 @@ public class ItemProcess {
 	 */
 	public void ClickItemToItem(Player player, HashMap<String, Object> data, String Shop, String Key) {
 		List<Element> list = new ArrayList<>();
-		PlayerInventory inventory = player.getInventory();
-		Map<Integer, Item> items = inventory.getContents();
-		int Count = 0;
-		for (Integer ike : items.keySet()) {
-			Item item = items.get(ike);
-			if (Tool.isMateID(item.getId() + ":" + item.getDamage(), String.valueOf(data.get("BlockID"))))
-				Count += item.getCount();
+		String FFFSB;
+		String FFF_PY_FFFF = "------------------------------";
+		String ItemsString = "";
+		ArrayList<String> icon = new ArrayList<>();
+		if (data.get("BlockID") instanceof List) {
+			for (String ditm : ((ArrayList<String>) data.get("BlockID"))) {
+				ItemsString += Tool.getRandColor() + ItemIDSunName.getIDByName(ditm) + " §e1" + Tool.getRandColor()
+						+ "个\n";
+				icon.add(ItemIDSunName.getIDByPath(ditm));
+			}
+		} else if (data.get("BlockID") instanceof Map) {
+			Map<String, Object> SCFFF = (Map<String, Object>) data.get("BlockID");
+			for (String ditm : SCFFF.keySet()) {
+				ItemsString += Tool.getRandColor() + ItemIDSunName.getIDByName(ditm) + " §e" + SCFFF.get(ditm)
+						+ Tool.getRandColor() + " 个\n";
+				icon.add(ItemIDSunName.getIDByPath(ditm));
+			}
+		} else {
+			ItemsString = Tool.getRandColor() + ItemIDSunName.getIDByName(String.valueOf(data.get("BlockID"))) + " §e1"
+					+ Tool.getRandColor() + "个\n";
+			icon.add(ItemIDSunName.getIDByPath(String.valueOf(data.get("BlockID"))));
 		}
-		int couu = Count > 0 ? (Count / (Float
-				.valueOf(String.valueOf(data.get("ItemMoeny") == null ? 1 : data.get("ItemMoeny"))).intValue() == 0 ? 1
-						: Float.valueOf(String.valueOf(data.get("ItemMoeny") == null ? 1 : data.get("ItemMoeny")))
-								.intValue()))
-				: 0;
-		list.add(
-				new ElementSlider(
-						TextFormat.WHITE + "您想兑换多少个 " + TextFormat.YELLOW + ItemIDSunName.getIDByName(String.valueOf(
-								data.get("ToBlockID"))) + TextFormat.WHITE + "?\n" + TextFormat.WHITE + "您当前共有 "
-								+ TextFormat.GOLD + Count + TextFormat.WHITE + " 个" + TextFormat.DARK_GREEN
-								+ ItemIDSunName.getIDByName(String.valueOf(data.get("BlockID"))) + "\n"
-								+ TextFormat.WHITE + "最多可兑换 " + TextFormat.DARK_PURPLE + couu + TextFormat.WHITE + " 个"
-								+ TextFormat.YELLOW + ItemIDSunName.getIDByName(String.valueOf(data.get("ToBlockID")))
-								+ (Boolean.valueOf(String.valueOf(data.get("Astrict")))
-										? ("\n" + TextFormat.WHITE + "剩余库存：" + TextFormat.RED
-												+ String.valueOf(data.get("ExpCount")))
-										: "")
-								+ (Float.valueOf(String.valueOf(data.get("ItemMoeny"))).intValue() > 0
-										? ("\n" + TextFormat.WHITE + "兑换每个" + TextFormat.YELLOW
-												+ ItemIDSunName.getIDByName(String.valueOf(data.get("ToBlockID")))
-												+ TextFormat.WHITE + "需要消耗" + TextFormat.AQUA
-												+ Float.valueOf(String.valueOf(data.get("ItemMoeny"))).intValue()
-												+ TextFormat.WHITE + mis.config.getString("货币单位"))
-										: "")
-								+ "\n兑换" + TextFormat.RED,
-						Float.valueOf(String.valueOf(data.get("Min"))).intValue(),
-						Float.valueOf(String.valueOf(data.get("Max"))).intValue(), 1,
-						couu < 1 ? Float.valueOf(String.valueOf(data.get("Min"))).intValue()
-								: (couu > Float.valueOf(String.valueOf(data.get("Max"))).intValue()
-										? Float.valueOf(String.valueOf(data.get("Max"))).intValue()
-										: couu)));
-		player.showFormWindow(new FormWindowCustom(
-				TextFormat.WHITE + "[" + TextFormat.YELLOW + Shop + TextFormat.WHITE + "]" + TextFormat.DARK_AQUA + "-"
-						+ TextFormat.WHITE + "]" + TextFormat.BLUE + "物品兑换",
-				list, "textures/ui/cartography_table_glass.png"), MakeID.PlayerShopInteract.getID());
+		String moneyItemString = "";
+		if (data.get("ToBlockID") instanceof List) {
+			ArrayList<String> zZFFFString = (ArrayList<String>) data.get("ToBlockID");
+			for (String ditm : zZFFFString)
+				moneyItemString += Tool.getRandColor() + ItemIDSunName.getIDByName(ditm) + " §e1" + Tool.getRandColor()
+						+ "个\n";
+		} else if (data.get("ToBlockID") instanceof Map) {
+			Map<String, Object> sbF = ((Map<String, Object>) data.get("ToBlockID"));
+			for (String ditm : sbF.keySet()) {
+				moneyItemString += Tool.getRandColor() + ItemIDSunName.getIDByName(ditm) + " §e" + sbF.get(ditm)
+						+ Tool.getRandColor() + "个\n";
+			}
+		} else
+			moneyItemString = Tool.getRandColor() + ItemIDSunName.getIDByName(String.valueOf(data.get("ToBlockID")))
+					+ " §e1" + Tool.getRandColor() + "个\n";
+		FFFSB = "§f您将可以兑换以下物品\n" + Tool.getColorFont(FFF_PY_FFFF + "\n") + moneyItemString
+				+ Tool.getColorFont(FFF_PY_FFFF) + "\n§4兑换这些物品您将会失去以下物品\n" + Tool.getColorFont(FFF_PY_FFFF + "\n")
+				+ ItemsString + Tool.getColorFont(FFF_PY_FFFF + "\n")
+				+ (Boolean.valueOf(String.valueOf(data.get("Astrict")))
+						? ("\n§f剩余库存：§4" + String.valueOf(data.get("ItemCount")))
+						: "")
+				+ (Float.valueOf(String.valueOf(data.get("ItemMoeny"))).intValue() > 0
+						? ("\n§f每次兑换需要消耗§5" + Float.valueOf(String.valueOf(data.get("ItemMoeny"))).intValue() + "§f"
+								+ mis.config.getString("货币单位"))
+						: "")
+				+ Tool.getColorFont("\n兑换前请检查背包空间是否充足！！！！") + "\n兑换";
+		list.add(new ElementSlider(FFFSB, Float.valueOf(String.valueOf(data.get("Min"))).intValue(),
+				Float.valueOf(String.valueOf(data.get("Max"))).intValue(), 1,
+				Float.valueOf(String.valueOf(data.get("Min"))).intValue()));
+		player.showFormWindow(
+				new FormWindowCustom("§f[§e" + Shop + "§f]§a-§9物品兑换", list, new ElementButtonImageData(
+						ElementButtonImageData.IMAGE_DATA_TYPE_PATH, icon.get(Tool.getRand(0, icon.size() - 1)))),
+				MakeID.PlayerShopInteract.getID());
 		mis.PlayerShopInteract.put(player.getName(), data);
 		ShopData value = new ShopData();
 		value.itemKey = Key;

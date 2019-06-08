@@ -187,6 +187,7 @@ public class MiniatureS extends PluginBase {
 	 * 存储自定义界面的数据
 	 */
 	public LinkedHashMap<String, CustomData> Custom;
+	public LinkedHashMap<String, Boolean> MakeFormTime = new LinkedHashMap<>();
 
 	/**
 	 * 明人不说暗话！这就是插件启动事件
@@ -280,13 +281,6 @@ public class MiniatureS extends PluginBase {
 		AdminCommand = new AdminCommand(this);
 		Custom = new LinkedHashMap<>();
 		EfficacyConfig.startPY();
-		file = new File(mis.getDataFolder(), "MiniatureS自定义控件介绍.docx");
-		try {
-			Utils.writeFile(file, this.getClass().getResourceAsStream("/resources/MiniatureS自定义控件介绍.docx"));
-			getLogger().info("§6已导出帮助文件至§9" + file.getAbsolutePath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		super.onLoad();
 	}
 

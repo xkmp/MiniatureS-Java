@@ -47,9 +47,11 @@ public class ShopMakeForm {
 			return;
 		}
 		List<Element> list = new ArrayList<>();
-		list.add(new ElementInput(TextFormat.GREEN + "请输入商店可以换的物品ID/物品名称  " + TextFormat.WHITE + "多个使用;分割", "玩家将会换得什么",
-				"钻石"));
-		list.add(new ElementInput(TextFormat.GREEN + "请输入玩家换物所需的物品ID/物品名称" + TextFormat.WHITE + "多个使用;分割", "玩家需要用什么来还",
+		list.add(
+				new ElementInput(TextFormat.GREEN + "请输入商店可以换的物品ID/物品名称  " + TextFormat.WHITE + "多个使用;分割(物品数量请在配置文件修改)",
+						"玩家将会换得什么", "钻石"));
+		list.add(new ElementInput(TextFormat.GREEN + "请输入玩家换物所需的物品ID/物品名称" + TextFormat.WHITE + "多个使用;分割(物品数量请在配置文件修改)",
+				"玩家需要用什么来还",
 				player.getInventory().getItemInHand().getId() != 0
 						? (player.getInventory().getItemInHand().getId() + ":"
 								+ player.getInventory().getItemInHand().getDamage())
@@ -57,8 +59,7 @@ public class ShopMakeForm {
 		list.add(new ElementInput(TextFormat.GREEN + "同时扣除玩家多少钱", "玩家在兑换物品时会扣除的金币", "1"));
 		list.add(new ElementInput(TextFormat.GREEN + "玩家每次能换的最少数", "", "1"));
 		list.add(new ElementInput(TextFormat.GREEN + "玩家每次能换的最大数", "", "64"));
-		list.add(new ElementInput(TextFormat.GREEN + "请输入想要出售的经验库存", "留空或小于等于零时不限制库存", "0"));
-		list.add(new ElementInput(TextFormat.GREEN + "需要多少个(金币)物品才能兑换目标物品 ", "", "1"));
+		list.add(new ElementInput(TextFormat.GREEN + "请输入想要出售的库存", "留空或小于等于零时不限制库存", "0"));
 		player.showFormWindow(
 				new FormWindowCustom(Tool.getRandColor() + mis.PlayerMenuBack.get(player.getName()), list),
 				MakeID.AddItemToItem.getID());
@@ -265,24 +266,31 @@ public class ShopMakeForm {
 				switch (String.valueOf(map.get("Type")).toLowerCase()) {
 				case "itemtoitem":
 				case "以物换物":
+					ArrayList<String> ls = new ArrayList<>();
+					if (map.get("BlockID") instanceof List) {
+						ls = (ArrayList<String>) map.get("BlockID");
+					} else if (map.get("BlockID") instanceof Map) {
+						Map<String, Object> x = (Map<String, Object>) map.get("BlockID");
+						for (String xs : x.keySet())
+							ls.add(xs);
+					} else
+						ls.add(String.valueOf(map.get("BlockID")));
+					ArrayList<String> las = new ArrayList<>();
+					if (map.get("ToBlockID") instanceof List) {
+						las = (ArrayList<String>) map.get("ToBlockID");
+					} else if (map.get("ToBlockID") instanceof Map) {
+						Map<String, Object> x = (Map<String, Object>) map.get("ToBlockID");
+						for (String xs : x.keySet())
+							las.add(xs);
+					} else
+						las.add(String.valueOf(map.get("ToBlockID")));
 					List.add(new ElementButton(
-							mis.getMessage().getSurname("Shop", "Items", "itemtoitem",
-									new String[] { "{MoneyItem}", "{MoneyItemName}", "{ItemName}", "{IsReMoney}",
-											"{ItemCount}" },
-									new Object[] {
-											String.valueOf((map.get("ItemMoeny") == null ? "1" : map.get("ItemMoeny"))),
-											ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID"))), ItemIDSunName
-													.getIDByName(String.valueOf(map.get("ToBlockID"))),
-											(Float.valueOf(String.valueOf(map.get("Money"))).intValue() > 0
-													? ("并扣除" + TextFormat.WHITE + String.valueOf(map.get("Money"))
-															+ TextFormat.DARK_BLUE + mis.config.getString("货币单位"))
-													: ""),
-											(Boolean.valueOf(String.valueOf(map.get("Astrict")))
-													? ("，空余库存：" + TextFormat.WHITE
-															+ String.valueOf(map.get("ExpCount")))
-													: "") }),
+							"§6" + ItemIDSunName.getIDByName(ls.get(Tool.getRand(0, ls.size() - 1)))
+									+ (ls.size() > 1 ? ("§f等§6" + ls.size() + "§f个物品") : "§f") + "可兑换§6"
+									+ ItemIDSunName.getIDByName(las.get(Tool.getRand(0, las.size() - 1)))
+									+ (las.size() > 1 ? ("§f等§6" + las.size()) + "§f个物品" : ""),
 							new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH,
-									"textures/ui/cartography_table_glass.png")));
+									ItemIDSunName.getIDByPath(las.get(Tool.getRand(0, las.size() - 1))))));
 					break;
 				case "sell_exp":
 				case "回收经验":

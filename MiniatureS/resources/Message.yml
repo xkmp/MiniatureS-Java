@@ -26,7 +26,7 @@ Main:
    NotIsButtons: §4打开失败！可能是该文件不存在这个按钮
 Shop:
    Items:
-      itemtoitem: §f{MoneyItem}§6个§f{MoneyItemName}§6可兑换一个§4{ItemName}{IsReMoney}{ItemCount}
+      itemtoitem: §f{MoneyItem}§6个§f{MoneyItemName}§6可兑换§4{ItemName}{IsReMoney}{ItemCount}
       sellExp: §1出售每级经验可得§f{Money}§f{MoneyName}{ItemCount}
       shopExp: §2购买每级经验需要§f{Money}§2{MoneyName}{ItemCount}
       shopItem: §9出售每个§e{ItemName}§9可得§4{Money}§9{MoneyName}{ItemCount}

@@ -99,7 +99,8 @@ public class PlayerEvent implements Listener {
 		Item item = e.getItem();
 		if (item != null && e.getAction() != null
 				&& (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-				&& Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool) && e.getPlayer().getGamemode() != 1) {
+				&& Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool) && e.getPlayer().getGamemode() != 1
+				&& item.getEnchantments().length > 0) {
 			e.setCancelled();
 			if (!mis.config.getBoolean("快捷打开为商店"))
 				mis.makeForm.makeMain(e.getPlayer());

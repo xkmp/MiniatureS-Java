@@ -1,7 +1,9 @@
 package cn.xiaokai.mis.shop;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
@@ -99,19 +101,48 @@ public class ItemCallback {
 		}
 		PlayerInventory inventory = player.getInventory();
 		Map<Integer, Item> items = inventory.getContents();
-		int MyCount = 0;
-		for (int ike : items.keySet()) {
-			Item item = items.get(ike);
-			MyCount += item.getCount();
+		Map<String, Integer> myIMap = new HashMap<>();
+		String YaoDeWuPing = "";
+		if (map.get("BlockID") instanceof Map) {
+			Map<String, Object> xs = (Map<String, Object>) map.get("BlockID");
+			for (String xx : xs.keySet()) {
+				YaoDeWuPing += "§e" + Count * (Tool.isInteger(String.valueOf(xs.get(xx)))
+						? Float.valueOf(String.valueOf(xs.get(xx))).intValue()
+						: 1) + "§6个§f" + ItemIDSunName.getIDByName(xx) + "\n";
+				myIMap.put(xx,
+						Count * (Tool.isInteger(String.valueOf(xs.get(xx)))
+								? Float.valueOf(String.valueOf(xs.get(xx))).intValue()
+								: 1));
+			}
+		} else if (map.get("BlockID") instanceof List) {
+			ArrayList<String> myList = (ArrayList<String>) map.get("BlockID");
+			for (String myitString : myList) {
+				YaoDeWuPing += "§e" + Count + "§6个§f" + ItemIDSunName.getIDByName(myitString) + "\n";
+				myIMap.put(myitString, Count);
+			}
+		} else {
+			myIMap.put(String.valueOf(map.get("BlockID")), Count);
+			YaoDeWuPing += "§e" + Count + "§6个§f" + ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID")))
+					+ "\n";
 		}
-		if (MyCount < (Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count)) {
-			MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemToItemItemSB",
-					new String[] { "{asCount}", "{isOK}", "{ItemName}", "{getCount}" },
-					new Object[] { (Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count),
-							(MyCount > 0 ? ("有" + TextFormat.AQUA + MyCount + TextFormat.YELLOW + "个") : "还没有没有"),
-							ItemIDSunName.getIDByName(String.valueOf(map.get("BlockID"))),
-							((Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count) - MyCount) }));
-			return;
+		for (String itname : myIMap.keySet()) {
+			int MyCount = 0;
+			for (int ike : items.keySet()) {
+				Item item = items.get(ike);
+				if (Tool.isMateID(item.getId() + ":" + item.getDamage(), itname))
+					MyCount += item.getCount();
+			}
+			if (MyCount < (Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count)) {
+				MakeForm.makeTip(player, mis.getMessage().getSon("Shop", "ItemToItemItemSB",
+						new String[] { "{asCount}", "{isOK}", "{ItemName}", "{getCount}" },
+						new Object[] {
+								(Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count) + "§6个§f"
+										+ ItemIDSunName.getIDByName(itname),
+								(MyCount > 0 ? ("有§5" + MyCount + "§e个") : "还没有没有"), ItemIDSunName.getIDByName(itname),
+								((Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count)
+										- MyCount) }));
+				return;
+			}
 		}
 		if (Boolean.valueOf(String.valueOf(map.get("Astrict")))) {
 			if (Float.valueOf(String.valueOf(map.get("ItemCount"))).intValue() < 1) {
@@ -136,22 +167,47 @@ public class ItemCallback {
 			}
 		}
 		EconomyAPI.getInstance().reduceMoney(player, Money);
-		String IDi = ItemIDSunName.UnknownToID(String.valueOf(map.get("BlockID")));
-		String[] IDs = IDi.split(":");
-		inventory.removeItem(new Item(Integer.valueOf(IDs[0]), Integer.valueOf(IDs[1]),
-				Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count));
-		IDi = ItemIDSunName.UnknownToID(String.valueOf(map.get("ToBlockID")));
-		IDs = IDi.split(":");
-		inventory.addItem(new Item(Integer.valueOf(IDs[0]), Integer.valueOf(IDs[1]), Count));
-		player.sendMessage(mis.getMessage().getSon("Shop", "ItemToItemOK",
-				new String[] { "{asCount}", "{ItemName}", "{Count}", "{toItem}", "{T}" },
-				new Object[] { (Float.valueOf(String.valueOf(map.get("ItemMoeny"))).intValue() * Count),
-						ItemIDSunName.getIDByName(ItemIDSunName.UnknownToID(String.valueOf(map.get("BlockID")))), Count,
-						ItemIDSunName.getIDByName(IDi),
-						(Money > 0
-								? (TextFormat.GREEN + ",同时消耗" + TextFormat.WHITE + Money + TextFormat.GREEN
-										+ mis.config.getString("货币单位"))
-								: "") }));
+		for (String ik : myIMap.keySet()) {
+			String IDi = ItemIDSunName.UnknownToID(ik);
+			String[] IDs = IDi.split(":");
+			inventory.removeItem(new Item(Integer.valueOf(IDs[0]), Integer.valueOf(IDs[1]), myIMap.get(ik) * Count));
+		}
+		String DeDeWuPing = "";
+		Map<String, Integer> Dedewuping = new HashMap<>();
+		if (map.get("ToBlockID") instanceof List) {
+			ArrayList<String> list = (ArrayList<String>) map.get("ToBlockID");
+			for (String in : list) {
+				Dedewuping.put(in, Count);
+				DeDeWuPing += "§e" + Count + "§f个§4" + ItemIDSunName.getIDByName(in) + "\n";
+			}
+		} else if (map.get("ToBlockID") instanceof Map) {
+			HashMap<String, Object> mHashMap = (HashMap<String, Object>) map.get("ToBlockID");
+			for (String is : mHashMap.keySet()) {
+				int XCOUNt = Count * (Tool.isInteger(String.valueOf(mHashMap.get(is)))
+						? Float.valueOf(String.valueOf(mHashMap.get(is))).intValue()
+						: 1);
+				DeDeWuPing += "§e" + XCOUNt + "§f个§4" + ItemIDSunName.getIDByName(is) + "\n";
+				Dedewuping.put(is, XCOUNt);
+			}
+		} else {
+			Dedewuping.put(String.valueOf(map.get("ToBlockID")), Count);
+			DeDeWuPing += "§e" + Count + "§f个§4" + ItemIDSunName.getIDByName(String.valueOf(map.get("ToBlockID")))
+					+ "\n";
+		}
+		for (String dd : Dedewuping.keySet()) {
+			String IDi = ItemIDSunName.UnknownToID(dd);
+			String[] IDs = IDi.split(":");
+			inventory.addItem(new Item(Integer.valueOf(IDs[0]), Integer.valueOf(IDs[1]), Dedewuping.get(dd) * Count));
+		}
+		String FFF_PY_FFFF = "------------------------------";
+		String sssss = "§6您成功兑换了以下物品\n" + Tool.getColorFont(FFF_PY_FFFF + "\n") + DeDeWuPing
+				+ Tool.getColorFont(FFF_PY_FFFF + "\n") + "§4同时失去以下物品\n" + Tool.getColorFont(FFF_PY_FFFF + "\n")
+				+ YaoDeWuPing + Tool.getColorFont(FFF_PY_FFFF + "\n")
+				+ (Money > 0
+						? (TextFormat.GREEN + ",同时消耗" + TextFormat.WHITE + Money + TextFormat.GREEN
+								+ mis.config.getString("货币单位"))
+						: "");
+		player.sendMessage(sssss);
 		this.remove();
 	}
 

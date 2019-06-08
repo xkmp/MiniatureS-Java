@@ -54,13 +54,15 @@ public class FormCallback implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public void onPlayerForm(PlayerFormRespondedEvent e) {
+		Player player = e.getPlayer();
+		if (mis.MakeFormTime.containsKey(player.getName()))
+			mis.MakeFormTime.remove(player.getName());
 		if (e.wasClosed() || e.getResponse() == null
 				|| (!(e.getResponse() instanceof FormResponseCustom) && !(e.getResponse() instanceof FormResponseSimple)
 						&& !(e.getResponse() instanceof FormResponseModal))
 				|| e.getPlayer() == null || MakeID.getByID(e.getFormID()) == null)
 			return;
 		mis.Menus = new Config(mis.getDataFolder() + "/Main.yml", 2);
-		Player player = e.getPlayer();
 		FormResponse data = e.getResponse();
 		switch (MakeID.getByID(e.getFormID())) {
 		case CustomTypeForm:

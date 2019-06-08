@@ -12,6 +12,7 @@ import cn.nukkit.utils.TextFormat;
 import cn.xiaokai.mis.MiniatureS;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
@@ -39,10 +40,9 @@ public class Shop {
 	 * @param Min       每次最少能对少多少个
 	 * @param Max       每次最多能兑换多少个
 	 * @param ItemCount 库存
-	 * @param ItemMoeny 没得可得物品需要玩家使用多少物品兑换
 	 */
-	public void AddItemToItem(String Key, Player player, int Money, String BlockID, String ToBlockID, int Min, int Max,
-			int ItemCount, int ItemMoeny) {
+	public void AddItemToItem(String Key, Player player, int Money, ArrayList<String> BlockID,
+			ArrayList<String> ToBlockID, int Min, int Max, int ItemCount) {
 		boolean Astrict = (ItemCount > 0);
 		ItemCount = ItemCount >= 0 ? ItemCount : 0;
 		HashMap<String, Object> map = new HashMap<>();
@@ -54,7 +54,7 @@ public class Shop {
 		map.put("Max", Max);
 		map.put("Type", "ItemToItem");
 		map.put("ItemCount", ItemCount);
-		map.put("ItemMoeny", ItemMoeny);
+		map.put("ItemMoeny", Money);
 		HashMap<String, Object> Bt = (HashMap<String, Object>) mis.ShopListConfig.get("Buttons");
 		if (!Bt.containsKey(Key)) {
 			player.sendMessage(TextFormat.RED + "非常抱歉！您正在创建出售物品的商店页不存在或已被移除");
@@ -77,13 +77,18 @@ public class Shop {
 		Buttons.put(getShopItemKey(Buttons), map);
 		config.set("Buttons", Buttons);
 		config.save();
-		player.sendMessage(TextFormat.GREEN + "成功创建一个物品兑换商店！使用" + TextFormat.YELLOW + ItemMoeny + TextFormat.GREEN + "个"
-				+ TextFormat.WHITE + ItemIDSunName.getIDByName(BlockID) + TextFormat.GREEN + "可兑换一个" + TextFormat.WHITE
-				+ ItemIDSunName.getIDByName(ToBlockID) + TextFormat.GREEN
-				+ (ItemMoeny > 0
-						? ("并扣除" + TextFormat.BLUE + ItemMoeny + TextFormat.GREEN + mis.config.getString("货币单位"))
-						: "")
-				+ (Astrict ? ("，限制库存" + TextFormat.BLUE + ItemCount) : "，不限制库存"));
+		player.sendMessage("§6成功创建一个物品兑换商店！使用§4"
+				+ (BlockID.size() > 1
+						? ItemIDSunName.getIDByName(BlockID.get(Tool.getRand(0, BlockID.size() - 1))) + "§6等§f"
+								+ BlockID.size() + "§6个物品"
+						: ItemIDSunName.getIDByName(BlockID.get(0)))
+				+ "§6兑换§4"
+				+ (ToBlockID.size() > 1
+						? ItemIDSunName.getIDByName(ToBlockID.get(Tool.getRand(0, ToBlockID.size() - 1))) + "§6等§4"
+								+ ToBlockID.size() + "§6个物品"
+						: ItemIDSunName.getIDByName(ToBlockID.get(0)))
+				+ "§6" + (Money > 0 ? ("并扣除§9" + Money + "§6" + mis.config.getString("货币单位")) : "")
+				+ (Astrict ? ("，限制库存§9" + ItemCount) : "，不限制库存"));
 	}
 
 	/**

@@ -11,6 +11,7 @@ import cn.xiaokai.mis.form.FormStatic;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.tool.ItemIDSunName;
 import cn.xiaokai.mis.tool.Tool;
+
 /**
  * @author Winfxk
  */
@@ -67,27 +68,40 @@ public class DataDispose {
 	public void AddItemToItem(Player player, FormResponseCustom data) {
 		if (!Tool.isNumeric(String.valueOf(data.getResponse(2))) || !Tool.isNumeric(String.valueOf(data.getResponse(3)))
 				|| !Tool.isNumeric(String.valueOf(data.getResponse(4)))
-				|| !Tool.isNumeric(String.valueOf(data.getResponse(5)))
-				|| !Tool.isNumeric(String.valueOf(data.getResponse(6)))) {
+				|| !Tool.isNumeric(String.valueOf(data.getResponse(5)))) {
 			MakeForm.makeTip(player, TextFormat.RED + "部分参数仅支持纯数字！");
 			return;
 		}
 		if (!Tool.isInteger(String.valueOf(data.getResponse(2))) || !Tool.isInteger(String.valueOf(data.getResponse(3)))
 				|| !Tool.isInteger(String.valueOf(data.getResponse(4)))
-				|| !Tool.isInteger(String.valueOf(data.getResponse(5)))
-				|| !Tool.isInteger(String.valueOf(data.getResponse(6)))) {
+				|| !Tool.isInteger(String.valueOf(data.getResponse(5)))) {
 			MakeForm.makeTip(player, TextFormat.RED + "部分参数不得超出范围（0-2147483647）！");
 			return;
 		}
-		String BlockID = ItemIDSunName.UnknownToID(String.valueOf(data.getResponse(0)));
-		String ToBlockID = ItemIDSunName.UnknownToID(String.valueOf(data.getResponse(1)));
+		String BlockID = String.valueOf(data.getResponse(0));
+		String ToBlockID = String.valueOf(data.getResponse(1));
 		int Money = Float.valueOf(String.valueOf(data.getResponse(2))).intValue();
 		int Min = Float.valueOf(String.valueOf(data.getResponse(3))).intValue();
 		int Max = Float.valueOf(String.valueOf(data.getResponse(4))).intValue();
 		int ItemCount = Float.valueOf(String.valueOf(data.getResponse(5))).intValue();
-		int ItemMoeny = Float.valueOf(String.valueOf(data.getResponse(6))).intValue();
-		(new Shop(mis)).AddItemToItem(mis.PlayerMenuBack.get(player.getName()), player, Money, BlockID, ToBlockID, Min,
-				Max, ItemCount, ItemMoeny);
+		ArrayList<String> BlockIDs = new ArrayList<String>();
+		if (BlockID.contains(";")) {
+			String[] BlockIDx = BlockID.split(";");
+			for (String B : BlockIDx)
+				if (B != null && !B.isEmpty())
+					BlockIDs.add(ItemIDSunName.UnknownToID(B));
+		} else
+			BlockIDs.add(ItemIDSunName.UnknownToID(BlockID));
+		ArrayList<String> ToBlockIDs = new ArrayList<>();
+		if (ToBlockID.contains(";")) {
+			String[] ToBlockIDx = ToBlockID.split(";");
+			for (String I : ToBlockIDx)
+				if (I != null && !I.isEmpty())
+					ToBlockIDs.add(ItemIDSunName.UnknownToID(I));
+		} else
+			ToBlockIDs.add(ItemIDSunName.UnknownToID(ToBlockID));
+		(new Shop(mis)).AddItemToItem(mis.PlayerMenuBack.get(player.getName()), player, Money, BlockIDs, ToBlockIDs,
+				Min, Max, ItemCount);
 	}
 
 	public void AddExpSell(Player player, FormResponseCustom data) {
@@ -221,10 +235,6 @@ public class DataDispose {
 	 * @param data   传递回来的数据
 	 */
 	public void Shop(Player player, FormResponseSimple data) {
-		if (!player.isOp()) {
-			MakeForm.makeTip(player, TextFormat.RED + "你没有权限这样做！");
-			return;
-		}
 		int list_int = mis.shopList.get(player.getName()).size();
 		if (!player.isOp() && data != null && list_int < (data.getClickedButtonId() + 1)) {
 			MakeForm.makeTip(player, TextFormat.RED + "数据解析错误：未知的数据Key或您无权限！");
