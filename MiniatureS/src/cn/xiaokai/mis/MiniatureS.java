@@ -50,6 +50,7 @@ import cn.xiaokai.mis.cmd.MyShopCommand;
 import cn.xiaokai.mis.cmd.ShopCommand;
 import cn.xiaokai.mis.event.FormCallback;
 import cn.xiaokai.mis.event.PlayerEvent;
+import cn.xiaokai.mis.event.yousb.SBPlayerData;
 import cn.xiaokai.mis.form.MakeForm;
 import cn.xiaokai.mis.form.custom.CustomData;
 import cn.xiaokai.mis.form.openbt.HandsomeXiaoKai;
@@ -59,6 +60,7 @@ import cn.xiaokai.mis.myshop.TonsFx;
 import cn.xiaokai.mis.shop.ShopData;
 import cn.xiaokai.mis.shop.ShopMakeForm;
 import cn.xiaokai.mis.tool.Tool;
+import cn.xiaokai.mis.tool.up.Update;
 
 /**
  * @author Winfxk
@@ -187,7 +189,7 @@ public class MiniatureS extends PluginBase {
 	 * 存储自定义界面的数据
 	 */
 	public LinkedHashMap<String, CustomData> Custom;
-	public LinkedHashMap<String, Boolean> MakeFormTime = new LinkedHashMap<>();
+	public LinkedHashMap<String, SBPlayerData> MakeFormTime = new LinkedHashMap<>();
 
 	/**
 	 * 明人不说暗话！这就是插件启动事件
@@ -247,12 +249,12 @@ public class MiniatureS extends PluginBase {
 			try {
 				file = new File(this.getDataFolder(), ConfigNameList[i]);
 				if (!file.exists()) {
-					this.getServer().getLogger().info(TextFormat.RED + "初始化资源：" + TextFormat.GREEN + ConfigNameList[i]);
+					this.getServer().getLogger().info("§6初始化资源：§c" + ConfigNameList[i]);
 					Utils.writeFile(file, this.getClass().getResourceAsStream("/resources/" + ConfigNameList[i]));
 				}
 			} catch (IOException e) {
-				this.getServer().getLogger().info(TextFormat.RED + "资源：" + TextFormat.GREEN + ConfigNameList[i]
-						+ TextFormat.RED + "加载错误！\n" + TextFormat.WHITE + "错误详情：" + e.getMessage());
+				this.getServer().getLogger()
+						.info("§4资源：§6" + ConfigNameList[i] + "§4加载错误！\n" + "§f错误详情：" + e.getMessage());
 				this.getServer().getPluginManager().disablePlugin(this);
 			}
 		ReloadConfig.start();
@@ -281,6 +283,14 @@ public class MiniatureS extends PluginBase {
 		AdminCommand = new AdminCommand(this);
 		Custom = new LinkedHashMap<>();
 		EfficacyConfig.startPY();
+		if (config.getBoolean("检测更新"))
+			(new Update(this)).start();
+		file = new File(getDataFolder(), "MiniatureS自定义控件介绍.docx");
+		try {
+			Utils.writeFile(file, mis.getClass().getResourceAsStream("/resources/MiniatureS自定义控件介绍.docx"));
+			getLogger().info("§6帮助文件已导出至§4" + file.getName());
+		} catch (IOException e) {
+		}
 		super.onLoad();
 	}
 

@@ -208,7 +208,6 @@ public class ItemCallback {
 								+ mis.config.getString("货币单位"))
 						: "");
 		player.sendMessage(sssss);
-		this.remove();
 	}
 
 	/**
@@ -256,7 +255,6 @@ public class ItemCallback {
 		player.setExperience(player.getExperience(), (player.getExperienceLevel() - Count));
 		player.sendMessage(mis.getMessage().getSon("Shop", "ExpPyOKNotSB", new String[] { "{Count}", "{Money}" },
 				new Object[] { Count, Money }));
-		this.remove();
 	}
 
 	/**
@@ -306,7 +304,6 @@ public class ItemCallback {
 		player.setExperience(player.getExperience(), (player.getExperienceLevel() + Count));
 		player.sendMessage(mis.getMessage().getSon("Shop", "ExpPyOKNotSbShop", new String[] { "{Count}", "{Money}" },
 				new Object[] { Count, Money }));
-		this.remove();
 	}
 
 	/**
@@ -359,7 +356,6 @@ public class ItemCallback {
 		EconomyAPI.getInstance().reduceMoney(player, Money);
 		player.sendMessage(mis.getMessage().getSon("Shop", "ShopItemOKNotSB", new String[] { "{ItemName}", "{Money}" },
 				new Object[] { ItemIDSunName.getIDByName(IDi), Money }));
-		this.remove();
 	}
 
 	/**
@@ -405,7 +401,9 @@ public class ItemCallback {
 						.valueOf(((HashMap<String, Object>) mis.ShopListConfig.get("Buttons")).get(value.ShopKey));
 				Config config = new Config(new File(mis.getDataFolder() + MiniatureS.ShopConfigPath, ShopConfigName),
 						Config.YAML);
-				HashMap<String, Object> ppap = (HashMap<String, Object>) config.get("Buttons");
+				HashMap<String, Object> ppap = (config.get("Buttons") != null && config.get("Buttons") instanceof Map)
+						? (HashMap<String, Object>) config.get("Buttons")
+						: new HashMap<>();
 				ppap.put(value.itemKey, map);
 				config.set("Buttons", ppap);
 				config.save();
@@ -418,19 +416,5 @@ public class ItemCallback {
 		player.sendMessage(mis.getMessage().getSon("Shop", "PYItemOKNotSB",
 				new String[] { "{Count}", "{ItemName}", "{Money}" }, new Object[] { Count,
 						ItemIDSunName.getIDByName(IDi), (Count * Float.valueOf(String.valueOf(map.get("Money")))) }));
-		this.remove();
-	}
-
-	private void remove() {
-		if (mis.PlayerShopInteract.get(player.getName()) != null)
-			mis.PlayerShopInteract.remove(player.getName());
-		if (mis.PlayerMenuBack.get(player.getName()) != null)
-			mis.PlayerMenuBack.remove(player.getName());
-		if (mis.shopList.get(player.getName()) != null)
-			mis.shopList.remove(player.getName());
-		if (mis.PlayerMenu.get(player.getName()) != null)
-			mis.PlayerMenu.remove(player.getName());
-		if (mis.PlayerShopItemData.get(player.getName()) != null)
-			mis.PlayerShopItemData.remove(player.getName());
 	}
 }

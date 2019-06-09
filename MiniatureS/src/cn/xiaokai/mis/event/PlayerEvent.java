@@ -1,6 +1,7 @@
 package cn.xiaokai.mis.event;
 
-import java.util.Map;
+import java.time.Duration;
+import java.time.Instant;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
@@ -12,13 +13,12 @@ import cn.nukkit.event.player.PlayerInteractEvent.Action;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.player.PlayerRespawnEvent;
-import cn.nukkit.inventory.Inventory;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.enchantment.Enchantment;
-import cn.nukkit.utils.Config;
+import cn.nukkit.nbt.tag.CompoundTag;
 import cn.xiaokai.mis.MiniatureS;
+import cn.xiaokai.mis.event.yousb.FFFSB;
 import cn.xiaokai.mis.event.yousb.Fuck;
-import cn.xiaokai.mis.myshop.CPlayer;
+import cn.xiaokai.mis.event.yousb.SBPlayerData;
 import cn.xiaokai.mis.tool.Tool;
 
 /**
@@ -76,13 +76,22 @@ public class PlayerEvent implements Listener {
 		if (makeTool == null || makeTool.equals(""))
 			return;
 		Item item = e.getItem();
+		Player player = e.getPlayer();
+		SBPlayerData data = mis.MakeFormTime.containsKey(player.getName())
+				? mis.MakeFormTime.get(player.getName()) == null ? new SBPlayerData()
+						: mis.MakeFormTime.get(player.getName())
+				: new SBPlayerData();
 		if (item != null && Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool)
-				&& e.getPlayer().getGamemode() == 1) {
+				&& (data == null || data.Open != true
+						|| ((float) (Duration.between(data.OpenTime, Instant.now()).toMillis()) / 1000) > 1)) {
 			e.setCancelled();
+			data.Open = true;
+			data.OpenTime = Instant.now();
+			mis.MakeFormTime.put(player.getName(), data);
 			if (!mis.config.getBoolean("快捷打开为商店"))
-				mis.makeForm.makeMain(e.getPlayer());
+				mis.makeForm.makeMain(player);
 			else
-				mis.shopMakeForm.MakeMain(e.getPlayer());
+				mis.shopMakeForm.MakeMain(player);
 		}
 	}
 
@@ -97,15 +106,27 @@ public class PlayerEvent implements Listener {
 		if (makeTool == null || makeTool.equals(""))
 			return;
 		Item item = e.getItem();
-		if (item != null && e.getAction() != null
-				&& (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-				&& Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool) && e.getPlayer().getGamemode() != 1
-				&& item.getEnchantments().length > 0) {
+		CompoundTag Tag = item.getNamedTag();
+		Action action = e.getAction();
+		Player player = e.getPlayer();
+		SBPlayerData data = mis.MakeFormTime.containsKey(player.getName())
+				? mis.MakeFormTime.get(player.getName()) == null ? new SBPlayerData()
+						: mis.MakeFormTime.get(player.getName())
+				: new SBPlayerData();
+		if (item != null && Tool.isMateID(makeTool, item.getId() + ":" + item.getDamage())
+				&& Tag.getString("快捷工具名称").equals(mis.getMessage().getMessage("快捷工具名称")) && action != null
+				&& (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK
+						|| action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)
+				&& (data == null || data.Open != true
+						|| ((float) (Duration.between(data.OpenTime, Instant.now()).toMillis()) / 1000) > 1)) {
 			e.setCancelled();
+			data.Open = true;
+			data.OpenTime = Instant.now();
+			mis.MakeFormTime.put(player.getName(), data);
 			if (!mis.config.getBoolean("快捷打开为商店"))
-				mis.makeForm.makeMain(e.getPlayer());
+				mis.makeForm.makeMain(player);
 			else
-				mis.shopMakeForm.MakeMain(e.getPlayer());
+				mis.shopMakeForm.MakeMain(player);
 		}
 	}
 
@@ -119,28 +140,8 @@ public class PlayerEvent implements Listener {
 		String makeTool = mis.config.getString("快捷工具", null);
 		if (makeTool == null || makeTool.equals(""))
 			return;
-		Player player = e.getPlayer();
-		Inventory inventory = player.getInventory();
-		Map<Integer, Item> map = inventory.getContents();
-		Item item;
-		boolean Mate = false;
-		for (int site : map.keySet()) {
-			item = map.get(site);
-			if (Mate = Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool))
-				break;
-		}
-		if (!Mate) {
-			int[] ID = Tool.IDtoFullID(makeTool);
-			item = new Item(ID[0], ID[1]);
-			item.addEnchantment(Enchantment.get(Enchantment.ID_SILK_TOUCH));
-			item.setCustomName(mis.getMessage().getMessage("快捷工具名称", new String[] { "{Player}", "{Server_Name}" },
-					new String[] { player.getName(), mis.getServer().getMotd() }));
-			item.setLore(mis.getMessage().getMessage("快捷工具名称2", new String[] { "{Player}", "{Server_Name}" },
-					new String[] { player.getName(), mis.getServer().getMotd() }));
-			inventory.addItem(item);
-			player.sendMessage(mis.getMessage().getMessage("进服给快捷工具", new String[] { "{Player}", "{Server_Name}" },
-					new String[] { player.getName(), mis.getServer().getMotd() }));
-		}
+		FFFSB sb = new FFFSB(e.getPlayer());
+		sb.getMis();
 	}
 
 	/**
@@ -150,37 +151,12 @@ public class PlayerEvent implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onJoin(PlayerJoinEvent e) {
+		Player player = e.getPlayer();
 		String makeTool = mis.config.getString("快捷工具", null);
+		(new Fuck()).Switch(player);
 		if (makeTool == null || makeTool.equals(""))
 			return;
-		Player player = e.getPlayer();
-		Inventory inventory = player.getInventory();
-		Map<Integer, Item> map = inventory.getContents();
-		if (!CPlayer.isPlayerConfig(player)) {
-			Config cp = CPlayer.getPlayerConfig(player);
-			player.sendMessage(mis.getMessage().getMessage("玩家加入提示1"));
-			cp.setAll(CPlayer.getConfig());
-			cp.save();
-		}
-		Item item;
-		boolean Mate = false;
-		for (int site : map.keySet()) {
-			item = map.get(site);
-			if (Mate = Tool.isMateID(item.getId() + ":" + item.getDamage(), makeTool))
-				break;
-		}
-		if (!Mate) {
-			int[] ID = Tool.IDtoFullID(makeTool);
-			item = new Item(ID[0], ID[1]);
-			item.addEnchantment(Enchantment.get(Enchantment.ID_SILK_TOUCH));
-			item.setCustomName(mis.getMessage().getMessage("快捷工具名称", new String[] { "{Player}", "{Server_Name}" },
-					new String[] { player.getName(), mis.getServer().getMotd() }));
-			item.setLore(mis.getMessage().getMessage("快捷工具名称2", new String[] { "{Player}", "{Server_Name}" },
-					new String[] { player.getName(), mis.getServer().getMotd() }));
-			inventory.addItem(item);
-			player.sendMessage(mis.getMessage().getMessage("进服给快捷工具", new String[] { "{Player}", "{Server_Name}" },
-					new String[] { player.getName(), mis.getServer().getMotd() }));
-		}
-		(new Fuck()).Switch(player);
+		FFFSB sb = new FFFSB(player);
+		sb.getMis();
 	}
 }

@@ -3,7 +3,6 @@ package cn.xiaokai.mis;
 import java.io.File;
 
 import cn.nukkit.utils.Config;
-import cn.nukkit.utils.TextFormat;
 
 /**
  * @author Winfxk
@@ -26,13 +25,10 @@ public class EfficacyConfig {
 					File file = new File(dirFile, fileName);
 					try {
 						new Config(file, Config.YAML);
-						MiniatureS.mis.getLogger().info(MiniatureS.Title + TextFormat.YELLOW + "文件" + TextFormat.GREEN
-								+ dirFile.getName() + "/" + fileName + TextFormat.YELLOW + "效验成功！");
+						MiniatureS.mis.getLogger().info("§e文件§6" + dirFile.getName() + "/" + fileName + "§e效验成功！");
 					} catch (Exception e) {
-						MiniatureS.mis.getLogger()
-								.info(MiniatureS.Title + TextFormat.RED + "文件" + TextFormat.GREEN + dirFile.getName()
-										+ "/" + fileName + TextFormat.RED + "效验不通过！请检查！" + TextFormat.WHITE
-										+ e.getMessage());
+						MiniatureS.mis.getLogger().info(
+								"§4文件§6" + dirFile.getName() + "§4/§6" + fileName + "§4效验不通过！请检查！§f" + e.getMessage());
 					}
 				}
 		}

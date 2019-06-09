@@ -63,7 +63,7 @@ public class DonFiddle {
 					new String[] { "{Money}" }, new Object[] { Money }));
 		}
 		if (SX != null && !SX.isEmpty())
-			if (String.valueOf(kai.Button.get("Commander")).toLowerCase() == "player")
+			if (!String.valueOf(kai.Button.get("Commander")).toLowerCase().equals("console"))
 				Server.getInstance().dispatchCommand(player, SX);
 			else
 				Server.getInstance().dispatchCommand(new ConsoleCommandSender(), SX);

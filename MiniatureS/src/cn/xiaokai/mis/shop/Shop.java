@@ -41,8 +41,8 @@ public class Shop {
 	 * @param Max       每次最多能兑换多少个
 	 * @param ItemCount 库存
 	 */
-	public void AddItemToItem(String Key, Player player, int Money, ArrayList<String> BlockID,
-			ArrayList<String> ToBlockID, int Min, int Max, int ItemCount) {
+	public void AddItemToItem(String Key, Player player, int Money, HashMap<String, Integer> BlockID,
+			HashMap<String, Integer> ToBlockID, int Min, int Max, int ItemCount) {
 		boolean Astrict = (ItemCount > 0);
 		ItemCount = ItemCount >= 0 ? ItemCount : 0;
 		HashMap<String, Object> map = new HashMap<>();
@@ -77,16 +77,16 @@ public class Shop {
 		Buttons.put(getShopItemKey(Buttons), map);
 		config.set("Buttons", Buttons);
 		config.save();
+		Object[] Keys1 = BlockID.keySet().toArray();
+		Object[] Keys2 = ToBlockID.keySet().toArray();
 		player.sendMessage("§6成功创建一个物品兑换商店！使用§4"
-				+ (BlockID.size() > 1
-						? ItemIDSunName.getIDByName(BlockID.get(Tool.getRand(0, BlockID.size() - 1))) + "§6等§f"
-								+ BlockID.size() + "§6个物品"
-						: ItemIDSunName.getIDByName(BlockID.get(0)))
+				+ (BlockID.size() > 1 ? ItemIDSunName.getIDByName(BlockID.get(Keys1[Tool.getRand(0, Keys1.length - 1)]))
+						+ "§6等§f" + BlockID.size() + "§6个物品" : ItemIDSunName.getIDByName(BlockID.get(Keys1[0])))
 				+ "§6兑换§4"
 				+ (ToBlockID.size() > 1
-						? ItemIDSunName.getIDByName(ToBlockID.get(Tool.getRand(0, ToBlockID.size() - 1))) + "§6等§4"
+						? ItemIDSunName.getIDByName(ToBlockID.get(Keys2[Tool.getRand(0, Keys2.length - 1)])) + "§6等§4"
 								+ ToBlockID.size() + "§6个物品"
-						: ItemIDSunName.getIDByName(ToBlockID.get(0)))
+						: ItemIDSunName.getIDByName(ToBlockID.get(Keys2[0])))
 				+ "§6" + (Money > 0 ? ("并扣除§9" + Money + "§6" + mis.config.getString("货币单位")) : "")
 				+ (Astrict ? ("，限制库存§9" + ItemCount) : "，不限制库存"));
 	}
@@ -369,12 +369,16 @@ public class Shop {
 	 * @return 商店kye
 	 */
 	private String getShopItemKey(HashMap<String, Object> buttons) {
+		return getShopItemKey(buttons, 1);
+	}
+
+	private String getShopItemKey(HashMap<String, Object> buttons, int JJLeng) {
 		String nameString = "";
-		int length = Tool.getRand(5, 20);
+		int length = JJLeng;
 		for (int i = 0; i < length; i++)
 			nameString += Tool.getRandString();
 		if (buttons.containsKey(nameString))
-			return getShopItemKey(buttons);
+			return getShopItemKey(buttons, JJLeng++);
 		return nameString;
 	}
 }

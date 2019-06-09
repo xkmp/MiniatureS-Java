@@ -37,10 +37,6 @@ public class MakeForm {
 	 */
 	@SuppressWarnings("unchecked")
 	public void makeMain(Player player) {
-		Boolean loadTime = mis.MakeFormTime.get(player.getName());
-		if (loadTime != null)
-			return;
-		mis.MakeFormTime.put(player.getName(), true);
 		Config Menus = new Config(mis.getDataFolder() + "/Main.yml", 2);
 		HashMap<String, Object> AllMap = (Menus.get("Buttons") instanceof Map)
 				? (HashMap<String, Object>) (Menus.get("Buttons"))

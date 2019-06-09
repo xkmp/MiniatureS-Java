@@ -1,5 +1,13 @@
 package cn.xiaokai.mis.tool;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -296,4 +304,89 @@ public class Tool {
 		DecimalFormat df = new DecimalFormat(s);
 		return Double.valueOf(df.format(d));
 	}
+
+	/**
+	 * 发送HTTP请求
+	 * 
+	 * @param httpUrl 请求地址
+	 * @param param   请求的内容
+	 * @return
+	 */
+	public static String doPost(String httpUrl, String param) {
+		HttpURLConnection connection = null;
+		InputStream is = null;
+		OutputStream os = null;
+		BufferedReader br = null;
+		String result = null;
+		try {
+			URL url = new URL(httpUrl);
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(15000);
+			connection.setReadTimeout(60000);
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			connection.setRequestProperty("Authorization", "Bearer da3efcbf-0845-4fe3-8aba-ee040be542c0");
+			os = connection.getOutputStream();
+			os.write(param.getBytes());
+			if (connection.getResponseCode() == 200) {
+				is = connection.getInputStream();
+				br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+				StringBuffer sbf = new StringBuffer();
+				String temp = null;
+				while ((temp = br.readLine()) != null) {
+					sbf.append(temp);
+					sbf.append("\r\n");
+				}
+				result = sbf.toString();
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (null != br)
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			if (null != os)
+				try {
+					os.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			if (null != is)
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			connection.disconnect();
+		}
+		return result;
+	}
+
+	/**
+	 * 从一段字符内截取另一段字符
+	 * 
+	 * @param Context 要截取字符的原文
+	 * @param text1   要截取的第一段文字
+	 * @param text2   要截取的第二段文字
+	 * @return 截取完毕的内容
+	 */
+	public static String cutString(String Context, String strStart, String strEnd) {
+		int strStartIndex = Context.indexOf(strStart);
+		int strEndIndex = Context.lastIndexOf(strEnd);
+		if (strStartIndex < 0) {
+			return null;
+		}
+		if (strEndIndex < 0) {
+			return null;
+		}
+		return Context.substring(strStartIndex, strEndIndex).substring(strStart.length());
+	}
+
 }

@@ -151,7 +151,7 @@ public class OpenButton {
 		} else if (ePlugin == null || !ePlugin.isEnabled())
 			mis.getLogger().info("§4警告：§6EconomyAPI§4未安装或未启用！本次忽略§9" + player.getName() + "§4的扣费！");
 		if (Command != null && !Command.isEmpty())
-			if (!String.valueOf(Button.get("Commander")).toLowerCase().equals("player"))
+			if (String.valueOf(Button.get("Commander")).toLowerCase().equals("console"))
 				Server.getInstance().dispatchCommand(new ConsoleCommandSender(), Command);
 			else
 				Server.getInstance().dispatchCommand(player, Command);

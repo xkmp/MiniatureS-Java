@@ -1,6 +1,7 @@
 package cn.xiaokai.mis.shop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
@@ -84,22 +85,92 @@ public class DataDispose {
 		int Min = Float.valueOf(String.valueOf(data.getResponse(3))).intValue();
 		int Max = Float.valueOf(String.valueOf(data.getResponse(4))).intValue();
 		int ItemCount = Float.valueOf(String.valueOf(data.getResponse(5))).intValue();
-		ArrayList<String> BlockIDs = new ArrayList<String>();
+		HashMap<String, Integer> BlockIDs = new HashMap<String, Integer>();
 		if (BlockID.contains(";")) {
 			String[] BlockIDx = BlockID.split(";");
 			for (String B : BlockIDx)
 				if (B != null && !B.isEmpty())
-					BlockIDs.add(ItemIDSunName.UnknownToID(B));
+					if (B.contains("=>")) {
+						String[] Bs = B.split("=>");
+						B = ItemIDSunName.UnknownToID(Bs[0]);
+						if (Bs[1] == null || Bs[1].isEmpty()) {
+							MakeForm.makeTip(player, "§4请输入§6" + ItemIDSunName.getIDByName(B) + "§4的物品数量");
+							return;
+						}
+						if (!Tool.isInteger(Bs[1])) {
+							MakeForm.makeTip(player, "§6" + ItemIDSunName.getIDByName(B) + "§4的物品数量仅能为大于零的纯整数！");
+							return;
+						}
+						int isCount = Float.valueOf(Bs[1]).intValue();
+						if (isCount < 1) {
+							MakeForm.makeTip(player, "§6" + ItemIDSunName.getIDByName(B) + "§4的物品数量仅能为大于零的纯整数！");
+							return;
+						}
+						BlockIDs.put(B, isCount);
+					} else
+						BlockIDs.put(ItemIDSunName.UnknownToID(B), 1);
+		} else if (BlockID.contains("=>")) {
+			String[] Bs = BlockID.split("=>");
+			BlockID = ItemIDSunName.UnknownToID(Bs[0]);
+			if (Bs[1] == null || Bs[1].isEmpty()) {
+				MakeForm.makeTip(player, "§4请输入§6" + ItemIDSunName.getIDByName(BlockID) + "§4的物品数量");
+				return;
+			}
+			if (!Tool.isInteger(Bs[1])) {
+				MakeForm.makeTip(player, "§6" + ItemIDSunName.getIDByName(BlockID) + "§4的物品数量仅能为大于零的纯整数！");
+				return;
+			}
+			int isCount = Float.valueOf(Bs[1]).intValue();
+			if (isCount < 1) {
+				MakeForm.makeTip(player, "§6" + ItemIDSunName.getIDByName(BlockID) + "§4的物品数量仅能为大于零的纯整数！");
+				return;
+			}
+			BlockIDs.put(BlockID, isCount);
 		} else
-			BlockIDs.add(ItemIDSunName.UnknownToID(BlockID));
-		ArrayList<String> ToBlockIDs = new ArrayList<>();
+			BlockIDs.put(ItemIDSunName.UnknownToID(BlockID), 1);
+		HashMap<String, Integer> ToBlockIDs = new HashMap<String, Integer>();
 		if (ToBlockID.contains(";")) {
 			String[] ToBlockIDx = ToBlockID.split(";");
 			for (String I : ToBlockIDx)
 				if (I != null && !I.isEmpty())
-					ToBlockIDs.add(ItemIDSunName.UnknownToID(I));
+					if (I.contains("=>")) {
+						String[] Bs = I.split("=>");
+						I = ItemIDSunName.UnknownToID(Bs[0]);
+						if (Bs[1] == null || Bs[1].isEmpty()) {
+							MakeForm.makeTip(player, "§4请输入§6" + ItemIDSunName.getIDByName(I) + "§4的物品数量");
+							return;
+						}
+						if (!Tool.isInteger(Bs[1])) {
+							MakeForm.makeTip(player, "§6" + ItemIDSunName.getIDByName(I) + "§4的物品数量仅能为大于零的纯整数！");
+							return;
+						}
+						int isCount = Float.valueOf(Bs[1]).intValue();
+						if (isCount < 1) {
+							MakeForm.makeTip(player, "§6" + ItemIDSunName.getIDByName(I) + "§4的物品数量仅能为大于零的纯整数！");
+							return;
+						}
+						ToBlockIDs.put(I, isCount);
+					} else
+						ToBlockIDs.put(ItemIDSunName.UnknownToID(I), 1);
+		} else if (ToBlockID.contains("=>")) {
+			String[] Bs = ToBlockID.split("=>");
+			ToBlockID = ItemIDSunName.UnknownToID(Bs[0]);
+			if (Bs[1] == null || Bs[1].isEmpty()) {
+				MakeForm.makeTip(player, "§4请输入§6" + ItemIDSunName.getIDByName(ToBlockID) + "§4的物品数量");
+				return;
+			}
+			if (!Tool.isInteger(Bs[1])) {
+				MakeForm.makeTip(player, "§6" + ItemIDSunName.getIDByName(ToBlockID) + "§4的物品数量仅能为大于零的纯整数！");
+				return;
+			}
+			int isCount = Float.valueOf(Bs[1]).intValue();
+			if (isCount < 1) {
+				MakeForm.makeTip(player, "§6" + ItemIDSunName.getIDByName(ToBlockID) + "§4的物品数量仅能为大于零的纯整数！");
+				return;
+			}
+			ToBlockIDs.put(ToBlockID, isCount);
 		} else
-			ToBlockIDs.add(ItemIDSunName.UnknownToID(ToBlockID));
+			ToBlockIDs.put(ItemIDSunName.UnknownToID(ToBlockID), 1);
 		(new Shop(mis)).AddItemToItem(mis.PlayerMenuBack.get(player.getName()), player, Money, BlockIDs, ToBlockIDs,
 				Min, Max, ItemCount);
 	}

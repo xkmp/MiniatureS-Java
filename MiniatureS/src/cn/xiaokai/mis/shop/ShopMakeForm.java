@@ -47,11 +47,15 @@ public class ShopMakeForm {
 			return;
 		}
 		List<Element> list = new ArrayList<>();
-		list.add(
-				new ElementInput(TextFormat.GREEN + "请输入商店可以换的物品ID/物品名称  " + TextFormat.WHITE + "多个使用;分割(物品数量请在配置文件修改)",
-						"玩家将会换得什么", "钻石"));
-		list.add(new ElementInput(TextFormat.GREEN + "请输入玩家换物所需的物品ID/物品名称" + TextFormat.WHITE + "多个使用;分割(物品数量请在配置文件修改)",
-				"玩家需要用什么来还",
+		String FFF_PY_FFFF = "------------------------------";
+		list.add(new ElementInput(
+				"§6请输入商店可以换的物品ID/物品名称 \n§5多个使用;分割\n\n§a格式：\n" + Tool.getColorFont(FFF_PY_FFFF)
+						+ "\n物品ID或名称=>物品数量;物品ID或名称=>物品数量\n§4如 泥土=>64;圆石=>64\n" + Tool.getColorFont(FFF_PY_FFFF),
+				"物品ID或名称=>物品数量;物品ID或名称=>物品数量 如 泥土=>64;圆石=>64"));
+		list.add(new ElementInput(
+				"§6请输入玩家换物所需的物品ID/物品名称 \n§5多个使用;分割\n\n§a格式：\n" + Tool.getColorFont(FFF_PY_FFFF)
+						+ "\n物品ID或名称=>物品数量;物品ID或名称=>物品数量\n§4如 泥土=>64;圆石=>64\n" + Tool.getColorFont(FFF_PY_FFFF),
+				"物品ID或名称=>物品数量;物品ID或名称=>物品数量 如 泥土=>64;圆石=>64",
 				player.getInventory().getItemInHand().getId() != 0
 						? (player.getInventory().getItemInHand().getId() + ":"
 								+ player.getInventory().getItemInHand().getDamage())
